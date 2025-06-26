@@ -188,7 +188,7 @@ Cta Area
                         <div class="shape-mockup cta-card-bg-shape" data-bottom="0" data-right="0" data-mask-src="{{ asset('assets/img/shape/cta_shape1_1.png') }}">
                             <img src="{{ asset('assets/img/shape/cta_shape1_1.png') }}" alt="img">
                         </div>
-                        <h3 class="box-title">Become a volunteer</h3>
+                        <h3 class="box-title">Become a Donor</h3>
                         <p class="box-text">Provide resources such as reports, infographics, and educational materials related to the charity's cause. Use a clear and intuitive navigation menu to help users find information quickly.</p>
                         <a href="contact.html" class="th-btn style5">Learn More <i class="fas fa-arrow-up-right ms-2"></i></a>
                     </div>

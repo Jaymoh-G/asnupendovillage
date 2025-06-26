@@ -49,7 +49,7 @@
                         <li><a href="blog-details.html">Blog Details</a></li>
                     </ul>
                 </li>
-                 <li>
+                <li>
                     <a href="{{ route('contact-us') }}">Contact Us1</a>
                 </li>
                 <li>
@@ -163,33 +163,58 @@
                             <li>
                                 <a href="{{ route('home') }}">Home</a>
                             </li>
-                           <li class="menu-item-has-children">
+                            <li class="menu-item-has-children">
                                 <a href="#">About Us</a>
                                 <ul class="sub-menu">
 
                                     <li><a href="{{ route('team') }}">Our Team</a></li>
+                                    <li><a href="{{ route('team') }}">Testimonials</a></li>
                                     <li><a href="{{ route('faqs') }}">FAQS</a></li>
                                 </ul>
                             </li>
                             <li class="menu-item-has-children">
                                 <a href="#">Our Programs</a>
                                 <ul class="sub-menu">
-                                    <li><a href="{{ route('donate-now') }}">Medical Support</a></li>
-                                    <li><a href="{{ route('donate-now') }}">HIV/AIDS Education & Awareness</a></li>
-                                    <li><a href="{{ route('donate-now') }}">Nutrition Program
-
-</a></li>
+                                    <li><a href="{{ route('donate-now') }}">Medical Care</a></li>
+                                    <li><a href="{{ route('donate-now') }}">Nutrition</a></li>
+                                    <li><a href="{{ route('donate-now') }}">Education & Sponsorship (CUSP)</a></li>
+                                    <li><a href="{{ route('donate-now') }}">Psychosocial Support</a></li>
+                                    <li><a href="{{ route('donate-now') }}">PMTCT & HBC</a></li>
+                                    <li><a href="{{ route('donate-now') }}">Upendo Farm & Income Generation (CIGAs)</a></li>
+                                </ul>
+                            </li>
+                             <li class="menu-item-has-children">
+                                <a href="#">Facilities</a>
+                                <ul class="sub-menu">
+                                    <li><a href="{{ route('donate-now') }}">Dispensary/Clinic</a></li>
+                                    <li><a href="{{ route('donate-now') }}">Laboratory & Pharmacy</a></li>
+                                    <li><a href="{{ route('donate-now') }}">Administration Block</a></li>
+                                    <li><a href="{{ route('donate-now') }}">Fountain Valley Water Bottling Plant</a></li>
+                                    <li><a href="{{ route('donate-now') }}">Upendo Farm Structures</a></li>
+                                    <li><a href="{{ route('donate-now') }}">Community Halls/Meeting Spaces</a></li>
+                                </ul>
+                            </li>
+                             <li class="menu-item-has-children">
+                                <a href="#">Projects</a>
+                                <ul class="sub-menu">
+                                    <li><a href="{{ route('donate-now') }}">Project 1</a></li>
+                                    <li><a href="{{ route('donate-now') }}">Project 2</a></li>
+                                    <li><a href="{{ route('donate-now') }}">Project 3</a></li>
+                                    <li><a href="{{ route('donate-now') }}">Project 4</a></li>
+                                    <li><a href="{{ route('donate-now') }}">Project 5</a></li>
+                                    <li><a href="{{ route('donate-now') }}">Project 6</a></li>
                                 </ul>
                             </li>
 
-                                    <li><a href="{{ route('testimonials') }}">Testimonials</a></li>
+
 
                             <li class="menu-item-has-children">
                                 <a href="{{ route('media-centre') }}">Media Centre</a>
                                 <ul class="sub-menu">
                                     <li><a href="{{ route('media-centre') }}">News</a></li>
                                     <li><a href="{{ route('media-centre') }}">Events</a></li>
-                                    <li><a href="{{ route('media-centre') }}">Gallery</a></li>
+                                    <li><a href="{{ route('media-centre') }}">Photo Gallery</a></li>
+                                    <li><a href="{{ route('media-centre') }}">Video Gallery</a></li>
                                 </ul>
                             </li>
                             <li>
