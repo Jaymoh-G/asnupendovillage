@@ -8,6 +8,7 @@ use App\Livewire\Frontend\DonateNow;
 use App\Livewire\Frontend\ContactUs;
 use App\Livewire\Frontend\Gallery;
 use App\Livewire\Frontend\Testimonials;
+use App\Livewire\Frontend\News;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', Home::class)->name('home');
@@ -25,3 +26,4 @@ Route::get('/contact-us', ContactUs::class)->name('contact-us');
 Route::get('/gallery', Gallery::class)->name('gallery');
 // testimonials
 Route::get('/testimonials', Testimonials::class)->name('testimonials');
+// news
