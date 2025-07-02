@@ -27,3 +27,8 @@ Route::get('/gallery', Gallery::class)->name('gallery');
 // testimonials
 Route::get('/testimonials', Testimonials::class)->name('testimonials');
 // news
+
+// Image management routes
+Route::delete('/admin/images/{imageId}/remove', [App\Http\Controllers\ImageController::class, 'removeImage'])
+    ->name('admin.remove-image')
+    ->middleware(['auth', 'web']);

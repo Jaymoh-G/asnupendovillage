@@ -18,10 +18,13 @@ class Album extends Model
         'cover_image',
         'slug',
         'status',
+        'gallery_id',
+        'sort_order',
     ];
 
     protected $casts = [
         'status' => 'string',
+        'sort_order' => 'integer',
     ];
 
     /**
@@ -44,6 +47,16 @@ class Album extends Model
         });
     }
 
+
+
+    /**
+     * Get the gallery this album belongs to
+     */
+    public function gallery()
+    {
+        return $this->belongsTo(Gallery::class);
+    }
+
     /**
      * Get the cover image
      */
@@ -53,13 +66,27 @@ class Album extends Model
     }
 
     /**
-     * Get the cover image URL
+     * Get the cover image URL for display
      */
     public function getCoverImageUrlAttribute(): ?string
     {
-        if ($this->cover_image && $this->coverImage) {
-            return $this->coverImage->url;
+        try {
+            // If cover_image field has a value, return the asset URL
+            if ($this->cover_image) {
+                return asset('storage/' . $this->cover_image);
+            }
+
+            // If no cover image, get the first image from the album
+            $firstImage = $this->images()->first();
+            if ($firstImage) {
+                return asset('storage/' . $firstImage->path);
+            }
+        } catch (\Exception $e) {
+            // Log error but don't break the page
+            \Illuminate\Support\Facades\Log::error('Error getting cover image for album ' . $this->id . ': ' . $e->getMessage());
         }
+
+        // Return null if no images exist - Filament will use the default image
         return null;
     }
 
@@ -69,6 +96,14 @@ class Album extends Model
     public function scopeActive($query)
     {
         return $query->where('status', 'active');
+    }
+
+    /**
+     * Scope to order by sort order
+     */
+    public function scopeOrdered($query)
+    {
+        return $query->orderBy('sort_order')->orderBy('name');
     }
 
     /**
