@@ -18,7 +18,7 @@ class AlbumResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationGroup = 'Gallery Management';
+    protected static ?string $navigationGroup = 'Media Centre';
 
     protected static ?int $navigationSort = 1;
 

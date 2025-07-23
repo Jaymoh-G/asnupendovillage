@@ -28,7 +28,7 @@ class ImageResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-photo';
 
-    protected static ?string $navigationGroup = 'Media Management';
+    protected static ?string $navigationGroup = 'Media Centre';
 
     public static function form(Form $form): Form
     {

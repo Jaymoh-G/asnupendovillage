@@ -10,6 +10,8 @@ use App\Livewire\Frontend\Gallery;
 use App\Livewire\Frontend\Testimonials;
 use App\Livewire\Frontend\News;
 use Illuminate\Support\Facades\Route;
+use App\Livewire\Frontend\Downloads;
+use App\Models\Program;
 
 Route::get('/', Home::class)->name('home');
 // faqs
@@ -27,8 +29,15 @@ Route::get('/gallery', Gallery::class)->name('gallery');
 // testimonials
 Route::get('/testimonials', Testimonials::class)->name('testimonials');
 // news
+Route::get('/downloads', function () {
+    return view('downloads-page');
+})->name('downloads');
 
 // Image management routes
 Route::delete('/admin/images/{imageId}/remove', [App\Http\Controllers\ImageController::class, 'removeImage'])
     ->name('admin.remove-image')
     ->middleware(['auth', 'web']);
+
+Route::get('/downloads/program/{program:slug}', function (Program $program) {
+    return view('downloads-page', ['programId' => $program->id]);
+})->name('downloads.by-program');

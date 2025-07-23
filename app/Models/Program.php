@@ -45,6 +45,11 @@ class Program extends Model
         return $image ? asset('storage/' . $image->path) : null;
     }
 
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
     public function teams()
     {
         return $this->belongsToMany(Team::class);
