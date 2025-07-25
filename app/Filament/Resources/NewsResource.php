@@ -48,9 +48,6 @@ class NewsResource extends Resource
                                 TextInput::make('title')
                                     ->required()
                                     ->maxLength(255),
-                                TextInput::make('slug')
-                                    ->maxLength(255)
-                                    ->unique(News::class, 'slug', fn($record) => $record),
                             ]),
                         RichEditor::make('content')
                             ->required()

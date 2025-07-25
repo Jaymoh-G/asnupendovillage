@@ -42,7 +42,7 @@ class News extends Model
         });
 
         static::updating(function ($news) {
-            if ($news->isDirty('title') && empty($news->slug)) {
+            if ($news->isDirty('title')) {
                 $news->slug = Str::slug($news->title);
             }
         });

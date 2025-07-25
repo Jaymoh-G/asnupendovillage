@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Career extends Model
 {
@@ -15,4 +16,14 @@ class Career extends Model
         'application_deadline',
         'contact_email',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::saving(function ($career) {
+            if (empty($career->slug) || $career->isDirty('title')) {
+                $career->slug = Str::slug($career->title);
+            }
+        });
+    }
 }
