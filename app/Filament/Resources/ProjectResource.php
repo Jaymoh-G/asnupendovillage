@@ -31,18 +31,23 @@ class ProjectResource extends Resource
                             ->label('Project Name')
                             ->required()
                             ->maxLength(255),
+                        Forms\Components\TextInput::make('slug')
+                            ->label('Slug')
+                            ->unique()
+                            ->maxLength(255)
+                            ->helperText('Leave empty to auto-generate from project name'),
                         Forms\Components\Select::make('program_id')
                             ->label('Program')
-                            ->relationship('program', 'title')
+                            ->options(\App\Models\Program::pluck('title', 'id'))
                             ->required()
-                            ->searchable(),
+                            ->searchable()
+                            ->preload(),
                         Forms\Components\Textarea::make('description')
                             ->label('Description')
                             ->rows(4)
                             ->maxLength(1000),
-                        Forms\Components\FileUpload::make('images')
-                            ->label('Project Images')
-                            ->multiple()
+                        Forms\Components\FileUpload::make('image')
+                            ->label('Project Image')
                             ->image()
                             ->imageEditor()
                             ->imageCropAspectRatio('16:9')
@@ -51,11 +56,7 @@ class ProjectResource extends Resource
                             ->directory('projects')
                             ->visibility('public')
                             ->maxSize(4096)
-                            ->helperText('Upload one or more images for the project.')
-                            ->columnSpan(1)
-                            ->default(fn($record) => $record ? $record->images->pluck('path')->toArray() : []),
-
-
+                            ->helperText('Upload an image for the project.'),
                     ])
                     ->columns(2),
                 Forms\Components\Section::make('Settings')
@@ -77,7 +78,7 @@ class ProjectResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('images.0.url')
+                Tables\Columns\ImageColumn::make('image_url')
                     ->label('Image')
                     ->size(60)
                     ->openUrlInNewTab(),

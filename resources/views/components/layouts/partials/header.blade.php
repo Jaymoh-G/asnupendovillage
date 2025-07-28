@@ -184,7 +184,7 @@
                                 </ul>
                             </li>
                              <li class="menu-item-has-children">
-                                <a href="#">Facilities</a>
+                                <a href="{{ route('facilities') }}">Facilities</a>
                                 <ul class="sub-menu">
                                     <li><a href="{{ route('donate-now') }}">Dispensary/Clinic</a></li>
                                     <li><a href="{{ route('donate-now') }}">Laboratory & Pharmacy</a></li>
@@ -194,16 +194,9 @@
                                     <li><a href="{{ route('donate-now') }}">Community Halls/Meeting Spaces</a></li>
                                 </ul>
                             </li>
-                             <li class="menu-item-has-children">
-                                <a href="#">Projects</a>
-                                <ul class="sub-menu">
-                                    <li><a href="{{ route('donate-now') }}">Project 1</a></li>
-                                    <li><a href="{{ route('donate-now') }}">Project 2</a></li>
-                                    <li><a href="{{ route('donate-now') }}">Project 3</a></li>
-                                    <li><a href="{{ route('donate-now') }}">Project 4</a></li>
-                                    <li><a href="{{ route('donate-now') }}">Project 5</a></li>
-                                    <li><a href="{{ route('donate-now') }}">Project 6</a></li>
-                                </ul>
+                             <li class="">
+                                <a href="{{ route('projects') }}">Projects</a>
+
                             </li>
 
 
@@ -211,10 +204,12 @@
                             <li class="menu-item-has-children">
                                 <a href="{{ route('media-centre') }}">Media Centre</a>
                                 <ul class="sub-menu">
-                                    <li><a href="{{ route('media-centre') }}">News</a></li>
-                                    <li><a href="{{ route('media-centre') }}">Events</a></li>
-                                    <li><a href="{{ route('media-centre') }}">Photo Gallery</a></li>
-                                    <li><a href="{{ route('media-centre') }}">Video Gallery</a></li>
+                                    <li><a href="{{ route('news') }}">News</a></li>
+                                    <li><a href="{{ route('events') }}">Events</a></li>
+                                    <li><a href="{{ route('gallery') }}">Gallery</a></li>
+                                    <li><a href="{{ route('careers') }}">Careers</a></li>
+                                    <li><a href="{{ route('downloads') }}">Downloads</a></li>
+
                                 </ul>
                             </li>
                             <li>
@@ -222,7 +217,7 @@
                             </li>
                         </ul>
                     </nav>
-                 
+
                 </div>
                 <div class="header-button">
                     <button type="button" class="icon-btn style2 searchBoxToggler d-lg-block d-none"><i

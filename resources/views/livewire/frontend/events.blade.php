@@ -7,10 +7,10 @@
     >
         <div class="container">
             <div class="breadcumb-content">
-                <h1 class="breadcumb-title">News & Articles</h1>
+                <h1 class="breadcumb-title">Events</h1>
                 <ul class="breadcumb-menu">
                     <li><a href="{{ route('home') }}">Home</a></li>
-                    <li>News & Articles</li>
+                    <li>Events</li>
                 </ul>
             </div>
         </div>
@@ -18,15 +18,15 @@
 
     <div class="container space-top space-extra-bottom">
         <div class="title-area text-center mb-5">
-            <span class="sub-title">News & Articles</span>
-            <h2 class="sec-title">Our Latest News & Articles</h2>
+            <span class="sub-title">Events</span>
+            <h2 class="sec-title">Our Latest Events</h2>
         </div>
         <div class="row gy-4 gx-4">
-            @forelse($news as $item)
+            @forelse($events as $event)
             <div class="col-md-4">
                 <div class="blog-card">
                     <div class="blog-img">
-                        <a href="{{ route('news.detail', $item->slug) }}">
+                        <a href="#">
                             <div
                                 class="blog-img-shape1"
                                 data-mask-src="{{
@@ -35,17 +35,19 @@
                                     )
                                 }}"
                             ></div>
-                            @if($item->featured_image_url)
+                            @if($event->featured_image_url)
                             <img
-                                src="{{ $item->featured_image_url }}"
-                                alt="{{ $item->title }}"
+                                src="{{ $event->featured_image_url }}"
+                                alt="{{ $event->title }}"
                             />
                             @else
                             <img
                                 src="{{
-                                    asset('assets/img/blog/blog_1_1.jpg')
+                                    asset(
+                                        'assets/img/event/event_card1_1-mask.png'
+                                    )
                                 }}"
-                                alt="{{ $item->title }}"
+                                alt="{{ $event->title }}"
                             />
                             @endif
                         </a>
@@ -60,39 +62,37 @@
                             }}"
                         ></div>
                         <div class="blog-meta">
-                            <a href="{{ route('news') }}"
+                            <a href="{{ route('events') }}"
                                 ><i class="fas fa-calendar"></i
-                                >{{ $item->updated_at->format('M d, Y') }}</a
+                                >{{ \Carbon\Carbon::parse($event->start_date)->format('M d, Y') }}</a
                             >
-                            <a href="{{ route('news') }}"
-                                ><i class="fas fa-tags"></i>News</a
+                            <a href="{{ route('events') }}"
+                                ><i class="fas fa-clock"></i
+                                >{{ \Carbon\Carbon::parse($event->start_date)->format('g:i A') }}</a
                             >
                         </div>
                         <h3 class="box-title">
-                            <a href="{{ route('news.detail', $item->slug) }}">
-                                {{ \Illuminate\Support\Str::limit($item->title, 50) }}
+                            <a href="#">
+                                {{ \Illuminate\Support\Str::limit($event->title, 50) }}
                             </a>
                         </h3>
-                        <a
-                            href="{{ route('news.detail', $item->slug) }}"
-                            class="th-btn"
-                        >
+                        <a href="#" class="th-btn">
                             Read More <i class="fas fa-arrow-up-right ms-2"></i>
                         </a>
                     </div>
                 </div>
             </div>
             @empty
-            <div class="col-12 text-center">No news found.</div>
+            <div class="col-12 text-center">No events found.</div>
             @endforelse
         </div>
         <div class="mt-5 d-flex justify-content-center">
-            {{ $news->links('pagination::bootstrap-4') }}
+            {{ $events->links('pagination::bootstrap-4') }}
         </div>
     </div>
 
     <style>
-        /* Override grayscale filter for news images to keep them colored */
+        /* Override grayscale filter for events images to keep them colored */
         .blog-card .blog-img img {
             filter: none !important;
         }

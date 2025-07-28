@@ -7,10 +7,10 @@
     >
         <div class="container">
             <div class="breadcumb-content">
-                <h1 class="breadcumb-title">News & Articles</h1>
+                <h1 class="breadcumb-title">Our Facilities</h1>
                 <ul class="breadcumb-menu">
                     <li><a href="{{ route('home') }}">Home</a></li>
-                    <li>News & Articles</li>
+                    <li>Facilities</li>
                 </ul>
             </div>
         </div>
@@ -18,15 +18,17 @@
 
     <div class="container space-top space-extra-bottom">
         <div class="title-area text-center mb-5">
-            <span class="sub-title">News & Articles</span>
-            <h2 class="sec-title">Our Latest News & Articles</h2>
+            <span class="sub-title">Our Facilities</span>
+            <h2 class="sec-title">Explore Our Modern Facilities</h2>
         </div>
         <div class="row gy-4 gx-4">
-            @forelse($news as $item)
+            @forelse($facilities as $facility)
             <div class="col-md-4">
                 <div class="blog-card">
                     <div class="blog-img">
-                        <a href="{{ route('news.detail', $item->slug) }}">
+                        <a
+                            href="{{ route('facilities.detail', $facility->slug) }}"
+                        >
                             <div
                                 class="blog-img-shape1"
                                 data-mask-src="{{
@@ -35,17 +37,19 @@
                                     )
                                 }}"
                             ></div>
-                            @if($item->featured_image_url)
+                            @if($facility->featured_image_url)
                             <img
-                                src="{{ $item->featured_image_url }}"
-                                alt="{{ $item->title }}"
+                                src="{{ $facility->featured_image_url }}"
+                                alt="{{ $facility->name }}"
                             />
                             @else
                             <img
                                 src="{{
-                                    asset('assets/img/blog/blog_1_1.jpg')
+                                    asset(
+                                        'assets/img/service/service_card_1_1.png'
+                                    )
                                 }}"
-                                alt="{{ $item->title }}"
+                                alt="{{ $facility->name }}"
                             />
                             @endif
                         </a>
@@ -60,39 +64,49 @@
                             }}"
                         ></div>
                         <div class="blog-meta">
-                            <a href="{{ route('news') }}"
-                                ><i class="fas fa-calendar"></i
-                                >{{ $item->updated_at->format('M d, Y') }}</a
+                            <a href="{{ route('facilities') }}"
+                                ><i class="fas fa-building"></i>Facility</a
                             >
-                            <a href="{{ route('news') }}"
-                                ><i class="fas fa-tags"></i>News</a
+                            @if($facility->capacity)
+                            <a href="{{ route('facilities') }}"
+                                ><i class="fas fa-users"></i>Capacity:
+                                {{ $facility->capacity }}</a
                             >
+                            @endif
                         </div>
                         <h3 class="box-title">
-                            <a href="{{ route('news.detail', $item->slug) }}">
-                                {{ \Illuminate\Support\Str::limit($item->title, 50) }}
+                            <a
+                                href="{{ route('facilities.detail', $facility->slug) }}"
+                            >
+                                {{ \Illuminate\Support\Str::limit($facility->name, 50) }}
                             </a>
                         </h3>
+                        @if($facility->description)
+                        <p class="blog-text">
+                            {{ \Illuminate\Support\Str::limit($facility->description, 100) }}
+                        </p>
+                        @endif
                         <a
-                            href="{{ route('news.detail', $item->slug) }}"
+                            href="{{ route('facilities.detail', $facility->slug) }}"
                             class="th-btn"
                         >
-                            Read More <i class="fas fa-arrow-up-right ms-2"></i>
+                            View Details
+                            <i class="fas fa-arrow-up-right ms-2"></i>
                         </a>
                     </div>
                 </div>
             </div>
             @empty
-            <div class="col-12 text-center">No news found.</div>
+            <div class="col-12 text-center">No facilities found.</div>
             @endforelse
         </div>
         <div class="mt-5 d-flex justify-content-center">
-            {{ $news->links('pagination::bootstrap-4') }}
+            {{ $facilities->links('pagination::bootstrap-4') }}
         </div>
     </div>
 
     <style>
-        /* Override grayscale filter for news images to keep them colored */
+        /* Override grayscale filter for facility images to keep them colored */
         .blog-card .blog-img img {
             filter: none !important;
         }

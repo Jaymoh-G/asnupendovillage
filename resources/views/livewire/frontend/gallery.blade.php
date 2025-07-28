@@ -19,81 +19,78 @@ Gallery Area
     <div class="overflow-hidden space">
         <div class="container">
             <div class="row gy-30 gx-30 filter-active">
+                @forelse($albums as $album)
                 <div class="col-md-6 col-xxl-auto col-lg-4 filter-item">
                     <div class="gallery-card">
                         <div class="gallery-img">
-                            <img src="assets/img/gallery/gallery_1_1.png" alt="gallery image">
-                            <a href="assets/img/gallery/gallery_1_1.png" class="icon-btn popup-image"><i class="fas fa-eye"></i></a>
+                            @if($album->cover_image_url)
+                            <img src="{{ $album->cover_image_url }}" alt="{{ $album->name }}">
+                            @else
+                            <img src="{{ asset('assets/img/gallery/gallery_1_1.png') }}" alt="{{ $album->name }}">
+                            @endif
+                            <div class="album-info">
+                                <h4 class="album-title">{{ $album->name }}</h4>
+                                <span class="photo-count">{{ $album->images->count() }} Photos</span>
+                            </div>
+                            <a href="{{ route('gallery.album', $album->slug) }}" class="icon-btn">
+                                <i class="fas fa-eye"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-xxl-auto col-lg-4 filter-item">
-                    <div class="gallery-card">
-                        <div class="gallery-img">
-                            <img src="assets/img/gallery/gallery_1_2.png" alt="gallery image">
-                            <a href="assets/img/gallery/gallery_1_2.png" class="icon-btn popup-image"><i class="fas fa-eye"></i></a>
-                        </div>
-                    </div>
+                @empty
+                <div class="col-12 text-center">
+                    <p>No albums found.</p>
                 </div>
-                <div class="col-md-6 col-xxl-auto col-lg-4 filter-item">
-                    <div class="gallery-card">
-                        <div class="gallery-img">
-                            <img src="assets/img/gallery/gallery_1_3.png" alt="gallery image">
-                            <a href="assets/img/gallery/gallery_1_3.png" class="icon-btn popup-image"><i class="fas fa-eye"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-xxl-auto col-lg-4 filter-item">
-                    <div class="gallery-card">
-                        <div class="gallery-img">
-                            <img src="assets/img/gallery/gallery_1_4.png" alt="gallery image">
-                            <a href="assets/img/gallery/gallery_1_4.png" class="icon-btn popup-image"><i class="fas fa-eye"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-xxl-auto col-lg-4 filter-item">
-                    <div class="gallery-card">
-                        <div class="gallery-img">
-                            <img src="assets/img/gallery/gallery_1_6.png" alt="gallery image">
-                            <a href="assets/img/gallery/gallery_1_6.png" class="icon-btn popup-image"><i class="fas fa-eye"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-xxl-auto col-lg-4 filter-item">
-                    <div class="gallery-card">
-                        <div class="gallery-img">
-                            <img src="assets/img/gallery/gallery_1_5.png" alt="gallery image">
-                            <a href="assets/img/gallery/gallery_1_5.png" class="icon-btn popup-image"><i class="fas fa-eye"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-xxl-auto col-lg-4 filter-item">
-                    <div class="gallery-card">
-                        <div class="gallery-img">
-                            <img src="assets/img/gallery/gallery_1_7.png" alt="gallery image">
-                            <a href="assets/img/gallery/gallery_1_7.png" class="icon-btn popup-image"><i class="fas fa-eye"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-xxl-auto col-lg-4 filter-item">
-                    <div class="gallery-card">
-                        <div class="gallery-img">
-                            <img src="assets/img/gallery/gallery_1_9.png" alt="gallery image">
-                            <a href="assets/img/gallery/gallery_1_9.png" class="icon-btn popup-image"><i class="fas fa-eye"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-xxl-auto col-lg-4 filter-item">
-                    <div class="gallery-card">
-                        <div class="gallery-img">
-                            <img src="assets/img/gallery/gallery_1_8.png" alt="gallery image">
-                            <a href="assets/img/gallery/gallery_1_8.png" class="icon-btn popup-image"><i class="fas fa-eye"></i></a>
-                        </div>
-                    </div>
-                </div>
+                @endforelse
             </div>
         </div>
     </div>
     <!--==============================
     @endsection
+
+    <style>
+        /* Album information overlay styling */
+        .gallery-img {
+            position: relative;
+        }
+
+        .album-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            color: white;
+            padding: 20px 15px 15px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery-card:hover .album-info {
+            opacity: 1;
+        }
+
+        .album-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0 0 5px 0;
+            color: white;
+        }
+
+        .photo-count {
+            font-size: 14px;
+            opacity: 0.9;
+            color: white;
+        }
+
+        /* Ensure images are colored */
+        .gallery-img img {
+            filter: none !important;
+        }
+
+        .gallery-card:hover .gallery-img img {
+            filter: none !important;
+        }
+    </style>
 </div>

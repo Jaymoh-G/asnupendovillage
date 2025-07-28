@@ -15,6 +15,7 @@ class Career extends Model
         'status',
         'application_deadline',
         'contact_email',
+        'slug',
     ];
 
     protected static function boot()

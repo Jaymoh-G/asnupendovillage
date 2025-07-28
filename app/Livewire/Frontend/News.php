@@ -12,7 +12,7 @@ class News extends Component
 
     public function render()
     {
-        $news = NewsModel::orderByDesc('updated_at')->paginate(12);
+        $news = NewsModel::orderByDesc('updated_at')->paginate(9);
         return view('livewire.frontend.news', [
             'news' => $news,
         ]);

@@ -12,6 +12,9 @@ use App\Livewire\Frontend\News;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Frontend\Downloads;
 use App\Livewire\Frontend\Careers;
+use App\Livewire\Frontend\Projects;
+use App\Livewire\Frontend\Events;
+use App\Livewire\Frontend\Facilities;
 use App\Models\Program;
 
 Route::get('/', Home::class)->name('home');
@@ -50,6 +53,25 @@ Route::get('/careers', function () {
 Route::get('/careers/{slug}', function ($slug) {
     return view('career-detail-page', ['slug' => $slug]);
 })->name('careers.detail');
+
+// projects
+Route::get('/projects', function () {
+    return view('projects-page');
+})->name('projects');
+// project detail
+Route::get('/projects/{slug}', function ($slug) {
+    return view('project-detail-page', ['slug' => $slug]);
+})->name('projects.detail');
+
+// events
+Route::get('/events', function () {
+    return view('events-page');
+})->name('events');
+
+// facilities
+Route::get('/facilities', function () {
+    return view('facilities-page');
+})->name('facilities');
 
 // Image management routes
 Route::delete('/admin/images/{imageId}/remove', [App\Http\Controllers\ImageController::class, 'removeImage'])
