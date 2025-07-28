@@ -27,9 +27,9 @@ return new class extends Migration
             $table->integer('current_attendees')->default(0);
             $table->enum('status', ['draft', 'published', 'cancelled', 'completed'])->default('draft');
             $table->enum('type', ['in-person', 'virtual', 'hybrid'])->default('in-person');
-            $table->timestamp('start_date');
-            $table->timestamp('end_date');
-            $table->timestamp('registration_deadline')->nullable();
+            $table->dateTime('start_date')->nullable();
+            $table->dateTime('end_date')->nullable();
+            $table->dateTime('registration_deadline')->nullable();
             $table->boolean('is_featured')->default(false);
             $table->json('tags')->nullable();
             $table->string('meta_title')->nullable();
