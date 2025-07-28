@@ -6,14 +6,10 @@
                     <div class="box-content">
                         <h2 class="box-title">{{ $career->title }}</h2>
                         <p class="box-text">{{ $career->description }}</p>
-                        <a
-                            href="{{ route('careers') }}"
-                            class="th-btn btn-sm mt-3"
-                            >Back to Careers</a
-                        >
+
 
                         <hr />
-                        <h4>Apply Now</h4>
+                        
                         <a
                             href="mailto:{{ $career->email }}?subject=Application for {{ urlencode($career->title) }}"
                             class="th-btn btn-sm"

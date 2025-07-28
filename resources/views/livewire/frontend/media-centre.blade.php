@@ -207,7 +207,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row gy-4 gx-4 justify-content-center">
+                <div class="row gy-4 gx-4">
                     @forelse($events as $event)
                     <div class="col-md-4">
                         <div class="blog-card">
@@ -299,7 +299,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row gy-4 gx-4 justify-content-center">
+                <div class="row gy-4 gx-4">
                     @forelse($news as $item)
                     <div class="col-md-4">
                         <div class="blog-card">
@@ -392,7 +392,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row gy-4 gx-4 justify-content-center">
+                <div class="row gy-4 gx-4">
                     @forelse($gallery as $image)
                     <div class="col-md-4">
                         <div class="project-card">
@@ -446,7 +446,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row gy-4 gx-4 justify-content-center">
+                <div class="row gy-4 gx-4">
                     @forelse($careers as $career)
                     <div class="col-md-4">
                         <div class="feature-card">
@@ -479,7 +479,7 @@
                                     </div>
                                 </div>
                                 <a
-                                    href="{{ url('/careers/' . ($career->id)) }}"
+                                    href="{{ route('careers.detail', $career->slug) }}"
                                     class="th-btn btn-sm"
                                     >View Details
                                     <i class="fas fa-arrow-up-right ms-2"></i
@@ -512,7 +512,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row gy-4 gx-4 justify-content-center">
+                <div class="row gy-4 gx-4">
                     @forelse($downloads as $download)
                     <div class="col-md-4">
                         <div class="feature-card">
