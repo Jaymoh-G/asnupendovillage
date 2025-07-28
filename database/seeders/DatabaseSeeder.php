@@ -20,5 +20,10 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@gmail.com',
             'password' => bcrypt('password'),
         ]);
+
+        // Seed page banners
+        $this->call([
+            PageBannerSeeder::class,
+        ]);
     }
 }

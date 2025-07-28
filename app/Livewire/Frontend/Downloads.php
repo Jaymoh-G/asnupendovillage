@@ -5,13 +5,16 @@ namespace App\Livewire\Frontend;
 use Livewire\Component;
 use App\Models\Download;
 use App\Models\Program;
+use App\Traits\HasPageBanner;
 use Livewire\WithPagination;
 
 class Downloads extends Component
 {
-    use WithPagination;
+    use WithPagination, HasPageBanner;
+
     public $programs;
     public $selectedProgram = '';
+    public $pageBanner;
 
     public function mount($programId = null)
     {
@@ -19,6 +22,9 @@ class Downloads extends Component
         if ($programId) {
             $this->selectedProgram = $programId;
         }
+
+        // Get page banner for downloads
+        $this->pageBanner = $this->getPageBanner('downloads');
     }
 
     public function filterByProgram($programId = null)
@@ -38,6 +44,7 @@ class Downloads extends Component
             'downloads' => $downloads,
             'programs' => $this->programs,
             'selectedProgram' => $this->selectedProgram,
+            'pageBanner' => $this->pageBanner,
         ]);
     }
 }

@@ -8,14 +8,18 @@ use App\Models\News;
 use App\Models\Image;
 use App\Models\Career;
 use App\Models\Download;
+use App\Traits\HasPageBanner;
 
 class MediaCentre extends Component
 {
+    use HasPageBanner;
+
     public $events;
     public $news;
     public $gallery;
     public $careers;
     public $downloads;
+    public $pageBanner;
 
     public function mount()
     {
@@ -29,6 +33,9 @@ class MediaCentre extends Component
             class_exists(Career::class) ? Career::orderByDesc('updated_at')->limit(3)->get() : collect();
         $this->downloads =
             class_exists(Download::class) ? Download::orderByDesc('updated_at')->limit(3)->get() : collect();
+
+        // Get page banner for media-centre
+        $this->pageBanner = $this->getPageBanner('media-centre');
     }
 
     public function render()

@@ -571,7 +571,7 @@
     }
     .box-title {
         margin: 0 0 -0.2em 0;
-        font-size: 24px;
+        font-size: 17px;
         font-weight: 700;
     }
     @include xxl {
@@ -634,7 +634,7 @@
             color: $theme-color2;
         }
     }
-    
+
     .main-menu > ul > li:has(.sub-menu) > a,
     .main-menu > ul > li:has(.mega-menu) > a,
     .main-menu > ul > li.menu-item-has-children > a {
@@ -690,7 +690,7 @@
         .menu-top {
             display: none;
         }
-    }    
+    }
 }
 @include xs {
     .header-default {
@@ -720,7 +720,7 @@
             .icon-btn {
                 --btn-size: 50px;
             }
-        }  
+        }
     }
 }
 @media (max-width: 360px) {
@@ -775,7 +775,7 @@
             color: $theme-color2;
         }
     }
-    
+
     .main-menu > ul > li:has(.sub-menu) > a,
     .main-menu > ul > li:has(.mega-menu) > a,
     .main-menu > ul > li.menu-item-has-children > a {
@@ -820,7 +820,7 @@
                 color: $theme-color;
             }
         }
-        
+
         .main-menu > ul > li:has(.sub-menu) > a,
         .main-menu > ul > li:has(.mega-menu) > a,
         .main-menu > ul > li.menu-item-has-children > a {
@@ -849,7 +849,7 @@
             justify-content: center;
             padding: 0 15px;
         }
-    }   
+    }
 }
 @include xl {
     .header-layout1 {
@@ -894,7 +894,7 @@
             .icon-btn {
                 --btn-size: 50px;
             }
-        }  
+        }
     }
 }
 
@@ -941,7 +941,7 @@
             color: $theme-color2;
         }
     }
-    
+
     .main-menu > ul > li:has(.sub-menu) > a,
     .main-menu > ul > li:has(.mega-menu) > a,
     .main-menu > ul > li.menu-item-has-children > a {
@@ -985,7 +985,7 @@
             justify-content: center;
             padding: 0 15px;
         }
-    }   
+    }
 }
 @include xl {
     .header-layout2 {
@@ -1034,7 +1034,7 @@
             .icon-btn {
                 --btn-size: 50px;
             }
-        }  
+        }
     }
 }
 
@@ -1078,7 +1078,7 @@
             color: $theme-color2;
         }
     }
-    
+
     .main-menu > ul > li:has(.sub-menu) > a,
     .main-menu > ul > li:has(.mega-menu) > a,
     .main-menu > ul > li.menu-item-has-children > a {
@@ -1122,7 +1122,7 @@
             justify-content: center;
             padding: 0 15px;
         }
-    }   
+    }
 }
 @include xl {
     .header-layout3 {
@@ -1162,7 +1162,7 @@
             .icon-btn {
                 --btn-size: 50px;
             }
-        }  
+        }
     }
 }
 
@@ -1196,7 +1196,7 @@
             color: $theme-color2;
         }
     }
-    
+
     .main-menu > ul > li:has(.sub-menu) > a,
     .main-menu > ul > li:has(.mega-menu) > a,
     .main-menu > ul > li.menu-item-has-children > a {

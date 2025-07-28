@@ -44,7 +44,7 @@ Version: 1.0.0
     4.6. Blog
     4.7. Comments
     4.8. Hero Area
-    4.9. Error    
+    4.9. Error
     4.00. Popup Search
     4.00. Popup Side Menu
     4.00. Wocommerce
@@ -3056,7 +3056,7 @@ textarea.is-invalid {
 }
 
 .box-title {
-  font-size: 24px;
+  font-size: 17px;
   line-height: 1.417;
   font-weight: 600;
   margin-top: -0.32em;

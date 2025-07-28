@@ -1,13 +1,17 @@
 <div>
-    Breadcumb ============================== -->
+    <!--==============================
+    Breadcumb
+============================== -->
     <div
         class="breadcumb-wrapper"
-        data-bg-src="assets/img/bg/breadcumb-bg.jpg"
+        data-bg-src="{{ $pageBanner ? $pageBanner->effective_banner_url : asset('assets/img/bg/breadcumb-bg.jpg') }}"
         data-overlay="theme"
     >
         <div class="container">
             <div class="breadcumb-content">
-                <h1 class="breadcumb-title">Downloads</h1>
+                <h1 class="breadcumb-title">
+                    {{ $pageBanner && $pageBanner->title ? $pageBanner->title : 'Downloads' }}
+                </h1>
                 <ul class="breadcumb-menu">
                     <li><a href="{{ route('home') }}">Home</a></li>
                     <li>Downloads</li>

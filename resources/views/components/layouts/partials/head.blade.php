@@ -1,13 +1,13 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title>Donat - Charity & Donation HTML Template - Home One</title>
-    <meta name="author" content="Donat" />
+    <title>Asn Upendo Village</title>
+    <meta name="author" content="Asn Upendo Village" />
     <meta
         name="description"
-        content="Donat - Charity & Donation HTML Template"
+        content="Asn Upendo Village"
     />
-    <meta name="keywords" content="Donat - Charity & Donation HTML Template" />
+    <meta name="keywords" content="Asn Upendo Village" />
     <meta name="robots" content="INDEX,FOLLOW" />
 
     <!-- Mobile Specific Metas -->

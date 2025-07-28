@@ -222,9 +222,7 @@
                             </li>
                         </ul>
                     </nav>
-                    <p class="header-notice"><img class="me-1" src="{{ asset('assets/img/icon/heart-icon.svg') }}"
-                            alt="img">Are you ready
-                        Let’s help...</p>
+                 
                 </div>
                 <div class="header-button">
                     <button type="button" class="icon-btn style2 searchBoxToggler d-lg-block d-none"><i
