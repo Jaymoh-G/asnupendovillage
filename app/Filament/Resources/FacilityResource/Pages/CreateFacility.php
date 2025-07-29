@@ -10,20 +10,14 @@ class CreateFacility extends CreateRecord
 {
     protected static string $resource = FacilityResource::class;
 
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
+
     protected function afterCreate(): void
     {
-        $facility = $this->record;
-        $images = $this->data['images'] ?? [];
-        if (!empty($images)) {
-            foreach ($images as $imagePath) {
-                $facility->images()->create([
-                    'filename' => basename($imagePath),
-                    'original_name' => basename($imagePath),
-                    'path' => $imagePath,
-                    'mime_type' => 'image/jpeg', // You may improve this
-                    'size' => 0, // You may improve this
-                ]);
-            }
-        }
+        // The image is already handled by Filament's FileUpload component
+        // No additional processing needed since we're using single image upload
     }
 }

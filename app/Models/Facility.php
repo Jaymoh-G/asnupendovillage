@@ -4,12 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Traits\HasImages;
 use Illuminate\Support\Str;
 
 class Facility extends Model
 {
-    use HasImages;
 
     protected $fillable = [
         'name',

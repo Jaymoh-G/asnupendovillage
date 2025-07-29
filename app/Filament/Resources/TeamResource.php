@@ -63,20 +63,6 @@ class TeamResource extends Resource
                     ])
                     ->columns(2),
 
-                Forms\Components\Section::make('Contact Information')
-                    ->schema([
-                        Forms\Components\TextInput::make('email')
-                            ->label('Email')
-                            ->email()
-                            ->maxLength(255),
-
-                        Forms\Components\TextInput::make('phone')
-                            ->label('Phone')
-                            ->tel()
-                            ->maxLength(255),
-                    ])
-                    ->columns(2),
-
                 Forms\Components\Section::make('Social Media')
                     ->schema([
                         Forms\Components\TextInput::make('facebook')

@@ -10,6 +10,11 @@ class EditFacility extends EditRecord
 {
     protected static string $resource = FacilityResource::class;
 
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
+
     protected function getHeaderActions(): array
     {
         return [
@@ -19,28 +24,7 @@ class EditFacility extends EditRecord
 
     protected function afterSave(): void
     {
-        $facility = $this->record;
-        $images = $this->data['images'] ?? [];
-        if (!empty($images)) {
-            // Optionally, remove old images if you want to replace
-            // $facility->images()->delete();
-            foreach ($images as $imagePath) {
-                if (!$facility->images()->where('path', $imagePath)->exists()) {
-                    $facility->images()->create([
-                        'filename' => basename($imagePath),
-                        'original_name' => basename($imagePath),
-                        'path' => $imagePath,
-                        'mime_type' => 'image/jpeg', // You may improve this
-                        'size' => 0, // You may improve this
-                    ]);
-                }
-            }
-        }
-    }
-
-    protected function mutateFormDataBeforeFill(array $data): array
-    {
-        $data['images'] = $this->record ? $this->record->images->pluck('path')->toArray() : [];
-        return $data;
+        // The image is already handled by Filament's FileUpload component
+        // No additional processing needed since we're using single image upload
     }
 }

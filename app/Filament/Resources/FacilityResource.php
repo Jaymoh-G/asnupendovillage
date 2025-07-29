@@ -33,16 +33,16 @@ class FacilityResource extends Resource
                             ->maxLength(255),
                         Forms\Components\Select::make('program_id')
                             ->label('Program')
-                            ->relationship('program', 'title')
+                            ->options(\App\Models\Program::pluck('title', 'id'))
                             ->required()
-                            ->searchable(),
+                            ->searchable()
+                            ->preload(),
                         Forms\Components\Textarea::make('description')
                             ->label('Description')
                             ->rows(4)
                             ->maxLength(1000),
-                        Forms\Components\FileUpload::make('images')
-                            ->label('Facility Images')
-                            ->multiple()
+                        Forms\Components\FileUpload::make('image')
+                            ->label('Facility Image')
                             ->image()
                             ->imageEditor()
                             ->imageCropAspectRatio('16:9')
@@ -51,9 +51,7 @@ class FacilityResource extends Resource
                             ->directory('facilities')
                             ->visibility('public')
                             ->maxSize(4096)
-                            ->helperText('Upload one or more images for the facility.')
-                            ->columnSpan(1)
-                            ->default(fn($record) => $record ? $record->images->pluck('path')->toArray() : []),
+                            ->helperText('Upload an image for the facility.'),
 
                     ])
                     ->columns(2),
@@ -77,7 +75,7 @@ class FacilityResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('images.0.url')
+                Tables\Columns\ImageColumn::make('image_url')
                     ->label('Image')
                     ->size(60)
                     ->openUrlInNewTab(),

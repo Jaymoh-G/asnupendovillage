@@ -1,230 +1,300 @@
 <div>
-    @section('content')
-      <!--==============================
-    Breadcumb
-============================== -->
-    <div class="breadcumb-wrapper " data-bg-src="assets/img/bg/breadcumb-bg.jpg" data-overlay="theme">
+    <!-- Banner Section -->
+    @if($pageBanner)
+    <div
+        class="breadcumb-wrapper"
+        data-bg-src="{{ $pageBanner->effective_banner_url }}"
+        data-overlay="theme"
+    >
         <div class="container">
             <div class="breadcumb-content">
-                <h1 class="breadcumb-title">Testimonials</h1>
+                <h1 class="breadcumb-title">
+                    {{ $pageBanner->title ?? 'Testimonials' }}
+                </h1>
                 <ul class="breadcumb-menu">
-                    <li><a href="index.html">Home</a></li>
+                    <li><a href="{{ route('home') }}">Home</a></li>
                     <li>Testimonials</li>
                 </ul>
             </div>
         </div>
     </div>
-    <!--==============================
-Testimonial Area
-==============================-->
+    @endif
+
+    <!-- Testimonial Area -->
     <section class="overflow-hidden space">
         <div class="container">
             <div class="title-area text-center">
-                <span class="sub-title after-none before-none"><i class="far fa-heart text-theme"></i>Testimonials</span>
-                <h2 class="sec-title">What Our Customers Say?</h2>
+                <span class="sub-title after-none before-none"
+                    ><i class="far fa-heart text-theme"></i>Testimonials</span
+                >
+                <h2 class="sec-title">Success Stories</h2>
             </div>
             <div class="row gy-30">
+                @forelse($testimonials as $testimonial)
                 <div class="col-lg-6">
                     <div class="testi-card3">
-                        <div class="testi-card-shape" data-mask-src="assets/img/shape/testi-card-bg-shape3-1.png"></div>
+                        <div
+                            class="testi-card-shape"
+                            data-mask-src="{{
+                                asset(
+                                    'assets/img/shape/testi-card-bg-shape3-1.png'
+                                )
+                            }}"
+                        ></div>
                         <div class="testi-card_review">
                             <i class="fas fa-star"></i>
-                            5.0
+                            {{ $testimonial->rating ?? '5.0' }}
                         </div>
                         <div class="testi-card_profile">
                             <div class="box-thumb">
-                                <img src="assets/img/testimonial/testi_3_1.png" alt="img">
+                                @if($testimonial->image_url)
+                                <img
+                                    src="{{ $testimonial->image_url }}"
+                                    alt="{{ $testimonial->name }}"
+                                    style="filter: none !important"
+                                />
+                                @else
+                                <img
+                                    src="{{
+                                        asset(
+                                            'assets/img/testimonial/testi_3_1.png'
+                                        )
+                                    }}"
+                                    alt="{{ $testimonial->name }}"
+                                />
+                                @endif
                                 <div class="quote-icon">
                                     <i class="fal fa-quote-right"></i>
                                 </div>
                             </div>
                             <div class="media-left">
-                                <h3 class="testi-card_name">Brandon Dixon</h3>
-                                <span class="testi-card_desig">CEO, Founder</span>
+                                <h3 class="testi-card_name">
+                                    <a
+                                        href="{{ route('testimonials.detail', $testimonial->id) }}"
+                                        >{{ $testimonial->name }}</a
+                                    >
+                                </h3>
+                                <span class="testi-card_desig">
+                                    {{ $testimonial->program->title ?? 'General Testimonial' }}
+                                </span>
                             </div>
                         </div>
-                        <p class="testi-card_text">“Stay informed about our upcoming events and campaigns. Whether it's a fundraising gala, a charity run, or a community outreach program, there are plenty of ways to get involved and support our cause. Check our event calendar for details.”</p>
+                        <p class="testi-card_text">
+                            "{{ Str::limit($testimonial->content ?? 'Stay informed about our upcoming events and campaigns. Whether it\'s a fundraising gala, a charity run, or a community outreach program, there are plenty of ways to get involved and support our cause. Check our event calendar for details.', 200)
+
+
+
+
+
+
+
+
+
+
+                            }}"
+                        </p>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <div class="testi-card3">
-                        <div class="testi-card-shape" data-mask-src="assets/img/shape/testi-card-bg-shape3-1.png"></div>
-                        <div class="testi-card_review">
-                            <i class="fas fa-star"></i>
-                            5.0
-                        </div>
-                        <div class="testi-card_profile">
-                            <div class="box-thumb">
-                                <img src="assets/img/testimonial/testi_3_2.png" alt="img">
-                                <div class="quote-icon">
-                                    <i class="fal fa-quote-right"></i>
-                                </div>
-                            </div>
-                            <div class="media-left">
-                                <h3 class="testi-card_name">Brooklyn Simmons</h3>
-                                <span class="testi-card_desig">CEO, Founder</span>
-                            </div>
-                        </div>
-                        <p class="testi-card_text">“Stay informed about our upcoming events and campaigns. Whether it's a fundraising gala, a charity run, or a community outreach program, there are plenty of ways to get involved and support our cause. Check our event calendar for details.”</p>
-                    </div>
+                @empty
+                <div class="col-12 text-center">
+                    <p>No testimonials found.</p>
                 </div>
-                <div class="col-lg-6">
-                    <div class="testi-card3">
-                        <div class="testi-card-shape" data-mask-src="assets/img/shape/testi-card-bg-shape3-1.png"></div>
-                        <div class="testi-card_review">
-                            <i class="fas fa-star"></i>
-                            5.0
-                        </div>
-                        <div class="testi-card_profile">
-                            <div class="box-thumb">
-                                <img src="assets/img/testimonial/testi_3_2.png" alt="img">
-                                <div class="quote-icon">
-                                    <i class="fal fa-quote-right"></i>
-                                </div>
-                            </div>
-                            <div class="media-left">
-                                <h3 class="testi-card_name">Michel Connor</h3>
-                                <span class="testi-card_desig">CEO, Founder</span>
-                            </div>
-                        </div>
-                        <p class="testi-card_text">“Stay informed about our upcoming events and campaigns. Whether it's a fundraising gala, a charity run, or a community outreach program, there are plenty of ways to get involved and support our cause. Check our event calendar for details.”</p>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="testi-card3">
-                        <div class="testi-card-shape" data-mask-src="assets/img/shape/testi-card-bg-shape3-1.png"></div>
-                        <div class="testi-card_review">
-                            <i class="fas fa-star"></i>
-                            5.0
-                        </div>
-                        <div class="testi-card_profile">
-                            <div class="box-thumb">
-                                <img src="assets/img/testimonial/testi_3_1.png" alt="img">
-                                <div class="quote-icon">
-                                    <i class="fal fa-quote-right"></i>
-                                </div>
-                            </div>
-                            <div class="media-left">
-                                <h3 class="testi-card_name">Ethan David</h3>
-                                <span class="testi-card_desig">CEO, Founder</span>
-                            </div>
-                        </div>
-                        <p class="testi-card_text">“Stay informed about our upcoming events and campaigns. Whether it's a fundraising gala, a charity run, or a community outreach program, there are plenty of ways to get involved and support our cause. Check our event calendar for details.”</p>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="testi-card3">
-                        <div class="testi-card-shape" data-mask-src="assets/img/shape/testi-card-bg-shape3-1.png"></div>
-                        <div class="testi-card_review">
-                            <i class="fas fa-star"></i>
-                            5.0
-                        </div>
-                        <div class="testi-card_profile">
-                            <div class="box-thumb">
-                                <img src="assets/img/testimonial/testi_3_1.png" alt="img">
-                                <div class="quote-icon">
-                                    <i class="fal fa-quote-right"></i>
-                                </div>
-                            </div>
-                            <div class="media-left">
-                                <h3 class="testi-card_name">Daniel Thomas</h3>
-                                <span class="testi-card_desig">CEO, Founder</span>
-                            </div>
-                        </div>
-                        <p class="testi-card_text">“Stay informed about our upcoming events and campaigns. Whether it's a fundraising gala, a charity run, or a community outreach program, there are plenty of ways to get involved and support our cause. Check our event calendar for details.”</p>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="testi-card3">
-                        <div class="testi-card-shape" data-mask-src="assets/img/shape/testi-card-bg-shape3-1.png"></div>
-                        <div class="testi-card_review">
-                            <i class="fas fa-star"></i>
-                            5.0
-                        </div>
-                        <div class="testi-card_profile">
-                            <div class="box-thumb">
-                                <img src="assets/img/testimonial/testi_3_2.png" alt="img">
-                                <div class="quote-icon">
-                                    <i class="fal fa-quote-right"></i>
-                                </div>
-                            </div>
-                            <div class="media-left">
-                                <h3 class="testi-card_name">Michel Vetory</h3>
-                                <span class="testi-card_desig">CEO, Founder</span>
-                            </div>
-                        </div>
-                        <p class="testi-card_text">“Stay informed about our upcoming events and campaigns. Whether it's a fundraising gala, a charity run, or a community outreach program, there are plenty of ways to get involved and support our cause. Check our event calendar for details.”</p>
+                @endforelse
+            </div>
+
+            <!-- Pagination -->
+            @if($testimonials->hasPages())
+            <div class="row">
+                <div class="col-12">
+                    <div class="th-pagination text-center pt-50">
+                        {{ $testimonials->links('vendor.pagination.bootstrap-4') }}
                     </div>
                 </div>
             </div>
+            @endif
         </div>
     </section>
 
-    <!--==============================
-Brand Area
-==============================-->
-    <div class="space-bottom overflow-hidden brand-area-1">
-        <div class="container">
-            <div class="brand-wrap1 p-0 m-0 text-center">
-                <h3 class="brand-wrap-title">Trusted by over <span class="text-theme2"><span class="counter-number">90</span>K+</span> companies worldwide</h3>
-                <div class="swiper th-slider" id="brandSlider1" data-slider-options='{"breakpoints":{"0":{"slidesPerView":2},"576":{"slidesPerView":"2"},"768":{"slidesPerView":"2"},"992":{"slidesPerView":"3"},"1200":{"slidesPerView":"4"},"1400":{"slidesPerView":"5", "spaceBetween": "90"}}}'>
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <a href="blog.html" class="brand-box">
-                                <img src="assets/img/brand/brand1-1.svg" alt="Brand Logo">
-                            </a>
-                        </div>
-                        <div class="swiper-slide">
-                            <a href="blog.html" class="brand-box">
-                                <img src="assets/img/brand/brand1-2.svg" alt="Brand Logo">
-                            </a>
-                        </div>
-                        <div class="swiper-slide">
-                            <a href="blog.html" class="brand-box">
-                                <img src="assets/img/brand/brand1-3.svg" alt="Brand Logo">
-                            </a>
-                        </div>
-                        <div class="swiper-slide">
-                            <a href="blog.html" class="brand-box">
-                                <img src="assets/img/brand/brand1-4.svg" alt="Brand Logo">
-                            </a>
-                        </div>
-                        <div class="swiper-slide">
-                            <a href="blog.html" class="brand-box">
-                                <img src="assets/img/brand/brand1-5.svg" alt="Brand Logo">
-                            </a>
-                        </div>
-                        <div class="swiper-slide">
-                            <a href="blog.html" class="brand-box">
-                                <img src="assets/img/brand/brand1-1.svg" alt="Brand Logo">
-                            </a>
-                        </div>
-                        <div class="swiper-slide">
-                            <a href="blog.html" class="brand-box">
-                                <img src="assets/img/brand/brand1-2.svg" alt="Brand Logo">
-                            </a>
-                        </div>
-                        <div class="swiper-slide">
-                            <a href="blog.html" class="brand-box">
-                                <img src="assets/img/brand/brand1-3.svg" alt="Brand Logo">
-                            </a>
-                        </div>
-                        <div class="swiper-slide">
-                            <a href="blog.html" class="brand-box">
-                                <img src="assets/img/brand/brand1-4.svg" alt="Brand Logo">
-                            </a>
-                        </div>
-                        <div class="swiper-slide">
-                            <a href="blog.html" class="brand-box">
-                                <img src="assets/img/brand/brand1-5.svg" alt="Brand Logo">
-                            </a>
-                        </div>
-                    </div>
+    <style>
+        /* Override grayscale filter for testimonial images to keep them colored */
+        .testi-card3 .box-thumb img {
+            filter: none !important;
+        }
+        .testi-card3:hover .box-thumb img {
+            filter: none !important;
+        }
+        .testi-card3 {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .testi-card3:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        .testi-card_review {
+            color: #ffac00;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .testi-card_review i {
+            margin-right: 5px;
+        }
+        .quote-icon {
+            position: absolute;
+            bottom: -10px;
+            right: -10px;
+            width: 30px;
+            height: 30px;
+            background: #007bff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+        }
+        .box-thumb {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 20px;
+        }
+        .box-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .testi-card_profile {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .testi-card_name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .testi-card_name a {
+            color: #333;
+            text-decoration: none;
+        }
+        .testi-card_name a:hover {
+            color: #007bff;
+        }
+        .testi-card_desig {
+            color: #666;
+            font-size: 14px;
+        }
+        .testi-card_text {
+            font-style: italic;
+            line-height: 1.6;
+            color: #555;
+            margin: 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-height: 6.4em; /* 4 lines * 1.6 line-height */
+        }
 
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--==============================
-    @endsection
+        /* Pagination Styling */
+        .th-pagination {
+            margin-top: 50px;
+        }
+        .th-pagination nav {
+            display: flex;
+            justify-content: center;
+        }
+        .th-pagination .pagination {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            gap: 5px;
+        }
+        .th-pagination .page-item {
+            margin: 0;
+        }
+        .th-pagination .page-link {
+            border: 1px solid #e9ecef;
+            color: #333;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            background-color: #fff;
+            display: block;
+        }
+        .th-pagination .page-link:hover {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: white;
+            text-decoration: none;
+        }
+        .th-pagination .page-item.active .page-link {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: white;
+        }
+        .th-pagination .page-item.disabled .page-link {
+            color: #6c757d;
+            background-color: #fff;
+            border-color: #e9ecef;
+            cursor: not-allowed;
+        }
+        .th-pagination .page-item.disabled .page-link:hover {
+            background-color: #fff;
+            border-color: #e9ecef;
+            color: #6c757d;
+        }
+        .th-pagination .small {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        .th-pagination .fw-semibold {
+            font-weight: 600;
+        }
+
+        /* Additional pagination improvements */
+        .th-pagination .pagination {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .th-pagination .page-link {
+            border: none;
+            margin: 0;
+            border-radius: 0;
+        }
+        .th-pagination .page-item:first-child .page-link {
+            border-top-left-radius: 8px;
+            border-bottom-left-radius: 8px;
+        }
+        .th-pagination .page-item:last-child .page-link {
+            border-top-right-radius: 8px;
+            border-bottom-right-radius: 8px;
+        }
+        .th-pagination .page-link:focus {
+            box-shadow: none;
+            outline: none;
+        }
+
+        /* Style the results text */
+        .th-pagination .text-muted {
+            color: #666 !important;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        .th-pagination .d-flex {
+            flex-direction: column;
+            align-items: center;
+        }
+        .th-pagination .justify-content-between {
+            justify-content: center !important;
+        }
+    </style>
 </div>

@@ -54,6 +54,10 @@ class PageBannerSeeder extends Seeder
                 'title' => 'Media Centre',
                 'description' => 'Access our media resources and press materials.',
             ],
+            'programs' => [
+                'title' => 'Our Programs',
+                'description' => 'Explore our comprehensive programs and initiatives.',
+            ],
         ];
 
         foreach ($pages as $pageName => $pageData) {

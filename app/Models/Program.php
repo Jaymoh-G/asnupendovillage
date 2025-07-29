@@ -54,4 +54,9 @@ class Program extends Model
     {
         return $this->belongsToMany(Team::class);
     }
+
+    public function facilities()
+    {
+        return $this->hasMany(Facility::class);
+    }
 }

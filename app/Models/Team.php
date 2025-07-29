@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\HasImages;
+use Illuminate\Support\Str;
 
 class Team extends Model
 {
@@ -11,6 +12,7 @@ class Team extends Model
 
     protected $fillable = [
         'name',
+        'slug',
         'position',
         'bio',
         'email',
@@ -29,6 +31,23 @@ class Team extends Model
         'is_featured' => 'boolean',
         'sort_order' => 'integer',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($team) {
+            if (empty($team->slug)) {
+                $team->slug = Str::slug($team->name);
+            }
+        });
+
+        static::updating(function ($team) {
+            if ($team->isDirty('name') && empty($team->slug)) {
+                $team->slug = Str::slug($team->name);
+            }
+        });
+    }
 
     /**
      * Scope to get active team members

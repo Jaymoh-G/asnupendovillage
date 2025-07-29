@@ -69,15 +69,6 @@ class TestimonialResource extends Resource
                             ->numeric()
                             ->default(0)
                             ->minValue(0),
-
-                        Forms\Components\Select::make('status')
-                            ->label('Status')
-                            ->options([
-                                'active' => 'Active',
-                                'inactive' => 'Inactive',
-                            ])
-                            ->default('active')
-                            ->required(),
                     ])
                     ->columns(3),
             ]);
@@ -113,13 +104,6 @@ class TestimonialResource extends Resource
                 Tables\Columns\ToggleColumn::make('is_featured')
                     ->label('Featured'),
 
-                Tables\Columns\BadgeColumn::make('status')
-                    ->label('Status')
-                    ->colors([
-                        'success' => 'active',
-                        'danger' => 'inactive',
-                    ]),
-
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Created')
                     ->dateTime()
@@ -133,13 +117,6 @@ class TestimonialResource extends Resource
 
                 Tables\Filters\TernaryFilter::make('is_featured')
                     ->label('Featured'),
-
-                Tables\Filters\SelectFilter::make('status')
-                    ->label('Status')
-                    ->options([
-                        'active' => 'Active',
-                        'inactive' => 'Inactive',
-                    ]),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

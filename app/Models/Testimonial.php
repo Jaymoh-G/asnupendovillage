@@ -12,12 +12,12 @@ class Testimonial extends Model
 
     protected $fillable = [
         'name',
+        'position',
         'program_id',
         'content',
         'image',
         'is_featured',
         'sort_order',
-        'status',
     ];
 
     protected $casts = [
@@ -31,14 +31,6 @@ class Testimonial extends Model
     public function program(): BelongsTo
     {
         return $this->belongsTo(Program::class);
-    }
-
-    /**
-     * Scope to get active testimonials
-     */
-    public function scopeActive($query)
-    {
-        return $query->where('status', 'active');
     }
 
     /**
