@@ -18,6 +18,14 @@ use App\Livewire\Frontend\Facilities;
 use App\Models\Program;
 
 Route::get('/', Home::class)->name('home');
+// about us
+Route::get('/about-us', function () {
+    return view('about-us-page');
+})->name('about-us');
+// founder
+Route::get('/founder', function () {
+    return view('founder-page');
+})->name('founder');
 // faqs
 Route::get('/faqs', Faqs::class)->name('faqs');
 // media centre
@@ -36,6 +44,10 @@ Route::get('/donate-now', DonateNow::class)->name('donate-now');
 Route::get('/contact-us', ContactUs::class)->name('contact-us');
 // gallery
 Route::get('/gallery', Gallery::class)->name('gallery');
+// album detail
+Route::get('/gallery/{slug}', function ($slug) {
+    return view('album-detail-page', ['slug' => $slug]);
+})->name('gallery.album');
 // testimonials
 Route::get('/testimonials', function () {
     return view('testimonials-page');
@@ -64,7 +76,7 @@ Route::get('/careers', function () {
 // career detail
 Route::get('/careers/{slug}', function ($slug) {
     return view('career-detail-page', ['slug' => $slug]);
-})->name('careers.detail');
+})->name('careers.detail')->where('slug', '.*');
 
 // projects
 Route::get('/projects', function () {

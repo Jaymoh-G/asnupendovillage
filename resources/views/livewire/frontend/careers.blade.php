@@ -139,7 +139,7 @@
                             </div>
                         </div>
                         <a
-                            href="{{ route('careers.detail', $careerItem->slug) }}"
+                            href="{{ route('careers.detail', $careerItem->slug ?? $careerItem->id) }}"
                             class="th-btn btn-sm"
                             >View Details
                             <i class="fas fa-arrow-up-right ms-2"></i

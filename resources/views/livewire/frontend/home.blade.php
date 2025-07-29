@@ -1475,20 +1475,8 @@ Video Area
 Testimonial Area
 ==============================-->
     <section class="testi-area-1 space overflow-hidden" id="testi-sec">
-        <div
-            class="shape-mockup testi-bg-shape1-1 jump-reverse d-xl-block d-none"
-            data-top="5%"
-            data-right="0"
-        >
-            <img src="assets/img/shape/footer-bg-shape3.png" alt="img" />
-        </div>
-        <div
-            class="shape-mockup testi-bg-shape1-2"
-            data-top="28%"
-            data-left="5%"
-        >
-            <img src="assets/img/shape/testimonial_shape1_1.png" alt="img" />
-        </div>
+
+      
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-6">

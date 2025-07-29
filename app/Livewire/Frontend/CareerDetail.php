@@ -16,7 +16,12 @@ class CareerDetail extends Component
 
     public function mount($slug)
     {
-        $this->career = \App\Models\Career::where('slug', $slug)->firstOrFail();
+        // Try to find by slug first, then by ID if slug is numeric
+        if (is_numeric($slug)) {
+            $this->career = Career::findOrFail($slug);
+        } else {
+            $this->career = Career::where('slug', $slug)->firstOrFail();
+        }
     }
 
     public function applyNow()

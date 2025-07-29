@@ -21,7 +21,7 @@
                 <li>
                     <a href="{{ route('home') }}">Home</a>
                 </li>
-                <li><a href="about.html">About Us</a></li>
+                <li><a href="{{ route('about-us') }}">About Us</a></li>
                 <li class="menu-item-has-children">
                     <a href="#">Donations</a>
                     <ul class="sub-menu">
@@ -271,7 +271,7 @@
                                 <a href="{{ route('home') }}">Home</a>
                             </li>
                             <li class="menu-item-has-children">
-                                <a href="#">About Us</a>
+                                <a href="{{ route('about-us') }}">About Us</a>
                                 <ul class="sub-menu">
                                     <li>
                                         <a href="{{ route('team') }}"
@@ -283,7 +283,6 @@
                                             >Testimonials</a
                                         >
                                     </li>
-
                                 </ul>
                             </li>
                             <li class="menu-item-has-children">
@@ -326,8 +325,24 @@
                                     @endforelse
                                 </ul>
                             </li>
-                            <li class="">
+                            <li class="menu-item-has-children">
                                 <a href="{{ route('projects') }}">Projects</a>
+                                <ul class="sub-menu">
+                                    @forelse($projects as $project)
+                                    <li>
+                                        <a
+                                            href="{{ route('projects.detail', $project->slug) }}"
+                                            >{{ $project->name }}</a
+                                        >
+                                    </li>
+                                    @empty
+                                    <li>
+                                        <a href="{{ route('projects') }}"
+                                            >All Projects</a
+                                        >
+                                    </li>
+                                    @endforelse
+                                </ul>
                             </li>
 
                             <li class="menu-item-has-children">

@@ -29,6 +29,8 @@ class PageBannerResource extends Resource
                         Forms\Components\Select::make('page_name')
                             ->label('Page')
                             ->options([
+                                'about-us' => 'About Us',
+                                'founder' => 'Founder',
                                 'downloads' => 'Downloads',
                                 'news' => 'News',
                                 'contact-us' => 'Contact Us',

@@ -379,28 +379,39 @@
                         <div class="col-md-8">
                             <span class="sub-title">Photo Gallery</span>
                             <h2 class="sec-title">
-                                Our Photo Gallery & Visual Content
+                                Our Photo Albums & Visual Content
                             </h2>
                         </div>
                         <div class="col-md-4 text-end">
                             <a
                                 href="{{ url('/gallery') }}"
                                 class="th-btn btn-sm"
-                                >View All Photos
+                                >View All Albums
                                 <i class="fas fa-arrow-up-right ms-2"></i
                             ></a>
                         </div>
                     </div>
                 </div>
                 <div class="row gy-4 gx-4">
-                    @forelse($gallery as $image)
+                    @forelse($albums as $album)
                     <div class="col-md-4">
                         <div class="project-card">
                             <div class="project-img">
+                                @if($album->cover_image_url)
                                 <img
-                                    src="{{ asset('storage/' . ($image->file_path ?? $image->path ?? '')) }}"
-                                    alt="{{ $image->alt_text ?? 'Gallery Image' }}"
+                                    src="{{ $album->cover_image_url }}"
+                                    alt="{{ $album->name }}"
                                 />
+                                @else
+                                <img
+                                    src="{{
+                                        asset(
+                                            'assets/img/gallery/gallery_1_1.png'
+                                        )
+                                    }}"
+                                    alt="{{ $album->name }}"
+                                />
+                                @endif
                             </div>
                             <div class="project-content">
                                 <div
@@ -413,18 +424,19 @@
                                 ></div>
                                 <h3 class="project-title">
                                     <a
-                                        href="{{ asset('storage/' . ($image->file_path ?? $image->path ?? '')) }}"
-                                        target="_blank"
+                                        href="{{ route('gallery.album', $album->slug) }}"
                                     >
-                                        {{ \Illuminate\Support\Str::limit($image->alt_text ?? 'Photo', 30) }}
+                                        {{ \Illuminate\Support\Str::limit($album->name, 30) }}
                                     </a>
                                 </h3>
-                                <p class="project-subtitle">Gallery Image</p>
+                                <p class="project-subtitle">
+                                    {{ $album->images->count() }} Photos
+                                </p>
                             </div>
                         </div>
                     </div>
                     @empty
-                    <div class="col-12 text-center">No photos found.</div>
+                    <div class="col-12 text-center">No albums found.</div>
                     @endforelse
                 </div>
             </div>
@@ -479,7 +491,7 @@
                                     </div>
                                 </div>
                                 <a
-                                    href="{{ route('careers.detail', $career->slug) }}"
+                                    href="{{ route('careers.detail', $career->slug ?? $career->id) }}"
                                     class="th-btn btn-sm"
                                     >View Details
                                     <i class="fas fa-arrow-up-right ms-2"></i
