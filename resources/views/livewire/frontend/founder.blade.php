@@ -21,6 +21,29 @@
         </div>
     </div>
 
+    @if($pageContent)
+    <!--==============================
+    Dynamic Content Area
+    ==============================-->
+    <section class="space">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="title-area text-center mb-50">
+                        <h1 class="sec-title">{{ $pageContent->effective_title }}</h1>
+                        @if($pageContent->excerpt)
+                        <p class="sec-text">{{ $pageContent->excerpt }}</p>
+                        @endif
+                    </div>
+                    <div class="content-area">
+                        {!! $pageContent->content !!}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    @endif
+
     <!--==============================
     Founder Area
     ==============================-->
@@ -259,6 +282,61 @@
                             We believe in the power of community and work
                             together to create lasting positive change.
                         </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--==============================
+    Founder's Story Area
+    ==============================-->
+    <section class="space" data-bg-src="{{ asset('assets/img/bg/gray-bg2.png') }}">
+        <div class="container">
+            <div class="row gy-4 align-items-center">
+                <div class="col-lg-6">
+                    <div class="title-area mb-30">
+                        <span class="sub-title">The Journey</span>
+                        <h2 class="sec-title">John's Story: From Vision to Reality</h2>
+                        <p class="mb-4">
+                            John's journey began in the heart of our community, where he grew up witnessing the struggles and triumphs of his neighbors. As a young boy, he would often accompany his mother to deliver meals to elderly residents who couldn't leave their homes. These early experiences planted the seeds of compassion and service that would later blossom into ASN Upendo Village.
+                        </p>
+                        <p class="mb-4">
+                            After completing his education in social work, John worked with various non-profit organizations, gaining valuable experience in community development and social services. However, he always felt that more could be done to address the specific needs of his hometown community. The turning point came in 2008 when a devastating economic downturn left many families struggling to make ends meet.
+                        </p>
+                        <p class="mb-4">
+                            "I remember sitting in my living room, watching the news about families losing their homes and children going hungry," John recalls. "That's when I realized I had to do something. I couldn't just stand by and watch my community suffer."
+                        </p>
+                        <p class="mb-4">
+                            With just $500 in savings and a dream to make a difference, John started ASN Upendo Village from his garage. The first program was a simple food bank that served 15 families. Today, that same organization serves over 5,000 individuals annually through comprehensive programs in education, healthcare, housing assistance, and community development.
+                        </p>
+                        <p class="mb-4">
+                            "The name 'Upendo' means 'love' in Swahili," John explains. "I chose this name because love is at the core of everything we do. When you approach people with genuine love and respect, you can overcome any obstacle and create lasting change."
+                        </p>
+                    </div>
+                    <div class="checklist style2">
+                        <ul>
+                            <li>Started with just $500 and a dream</li>
+                            <li>First program served 15 families</li>
+                            <li>Now serves 5,000+ individuals annually</li>
+                            <li>Expanded to 12 different programs</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="img-box1">
+                        <div class="img1" data-mask-src="{{ asset('assets/img/normal/about_1_1-mask.png') }}">
+                            <img src="{{ asset('assets/img/team/team_3_1.png') }}" alt="John's Journey" />
+                        </div>
+                        <div class="about-shape1-1 jump">
+                            <img src="{{ asset('assets/img/shape/about_shape1_1.png') }}" alt="img" />
+                        </div>
+                        <div class="experience-box">
+                            <div class="experience-box-inner">
+                                <h3 class="experience-box-title">15+ Years</h3>
+                                <p class="experience-box-text">Of Dedicated Service</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

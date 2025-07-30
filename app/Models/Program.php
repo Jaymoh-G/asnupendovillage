@@ -41,8 +41,26 @@ class Program extends Model
 
     public function getImageUrlAttribute()
     {
+        // First try to get image from HasImages trait
+        $featuredImageUrl = $this->featured_image_url;
+        if ($featuredImageUrl) {
+            return $featuredImageUrl;
+        }
+
+        // Fallback to the old method
         $image = $this->images()->first();
         return $image ? asset('storage/' . $image->path) : null;
+    }
+
+    /**
+     * Scope to get latest featured programs
+     */
+    public function scopeLatestFeatured($query, $limit = 6)
+    {
+        return $query->where('featured', true)
+            ->orderBy('sort_order')
+            ->orderBy('created_at', 'desc')
+            ->limit($limit);
     }
 
     public function getRouteKeyName()

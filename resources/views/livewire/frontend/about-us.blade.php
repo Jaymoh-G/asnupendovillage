@@ -20,6 +20,31 @@
         </div>
     </div>
 
+    @if($pageContent)
+    <!--==============================
+    Dynamic Content Area
+    ==============================-->
+    <section class="space">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="title-area text-center mb-50">
+                        <h1 class="sec-title">
+                            {{ $pageContent->effective_title }}
+                        </h1>
+                        @if($pageContent->excerpt)
+                        <p class="sec-text">{{ $pageContent->excerpt }}</p>
+                        @endif
+                    </div>
+                    <div class="content-area">
+                        {!! $pageContent->content !!}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    @endif
+
     <!--==============================
     Feature Area
     ==============================-->

@@ -12,6 +12,11 @@ class CreateNews extends CreateRecord
 {
     protected static string $resource = NewsResource::class;
 
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
+
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         // Remove images from data as we'll handle them separately

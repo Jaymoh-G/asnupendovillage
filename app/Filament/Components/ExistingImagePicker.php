@@ -12,35 +12,35 @@ class ExistingImagePicker extends Field
 
     protected string $directory = 'images';
     protected array $acceptedFileTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
-    protected int $maxFiles = 10;
+    protected int $maxFiles = 5;
     protected bool $showPreview = true;
-    protected string $placeholder = 'Select from existing images';
+    protected string $placeholder = 'Upload images';
 
-    public function directory(string $directory): static
+    public function directory(string $directory): self
     {
         $this->directory = $directory;
         return $this;
     }
 
-    public function acceptedFileTypes(array $types): static
+    public function acceptedFileTypes(array $types): self
     {
         $this->acceptedFileTypes = $types;
         return $this;
     }
 
-    public function maxFiles(int $maxFiles): static
+    public function maxFiles(int $maxFiles): self
     {
         $this->maxFiles = $maxFiles;
         return $this;
     }
 
-    public function showPreview(bool $show = true): static
+    public function showPreview(bool $show = true): self
     {
         $this->showPreview = $show;
         return $this;
     }
 
-    public function placeholder(string $placeholder): static
+    public function placeholder(string $placeholder): self
     {
         $this->placeholder = $placeholder;
         return $this;
@@ -55,17 +55,45 @@ class ExistingImagePicker extends Field
         $files = $disk->allFiles($this->directory);
 
         foreach ($files as $file) {
-            $extension = pathinfo($file, PATHINFO_EXTENSION);
-            $mimeType = $this->getMimeType($extension);
+            try {
+                // Check if file exists and is accessible
+                if (!$disk->exists($file)) {
+                    continue;
+                }
 
-            if (in_array($mimeType, $this->acceptedFileTypes)) {
-                $images[] = [
-                    'path' => $file,
-                    'url' => asset('storage/' . $file),
-                    'name' => basename($file),
-                    'size' => $disk->size($file),
-                    'last_modified' => $disk->lastModified($file),
-                ];
+                $extension = pathinfo($file, PATHINFO_EXTENSION);
+                $mimeType = $this->getMimeType($extension);
+
+                if (in_array($mimeType, $this->acceptedFileTypes)) {
+                    // Get file size with error handling
+                    $fileSize = 0;
+                    try {
+                        $fileSize = $disk->size($file);
+                    } catch (\Exception $e) {
+                        // If we can't get file size, use 0
+                        $fileSize = 0;
+                    }
+
+                    // Get last modified with error handling
+                    $lastModified = time();
+                    try {
+                        $lastModified = $disk->lastModified($file);
+                    } catch (\Exception $e) {
+                        // If we can't get last modified, use current time
+                        $lastModified = time();
+                    }
+
+                    $images[] = [
+                        'path' => $file,
+                        'url' => asset('storage/' . $file),
+                        'name' => basename($file),
+                        'size' => $fileSize,
+                        'last_modified' => $lastModified,
+                    ];
+                }
+            } catch (\Exception $e) {
+                // Skip files that cause errors
+                continue;
             }
         }
 
@@ -99,5 +127,20 @@ class ExistingImagePicker extends Field
         }
 
         return $state;
+    }
+
+    public function getMaxFiles(): int
+    {
+        return $this->maxFiles;
+    }
+
+    public function getAcceptedFileTypes(): array
+    {
+        return $this->acceptedFileTypes;
+    }
+
+    public function getDirectory(): string
+    {
+        return $this->directory;
     }
 }

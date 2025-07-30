@@ -29,7 +29,7 @@ trait HasImages
      */
     public function featuredImage()
     {
-        return $this->morphOne(Image::class, 'imageable')->where('featured', true)->ordered();
+        return $this->morphOne(Image::class, 'imageable')->where('featured', true);
     }
 
     /**
@@ -115,8 +115,20 @@ trait HasImages
      */
     public function getFeaturedImageUrlAttribute()
     {
+        // First try to get the featured image
         $featuredImage = $this->featuredImage;
-        return $featuredImage ? $featuredImage->display_url : null;
+        if ($featuredImage) {
+            return $featuredImage->display_url;
+        }
+
+        // If no featured image, get the first image
+        $firstImage = $this->images()->first();
+        if ($firstImage) {
+            return $firstImage->display_url;
+        }
+
+        // Return null if no images exist
+        return null;
     }
 
     /**

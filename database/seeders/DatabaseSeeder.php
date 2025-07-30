@@ -21,9 +21,16 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('password'),
         ]);
 
-        // Seed page banners
+        // Seed page banners, news, projects, testimonials, team members, programs, home sliders, and home slider images
         $this->call([
             PageBannerSeeder::class,
+            NewsSeeder::class,
+            ProjectSeeder::class,
+            TestimonialSeeder::class,
+            TeamSeeder::class,
+            ProgramSeeder::class,
+            HomeSliderSeeder::class,
+            HomeSliderImageSeeder::class,
         ]);
     }
 }

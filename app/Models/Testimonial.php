@@ -12,7 +12,6 @@ class Testimonial extends Model
 
     protected $fillable = [
         'name',
-        'position',
         'program_id',
         'content',
         'image',
@@ -42,13 +41,31 @@ class Testimonial extends Model
     }
 
     /**
-     * Get the image URL
+     * Scope to get latest testimonials
+     */
+    public function scopeLatestTestimonials($query, $limit = 4)
+    {
+        return $query->orderBy('sort_order')
+            ->orderBy('created_at', 'desc')
+            ->limit($limit);
+    }
+
+    /**
+     * Get the image URL for display (fallback to HasImages trait)
      */
     public function getImageUrlAttribute(): ?string
     {
+        // First try to get image from HasImages trait
+        $featuredImageUrl = $this->featured_image_url;
+        if ($featuredImageUrl) {
+            return $featuredImageUrl;
+        }
+
+        // Fallback to the old image field
         if ($this->image) {
             return asset('storage/' . $this->image);
         }
+
         return null;
     }
 }

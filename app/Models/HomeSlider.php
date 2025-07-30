@@ -80,8 +80,20 @@ class HomeSlider extends Model
      */
     public function getFeaturedImageUrlAttribute()
     {
-        $featuredImage = $this->featuredImage;
-        return $featuredImage ? asset('storage/' . $featuredImage->path) : null;
+        // Get the first featured image explicitly
+        $featuredImage = $this->images()->where('featured', true)->first();
+        if ($featuredImage) {
+            return $featuredImage->display_url;
+        }
+
+        // If no featured image, get the first image
+        $firstImage = $this->images()->first();
+        if ($firstImage) {
+            return $firstImage->display_url;
+        }
+
+        // Return a fallback image if no images exist
+        return asset('assets/img/hero/hero_bg_1_1.jpg');
     }
 
     /**
@@ -89,8 +101,8 @@ class HomeSlider extends Model
      */
     public function getThumbnailUrlAttribute()
     {
-        $featuredImage = $this->featuredImage;
-        return $featuredImage ? asset('storage/' . $featuredImage->path) : null;
+        // Use the same logic as featured image URL
+        return $this->getFeaturedImageUrlAttribute();
     }
 
     /**

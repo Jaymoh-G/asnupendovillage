@@ -49,28 +49,20 @@ class News extends Model
     }
 
     /**
-     * Get the featured image URL for display
+     * Scope to get published news articles
      */
-    public function getFeaturedImageUrlAttribute()
+    public function scopePublished($query)
     {
-        try {
-            // First try to get the featured image
-            $featuredImage = $this->featuredImage;
-            if ($featuredImage) {
-                return asset('storage/' . $featuredImage->path);
-            }
+        return $query->where('status', 'published');
+    }
 
-            // If no featured image, get the first image
-            $firstImage = $this->images()->first();
-            if ($firstImage) {
-                return asset('storage/' . $firstImage->path);
-            }
-        } catch (\Exception $e) {
-            // Log error but don't break the page
-            Log::error('Error getting featured image for news ' . $this->id . ': ' . $e->getMessage());
-        }
-
-        // Return null if no images exist - Filament will use the default image
-        return null;
+    /**
+     * Scope to get latest news articles
+     */
+    public function scopeLatestNews($query, $limit = 6)
+    {
+        return $query->orderBy('published_at', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->limit($limit);
     }
 }

@@ -47,7 +47,7 @@ class HomeSliderResource extends Resource
                             ->label('Slug')
                             ->required()
                             ->maxLength(255)
-                            ->unique(ignoreRecord: true),
+                            ->unique('home_sliders', 'slug', fn($record) => $record),
 
                         Forms\Components\TextInput::make('subtitle')
                             ->label('Subtitle')
@@ -140,14 +140,17 @@ class HomeSliderResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('featured_image_url')
+                Tables\Columns\TextColumn::make('image')
                     ->label('Image')
-                    ->circular()
-                    ->size(60)
-                    ->url(function ($record) {
-                        return $record->featured_image_url;
-                    }, true)
-                    ->openUrlInNewTab(),
+                    ->html()
+                    ->formatStateUsing(function ($record) {
+                        $imageUrl = $record->featured_image_url;
+                        if ($imageUrl) {
+                            return "<img src='{$imageUrl}' style='width: 60px; height: 60px; border-radius: 50%; object-fit: cover;' alt='Slider Image' />";
+                        } else {
+                            return "<div style='width: 60px; height: 60px; border-radius: 50%; background-color: #f3f4f6; display: flex; align-items: center; justify-content: center; color: #9ca3af; font-size: 12px;'>No Image</div>";
+                        }
+                    }),
 
                 Tables\Columns\TextColumn::make('title')
                     ->label('Title')

@@ -274,6 +274,11 @@
                                 <a href="{{ route('about-us') }}">About Us</a>
                                 <ul class="sub-menu">
                                     <li>
+                                        <a href="{{ route('founder') }}"
+                                            >Founder</a
+                                        >
+                                    </li>
+                                    <li>
                                         <a href="{{ route('team') }}"
                                             >Our Team</a
                                         >

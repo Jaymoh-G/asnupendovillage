@@ -33,7 +33,7 @@ class ProjectResource extends Resource
                             ->maxLength(255),
                         Forms\Components\TextInput::make('slug')
                             ->label('Slug')
-                            ->unique()
+                            ->unique('projects', 'slug', fn($record) => $record)
                             ->maxLength(255)
                             ->helperText('Leave empty to auto-generate from project name'),
                         Forms\Components\Select::make('program_id')
