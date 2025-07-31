@@ -31,44 +31,44 @@ class StatsOverview extends BaseWidget
                 ->color('primary')
                 ->chart([7, 2, 10, 3, 15, 4, 17]),
 
-            Stat::make('Active News', News::where('is_active', true)->count())
+            Stat::make('Active News', News::published()->count())
                 ->description('Published news articles')
                 ->descriptionIcon('heroicon-m-newspaper')
                 ->color('success')
                 ->chart([17, 16, 14, 15, 14, 13, 12]),
 
-            Stat::make('Upcoming Events', Event::where('is_active', true)->count())
+            Stat::make('Upcoming Events', Event::published()->count())
                 ->description('Active events')
                 ->descriptionIcon('heroicon-m-calendar')
                 ->color('warning')
                 ->chart([15, 4, 5, 2, 10, 2, 7]),
 
-            Stat::make('Team Members', Team::where('is_active', true)->count())
+            Stat::make('Team Members', Team::active()->count())
                 ->description('Active team members')
                 ->descriptionIcon('heroicon-m-user-group')
                 ->color('info')
                 ->chart([3, 10, 5, 2, 10, 2, 7]),
 
-            Stat::make('Projects', Project::where('is_active', true)->count())
+            Stat::make('Projects', Project::active()->count())
                 ->description('Active projects')
                 ->descriptionIcon('heroicon-m-folder')
                 ->color('success')
                 ->chart([7, 2, 10, 3, 15, 4, 17]),
 
-            Stat::make('Programs', Program::where('is_active', true)->count())
-                ->description('Active programs')
+            Stat::make('Programs', Program::count())
+                ->description('Total programs')
                 ->descriptionIcon('heroicon-m-academic-cap')
                 ->color('warning')
                 ->chart([17, 16, 14, 15, 14, 13, 12]),
 
-            Stat::make('Facilities', Facility::where('is_active', true)->count())
+            Stat::make('Facilities', Facility::active()->count())
                 ->description('Available facilities')
                 ->descriptionIcon('heroicon-m-building-office')
                 ->color('info')
                 ->chart([15, 4, 5, 2, 10, 2, 7]),
 
-            Stat::make('Testimonials', Testimonial::where('is_active', true)->count())
-                ->description('Published testimonials')
+            Stat::make('Testimonials', Testimonial::count())
+                ->description('Total testimonials')
                 ->descriptionIcon('heroicon-m-chat-bubble-left-right')
                 ->color('success')
                 ->chart([3, 10, 5, 2, 10, 2, 7]),
@@ -85,7 +85,7 @@ class StatsOverview extends BaseWidget
                 ->color('info')
                 ->chart([17, 16, 14, 15, 14, 13, 12]),
 
-            Stat::make('Careers', Career::where('is_active', true)->count())
+            Stat::make('Careers', Career::active()->count())
                 ->description('Active job openings')
                 ->descriptionIcon('heroicon-m-briefcase')
                 ->color('warning')
@@ -97,7 +97,7 @@ class StatsOverview extends BaseWidget
                 ->color('danger')
                 ->chart([3, 10, 5, 2, 10, 2, 7]),
 
-            Stat::make('Home Sliders', HomeSlider::where('is_active', true)->count())
+            Stat::make('Home Sliders', HomeSlider::active()->count())
                 ->description('Active slider images')
                 ->descriptionIcon('heroicon-m-photo')
                 ->color('success')

@@ -278,42 +278,45 @@ About Area
                 <div class="col-xl-5">
                     <div class="about-wrap1">
                         <div class="title-area mb-30">
-                            <span class="sub-title before-none"
-                                >About Us Donat</span
-                            >
-                            <h2 class="sec-title">
-                                We Believe that We can Save More Life's with you
-                            </h2>
-                            <p class="">
-                                Donet is the largest global crowdfunding
-                                community connecting nonprofits, donors, and
-                                companies in nearly every country. We help
-                                nonprofits from Afghanistan to Zimbabwe (and
-                                hundreds of places in between) access the tools,
-                                training, and support they need to be more
-                                effective and make our world a better place.
-                            </p>
+                            @if($homePageContent->has('about-us'))
+                                @php $aboutUs = $homePageContent['about-us']; @endphp
+                                @if($aboutUs->subtitle)
+                                    <span class="sub-title before-none">{{ $aboutUs->subtitle }}</span>
+                                @endif
+                                @if($aboutUs->title)
+                                    <h2 class="sec-title">{{ $aboutUs->title }}</h2>
+                                @endif
+                                @if($aboutUs->description)
+                                    <p class="">{{ $aboutUs->description }}</p>
+                                @endif
+                            @else
+                                <span class="sub-title before-none">About Us Donat</span>
+                                <h2 class="sec-title">We Believe that We can Save More Life's with you</h2>
+                                <p class="">Donet is the largest global crowdfunding community connecting nonprofits, donors, and companies in nearly every country. We help nonprofits from Afghanistan to Zimbabwe (and hundreds of places in between) access the tools, training, and support they need to be more effective and make our world a better place.</p>
+                            @endif
                         </div>
                         <div class="checklist style2 list-two-column">
                             <ul>
-                                <li>Charity For Foods</li>
-                                <li data-theme-color="var(--theme-color2)">
-                                    Charity For Water
-                                </li>
-                                <li data-theme-color="#FF5528">
-                                    Charity For Education
-                                </li>
-                                <li data-theme-color="#122F2A">
-                                    Charity For Medical
-                                </li>
+                                @if($homePageContent->has('about-us') && !empty($homePageContent['about-us']->checklist_items))
+                                    @foreach($homePageContent['about-us']->checklist_items as $item)
+                                        <li @if($item['color']) data-theme-color="{{ $item['color'] }}" @endif>{{ $item['text'] }}</li>
+                                    @endforeach
+                                @else
+                                    <li>Charity For Foods</li>
+                                    <li data-theme-color="var(--theme-color2)">Charity For Water</li>
+                                    <li data-theme-color="#FF5528">Charity For Education</li>
+                                    <li data-theme-color="#122F2A">Charity For Medical</li>
+                                @endif
                             </ul>
                         </div>
                         <div class="btn-wrap mt-40">
-                            <a href="about.html" class="th-btn"
-                                >About More<i
-                                    class="fas fa-arrow-up-right ms-2"
-                                ></i
-                            ></a>
+                            @if($homePageContent->has('about-us') && $homePageContent['about-us']->button_text)
+                                <a href="{{ $homePageContent['about-us']->button_url ?? 'about.html' }}" class="th-btn">
+                                    {{ $homePageContent['about-us']->button_text }}<i class="fas fa-arrow-up-right ms-2"></i>
+                                </a>
+                            @else
+                                <a href="about.html" class="th-btn">About More<i class="fas fa-arrow-up-right ms-2"></i></a>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -373,14 +376,20 @@ Cta Area
             <div class="row justify-content-center">
                 <div class="col-lg-7">
                     <div class="title-area text-center mb-0">
-                        <h2 class="sec-title text-white">
-                            Our Door Are Always Open to More People Who Want to
-                            Support Each Others!
-                        </h2>
-                        <a href="contact.html" class="th-btn style5 mt-40"
-                            >Get Involved
-                            <i class="fas fa-arrow-up-right ms-2"></i
-                        ></a>
+                        @if($homePageContent->has('cta-section'))
+                            @php $ctaSection = $homePageContent['cta-section']; @endphp
+                            @if($ctaSection->title)
+                                <h2 class="sec-title text-white">{{ $ctaSection->title }}</h2>
+                            @endif
+                            @if($ctaSection->button_text)
+                                <a href="{{ $ctaSection->button_url ?? 'contact.html' }}" class="th-btn style5 mt-40">
+                                    {{ $ctaSection->button_text }}<i class="fas fa-arrow-up-right ms-2"></i>
+                                </a>
+                            @endif
+                        @else
+                            <h2 class="sec-title text-white">Our Door Are Always Open to More People Who Want to Support Each Others!</h2>
+                            <a href="contact.html" class="th-btn style5 mt-40">Get Involved<i class="fas fa-arrow-up-right ms-2"></i></a>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -436,25 +445,32 @@ Story Area
                 <div class="col-xl-5">
                     <div class="story-wrap1">
                         <div class="title-area mb-0">
-                            <span class="sub-title before-none"
-                                >Success Story</span
-                            >
-                            <h2 class="sec-title">
-                                We Help Fellow Nonprofits Access the Funding
-                                Tools, Training
-                            </h2>
-                            <p class="mt-30">
-                                Our secure online donation platform allows you
-                                to make contributions quickly and safely. Choose
-                                from various payment methods and set up
-                                one-time.exactly.
-                            </p>
-                            <div class="btn-wrap mt-35">
-                                <a href="about.html" class="th-btn style-border"
-                                    >Our Success Story
-                                    <i class="fas fa-arrow-up-right ms-2"></i
-                                ></a>
-                            </div>
+                            @if($homePageContent->has('story-section'))
+                                @php $storySection = $homePageContent['story-section']; @endphp
+                                @if($storySection->subtitle)
+                                    <span class="sub-title before-none">{{ $storySection->subtitle }}</span>
+                                @endif
+                                @if($storySection->title)
+                                    <h2 class="sec-title">{{ $storySection->title }}</h2>
+                                @endif
+                                @if($storySection->description)
+                                    <p class="mt-30">{{ $storySection->description }}</p>
+                                @endif
+                                @if($storySection->button_text)
+                                    <div class="btn-wrap mt-35">
+                                        <a href="{{ $storySection->button_url ?? 'about.html' }}" class="th-btn style-border">
+                                            {{ $storySection->button_text }}<i class="fas fa-arrow-up-right ms-2"></i>
+                                        </a>
+                                    </div>
+                                @endif
+                            @else
+                                <span class="sub-title before-none">Success Story</span>
+                                <h2 class="sec-title">We Help Fellow Nonprofits Access the Funding Tools, Training</h2>
+                                <p class="mt-30">Our secure online donation platform allows you to make contributions quickly and safely. Choose from various payment methods and set up one-time.exactly.</p>
+                                <div class="btn-wrap mt-35">
+                                    <a href="about.html" class="th-btn style-border">Our Success Story<i class="fas fa-arrow-up-right ms-2"></i></a>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -595,65 +611,57 @@ Video Area
             <div class="row gy-40 justify-content-between">
                 <div class="col-xl-5">
                     <div class="title-area mb-35">
-                        <h2 class="sec-title text-white">
-                            We Always Help The Needy People
-                        </h2>
-                        <p class="text-white">
-                            Discover the inspiring stories of individuals and
-                            communities transformed by our programs. Our success
-                            stories highlight the real-life impact of your
-                            donations.
-                        </p>
+                        @if($homePageContent->has('statistics'))
+                            @php $statisticsSection = $homePageContent['statistics']; @endphp
+                            @if($statisticsSection->title)
+                                <h2 class="sec-title text-white">{{ $statisticsSection->title }}</h2>
+                            @endif
+                            @if($statisticsSection->description)
+                                <p class="text-white">{{ $statisticsSection->description }}</p>
+                            @endif
+                        @else
+                            <h2 class="sec-title text-white">We Always Help The Needy People</h2>
+                            <p class="text-white">Discover the inspiring stories of individuals and communities transformed by our programs. Our success stories highlight the real-life impact of your donations.</p>
+                        @endif
                     </div>
                     <div class="row">
-                        <div class="col-sm-6 counter-card-wrap">
-                            <div class="counter-card">
-                                <h2 class="box-number text-theme2">
-                                    <span class="counter-number">15</span>k<span
-                                        class="fw-light"
-                                        >+</span
-                                    >
-                                </h2>
-                                <p class="box-text text-white">
-                                    Incredible Volunteers
-                                </p>
+                        @if($homePageContent->has('statistics') && !empty($homePageContent['statistics']->statistics))
+                            @foreach($homePageContent['statistics']->statistics as $statistic)
+                                <div class="col-sm-6 counter-card-wrap">
+                                    <div class="counter-card">
+                                        <h2 class="box-number @if($statistic['color']) text-theme2 @else text-white @endif">
+                                            <span class="counter-number">{{ $statistic['number'] }}</span>{{ $statistic['suffix'] ?? '' }}<span class="fw-light">+</span>
+                                        </h2>
+                                        <p class="box-text text-white">{{ $statistic['label'] }}</p>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @else
+                            <div class="col-sm-6 counter-card-wrap">
+                                <div class="counter-card">
+                                    <h2 class="box-number text-theme2"><span class="counter-number">15</span>k<span class="fw-light">+</span></h2>
+                                    <p class="box-text text-white">Incredible Volunteers</p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-sm-6 counter-card-wrap">
-                            <div class="counter-card">
-                                <h2 class="box-number text-white">
-                                    <span class="counter-number">1</span>k<span
-                                        class="fw-light"
-                                        >+</span
-                                    >
-                                </h2>
-                                <p class="box-text text-white">
-                                    Successful Campaigns
-                                </p>
+                            <div class="col-sm-6 counter-card-wrap">
+                                <div class="counter-card">
+                                    <h2 class="box-number text-white"><span class="counter-number">1</span>k<span class="fw-light">+</span></h2>
+                                    <p class="box-text text-white">Successful Campaigns</p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-sm-6 counter-card-wrap">
-                            <div class="counter-card">
-                                <h2 class="box-number text-white">
-                                    <span class="counter-number">400</span
-                                    ><span class="fw-light">+</span>
-                                </h2>
-                                <p class="box-text text-white">
-                                    Monthly Donors
-                                </p>
+                            <div class="col-sm-6 counter-card-wrap">
+                                <div class="counter-card">
+                                    <h2 class="box-number text-white"><span class="counter-number">400</span><span class="fw-light">+</span></h2>
+                                    <p class="box-text text-white">Monthly Donors</p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-sm-6 counter-card-wrap">
-                            <div class="counter-card">
-                                <h2 class="box-number text-theme2">
-                                    <span class="counter-number">35</span>k<span
-                                        class="fw-light"
-                                        >+</span
-                                    >
-                                </h2>
-                                <p class="box-text text-white">Team Support</p>
+                            <div class="col-sm-6 counter-card-wrap">
+                                <div class="counter-card">
+                                    <h2 class="box-number text-theme2"><span class="counter-number">35</span>k<span class="fw-light">+</span></h2>
+                                    <p class="box-text text-white">Team Support</p>
+                                </div>
                             </div>
-                        </div>
+                        @endif
                     </div>
                 </div>
                 <div class="col-xl-6">
@@ -662,11 +670,15 @@ Video Area
                             src="assets/img/normal/video-thumb1-1.png"
                             alt="img"
                         />
-                        <a
-                            href="https://www.youtube.com/watch?v=_sI_Ps7JSEk"
-                            class="play-btn style2 popup-video"
-                            ><i class="fa-sharp fa-solid fa-play"></i
-                        ></a>
+                        @if($homePageContent->has('video-section') && $homePageContent['video-section']->video_url)
+                            <a href="{{ $homePageContent['video-section']->video_url }}" class="play-btn style2 popup-video">
+                                <i class="fa-sharp fa-solid fa-play"></i>
+                            </a>
+                        @else
+                            <a href="https://www.youtube.com/watch?v=_sI_Ps7JSEk" class="play-btn style2 popup-video">
+                                <i class="fa-sharp fa-solid fa-play"></i>
+                            </a>
+                        @endif
                     </div>
                 </div>
             </div>

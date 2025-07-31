@@ -34,6 +34,7 @@ class DonationResource extends Resource
                         'mpesa' => 'M-Pesa',
                         'card' => 'Card',
                         'paypal' => 'PayPal',
+                        'bank' => 'Bank Transfer',
                         'other' => 'Other',
                     ])->required(),
                 Forms\Components\Select::make('status')

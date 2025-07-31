@@ -8,6 +8,7 @@ use App\Models\News;
 use App\Models\Project;
 use App\Models\Testimonial;
 use App\Models\Team;
+use App\Models\HomePageContent;
 
 class Home extends Component
 {
@@ -28,12 +29,16 @@ class Home extends Component
         // Get the latest 6 active team members
         $latestTeamMembers = Team::active()->latestTeamMembers(6)->get();
 
+        // Get homepage content sections
+        $homePageContent = HomePageContent::active()->ordered()->get()->keyBy('section_name');
+
         return view('livewire.frontend.home', [
             'latestPrograms' => $latestPrograms,
             'latestNews' => $latestNews,
             'latestProjects' => $latestProjects,
             'latestTestimonials' => $latestTestimonials,
-            'latestTeamMembers' => $latestTeamMembers
+            'latestTeamMembers' => $latestTeamMembers,
+            'homePageContent' => $homePageContent
         ]);
     }
 }

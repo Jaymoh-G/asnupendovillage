@@ -12,9 +12,19 @@
     <div class="th-menu-area text-center">
         <button class="th-menu-toggle"><i class="fal fa-times"></i></button>
         <div class="mobile-logo">
-            <a href="index.html"
-                ><img src="{{ asset('assets/img/logo.svg') }}" alt="Donat"
-            /></a>
+            <a href="{{ route('home') }}">
+                @if(\App\Models\Setting::get('header_logo'))
+                <img
+                    src="{{ asset('storage/' . \App\Models\Setting::get('header_logo')) }}"
+                    alt="{{ \App\Models\Setting::get('site_name', 'ASN Upendo Village') }}"
+                />
+                @else
+                <img
+                    src="{{ asset('assets/img/logo.svg') }}"
+                    alt="{{ \App\Models\Setting::get('site_name', 'ASN Upendo Village') }}"
+                />
+                @endif
+            </a>
         </div>
         <div class="th-mobile-menu">
             <ul>
@@ -29,7 +39,9 @@
                         <li>
                             <a href="donation-details.html">Donation Details</a>
                         </li>
-                        <li><a href="donate-now.html">Donate Now</a></li>
+                        <li>
+                            <a href="{{ route('donate-now') }}">Donate Now</a>
+                        </li>
                     </ul>
                 </li>
                 <li class="menu-item-has-children">
@@ -95,12 +107,8 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="{{ route('contact-us') }}">Contact Us1</a>
-                </li>
-                <li>
                     <a href="{{ route('contact-us') }}">Contact Us</a>
                 </li>
-                <li><a href="{{ route('gallery') }}">Gallery</a></li>
             </ul>
         </div>
     </div>
@@ -158,11 +166,19 @@
             >
                 <div class="d-none d-lg-block col-auto">
                     <div class="header-logo">
-                        <a href="index.html"
-                            ><img
+                        <a href="{{ route('home') }}">
+                            @if(\App\Models\Setting::get('header_logo'))
+                            <img
+                                src="{{ asset('storage/' . \App\Models\Setting::get('header_logo')) }}"
+                                alt="{{ \App\Models\Setting::get('site_name', 'ASN Upendo Village') }}"
+                            />
+                            @else
+                            <img
                                 src="{{ asset('assets/img/Asn-upendo.jpg') }}"
-                                alt="Donat"
-                        /></a>
+                                alt="{{ \App\Models\Setting::get('site_name', 'ASN Upendo Village') }}"
+                            />
+                            @endif
+                        </a>
                     </div>
                 </div>
                 <div class="d-none d-md-block col-auto">
@@ -182,9 +198,18 @@
                             <div class="box-content">
                                 <p class="box-text">Locate Address:</p>
                                 <h4 class="box-title">
-                                    <a href="https://www.google.com/maps"
-                                        >Naivasha, Kenya</a
+                                    @if(\App\Models\Setting::get('google_map_link'))
+                                    <a
+                                        href="{{ \App\Models\Setting::get('google_map_link') }}"
+                                        target="_blank"
                                     >
+                                        {{ \App\Models\Setting::get('contact_address', 'Naivasha, Kenya') }}
+                                    </a>
+                                    @else
+                                    <a href="https://www.google.com/maps">
+                                        {{ \App\Models\Setting::get('contact_address', 'Naivasha, Kenya') }}
+                                    </a>
+                                    @endif
                                 </h4>
                             </div>
                         </div>
@@ -203,7 +228,11 @@
                             <div class="box-content">
                                 <p class="box-text">Call us any time:</p>
                                 <h4 class="box-title">
-                                    <a href="tel:+254745607456">0745607456</a>
+                                    <a
+                                        href="tel:{{ \App\Models\Setting::get('contact_phone', '+254745607456') }}"
+                                    >
+                                        {{ \App\Models\Setting::get('contact_phone', '+254745607456') }}
+                                    </a>
                                 </h4>
                             </div>
                         </div>
@@ -222,9 +251,11 @@
                             <div class="box-content">
                                 <p class="box-text">Email us any time:</p>
                                 <h4 class="box-title">
-                                    <a href="mailto:admin@asnupendovillage.com"
-                                        >admin@asnupendovillage.com</a
+                                    <a
+                                        href="mailto:{{ \App\Models\Setting::get('contact_email', 'admin@asnupendovillage.com') }}"
                                     >
+                                        {{ \App\Models\Setting::get('contact_email', 'admin@asnupendovillage.com') }}
+                                    </a>
                                 </h4>
                             </div>
                         </div>
@@ -232,18 +263,47 @@
                 </div>
                 <div class="header-social-col col-auto">
                     <div class="th-social">
-                        <a href="https://www.facebook.com/"
-                            ><i class="fab fa-facebook-f"></i
-                        ></a>
-                        <a href="https://www.twitter.com/"
-                            ><i class="fab fa-twitter"></i
-                        ></a>
-                        <a href="https://www.youtube.com/"
-                            ><i class="fab fa-youtube"></i
-                        ></a>
-                        <a href="https://www.linkedin.com/"
-                            ><i class="fab fa-linkedin-in"></i
-                        ></a>
+                        @if(\App\Models\Setting::get('social_facebook') &&
+                        !empty(\App\Models\Setting::get('social_facebook')))
+                        <a
+                            href="{{ \App\Models\Setting::get('social_facebook') }}"
+                            target="_blank"
+                        >
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        @endif @if(\App\Models\Setting::get('social_twitter') &&
+                        !empty(\App\Models\Setting::get('social_twitter')))
+                        <a
+                            href="{{ \App\Models\Setting::get('social_twitter') }}"
+                            target="_blank"
+                        >
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        @endif @if(\App\Models\Setting::get('social_youtube') &&
+                        !empty(\App\Models\Setting::get('social_youtube')))
+                        <a
+                            href="{{ \App\Models\Setting::get('social_youtube') }}"
+                            target="_blank"
+                        >
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                        @endif @if(\App\Models\Setting::get('social_linkedin')
+                        && !empty(\App\Models\Setting::get('social_linkedin')))
+                        <a
+                            href="{{ \App\Models\Setting::get('social_linkedin') }}"
+                            target="_blank"
+                        >
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        @endif @if(\App\Models\Setting::get('social_instagram')
+                        && !empty(\App\Models\Setting::get('social_instagram')))
+                        <a
+                            href="{{ \App\Models\Setting::get('social_instagram') }}"
+                            target="_blank"
+                        >
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -256,13 +316,21 @@
                 <div class="menu-area-wrap">
                     <div class="d-inline-block d-lg-none col-auto">
                         <div class="header-logo">
-                            <a href="index.html"
-                                ><img
+                            <a href="{{ route('home') }}">
+                                @if(\App\Models\Setting::get('header_logo'))
+                                <img
+                                    src="{{ asset('storage/' . \App\Models\Setting::get('header_logo')) }}"
+                                    alt="{{ \App\Models\Setting::get('site_name', 'ASN Upendo Village') }}"
+                                />
+                                @else
+                                <img
                                     src="{{
                                         asset('assets/img/logo-white.svg')
                                     }}"
-                                    alt="Donat"
-                            /></a>
+                                    alt="{{ \App\Models\Setting::get('site_name', 'ASN Upendo Village') }}"
+                                />
+                                @endif
+                            </a>
                         </div>
                     </div>
                     <nav class="main-menu d-none d-lg-block">
@@ -397,7 +465,7 @@
                     </button>
 
                     <a
-                        href="contact.html"
+                        href="{{ route('donate-now') }}"
                         class="th-btn style3 d-lg-block d-none"
                         ><i class="fas fa-heart me-2"></i> Donate Now</a
                     >

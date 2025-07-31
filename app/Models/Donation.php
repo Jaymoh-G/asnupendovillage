@@ -21,4 +21,36 @@ class Donation extends Model
     protected $casts = [
         'meta' => 'array',
     ];
+
+    /**
+     * Scope to get completed donations
+     */
+    public function scopeCompleted($query)
+    {
+        return $query->where('status', 'completed');
+    }
+
+    /**
+     * Scope to get pending donations
+     */
+    public function scopePending($query)
+    {
+        return $query->where('status', 'pending');
+    }
+
+    /**
+     * Get total amount donated
+     */
+    public static function getTotalAmount()
+    {
+        return static::completed()->sum('amount');
+    }
+
+    /**
+     * Get recent donations
+     */
+    public function scopeRecent($query, $limit = 10)
+    {
+        return $query->orderBy('created_at', 'desc')->limit($limit);
+    }
 }

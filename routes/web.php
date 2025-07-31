@@ -4,7 +4,7 @@ use App\Livewire\Frontend\Home;
 use App\Livewire\Frontend\Faqs;
 use App\Livewire\Frontend\MediaCentre;
 use App\Livewire\Frontend\Team;
-use App\Livewire\Frontend\DonateNow;
+use App\Livewire\Frontend\DonationPage;
 use App\Livewire\Frontend\ContactUs;
 use App\Livewire\Frontend\Gallery;
 use App\Livewire\Frontend\Testimonials;
@@ -39,7 +39,9 @@ Route::get('/team/{slug}', function ($slug) {
     return view('team-detail-page', ['slug' => $slug]);
 })->name('team.detail');
 // donate now
-Route::get('/donate-now', DonateNow::class)->name('donate-now');
+Route::get('/donate-now', function () {
+    return view('donation-page');
+})->name('donate-now');
 // contact us
 Route::get('/contact-us', ContactUs::class)->name('contact-us');
 // gallery

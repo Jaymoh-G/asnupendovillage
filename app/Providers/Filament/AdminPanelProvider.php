@@ -32,15 +32,15 @@ class AdminPanelProvider extends PanelProvider
                 'gray' => '#202020',
             ])
             ->darkMode(false)
-            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
-            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
+            ->discoverResources(app_path('Filament/Resources'), 'App\\Filament\\Resources')
+            ->discoverPages(app_path('Filament/Pages'), 'App\\Filament\\Pages')
             ->pages([
                 Pages\Dashboard::class,
             ])
             ->widgets([
-                Widgets\AccountWidget::class,
-                \App\Filament\Widgets\TestWidget::class,
                 \App\Filament\Widgets\DashboardStats::class,
+                \App\Filament\Widgets\DonationStats::class,
+                \App\Filament\Widgets\SettingsOverview::class,
             ])
             ->middleware([
                 EncryptCookies::class,

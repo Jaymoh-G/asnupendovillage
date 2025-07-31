@@ -27,4 +27,12 @@ class Career extends Model
             }
         });
     }
+
+    /**
+     * Scope to get active careers
+     */
+    public function scopeActive($query)
+    {
+        return $query->where('status', 'open');
+    }
 }

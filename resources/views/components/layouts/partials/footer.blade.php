@@ -1,3 +1,4 @@
+<!--==============================
 Footer Area ==============================-->
 <footer
     class="footer-wrapper footer-default"
@@ -43,20 +44,28 @@ Footer Area ==============================-->
                     <div class="widget footer-widget">
                         <div class="th-widget-about">
                             <div class="about-logo">
-                                <a href="index.html"
-                                    ><img
+                                <a href="{{ route('home') }}">
+                                    @if(\App\Models\Setting::get('footer_logo')
+                                    &&
+                                    !empty(\App\Models\Setting::get('footer_logo')))
+                                    <img
+                                        src="{{ asset('storage/' . \App\Models\Setting::get('footer_logo')) }}"
+                                        alt="{{ \App\Models\Setting::get('site_name', 'ASN Upendo Village') }}"
+                                    />
+                                    @else
+                                    <img
                                         src="{{
                                             asset('assets/img/Asn-upendo.jpg')
                                         }}"
-                                        alt="Asn Upendo Village"
-                                /></a>
+                                        alt="{{ \App\Models\Setting::get('site_name', 'ASN Upendo Village') }}"
+                                    />
+                                    @endif
+                                </a>
                             </div>
                             <p class="about-text">
-                                Our secure online donation platform allows you
-                                to make contributions quickly and safely. Choose
-                                from various.
+                                {{ \App\Models\Setting::get('footer_about', 'Our secure online donation platform allows you to make contributions quickly and safely. Choose from various payment methods.') }}
                             </p>
-                            <a href="contact.html" class="th-btn"
+                            <a href="{{ route('donate-now') }}" class="th-btn"
                                 ><i class="fas fa-heart me-2"></i> Donate Now</a
                             >
                         </div>
@@ -67,21 +76,28 @@ Footer Area ==============================-->
                         <h3 class="widget_title">Quick Links</h3>
                         <div class="menu-all-pages-container">
                             <ul class="menu">
+                                @php $quickLinks =
+                                \App\Models\Setting::get('footer_quick_links',
+                                []); if (is_string($quickLinks)) { $quickLinks =
+                                json_decode($quickLinks, true) ?: []; } @endphp
+                                @if(!empty($quickLinks) &&
+                                is_array($quickLinks))
+                                @foreach($quickLinks as $link)
                                 <li>
-                                    <a href="{{ route('about-us') }}"
-                                        >About Us</a
+                                    <a href="{{ $link['url'] ?? '#' }}">{{
+                                        $link["title"] ?? "Link"
+                                    }}</a>
+                                </li>
+                                @endforeach @else
+                           
+
+
+                                <li>
+                                    <a href="{{ route('contact-us') }}"
+                                        >Contact Us</a
                                     >
                                 </li>
-                                <li><a href="blog.html">Our News</a></li>
-                                <li>
-                                    <a href="{{ route('about-us') }}"
-                                        >Our Campaign</a
-                                    >
-                                </li>
-                                <li>
-                                    <a href="contact.html">Privacy policy</a>
-                                </li>
-                                <li><a href="contact.html">Contact Us</a></li>
+                                @endif
                             </ul>
                         </div>
                     </div>
@@ -92,15 +108,29 @@ Footer Area ==============================-->
                         <div class="menu-all-pages-container">
                             <ul class="menu">
                                 <li>
-                                    <a href="donate-now.html">Give Donation</a>
+                                    <a href="{{ route('donate-now') }}"
+                                        >Give Donation1</a
+                                    >
                                 </li>
                                 <li>
-                                    <a href="faq.html">Education Support</a>
+                                    <a href="{{ route('programs') }}"
+                                        >Education Support</a
+                                    >
                                 </li>
-                                <li><a href="faq.html">Food Support</a></li>
-                                <li><a href="faq.html">Health Support</a></li>
                                 <li>
-                                    <a href="gallery.html">Our Campaign </a>
+                                    <a href="{{ route('programs') }}"
+                                        >Food Support</a
+                                    >
+                                </li>
+                                <li>
+                                    <a href="{{ route('programs') }}"
+                                        >Health Support</a
+                                    >
+                                </li>
+                                <li>
+                                    <a href="{{ route('projects') }}"
+                                        >Our Campaign</a
+                                    >
                                 </li>
                             </ul>
                         </div>
@@ -125,8 +155,9 @@ Footer Area ==============================-->
                                 <div class="box-content">
                                     <p class="box-text">Call us any time:</p>
                                     <h4 class="box-title">
-                                        <a href="tel:16336547896"
-                                            >+163-3654-7896</a
+                                        <a
+                                            href="tel:{{ \App\Models\Setting::get('contact_phone', '+254 700 000 000') }}"
+                                            >{{ \App\Models\Setting::get('contact_phone', '+254 700 000 000') }}</a
                                         >
                                     </h4>
                                 </div>
@@ -146,25 +177,64 @@ Footer Area ==============================-->
                                 <div class="box-content">
                                     <p class="box-text">Email us any time:</p>
                                     <h4 class="box-title">
-                                        <a href="mailto:info@donat.com"
-                                            >info@donat.com</a
+                                        <a
+                                            href="mailto:{{ \App\Models\Setting::get('contact_email', 'info@asnupendovillage.org') }}"
+                                            >{{ \App\Models\Setting::get('contact_email', 'info@asnupendovillage.org') }}</a
                                         >
                                     </h4>
                                 </div>
                             </div>
                             <div class="th-social style2">
-                                <a href="https://www.facebook.com/"
-                                    ><i class="fab fa-facebook-f"></i
-                                ></a>
-                                <a href="https://www.twitter.com/"
-                                    ><i class="fab fa-twitter"></i
-                                ></a>
-                                <a href="https://www.youtube.com/"
-                                    ><i class="fab fa-youtube"></i
-                                ></a>
-                                <a href="https://www.linkedin.com/"
-                                    ><i class="fab fa-linkedin-in"></i
-                                ></a>
+                                @if(\App\Models\Setting::get('social_facebook')
+                                &&
+                                !empty(\App\Models\Setting::get('social_facebook')))
+                                <a
+                                    href="{{ \App\Models\Setting::get('social_facebook') }}"
+                                    target="_blank"
+                                >
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                                @endif
+                                @if(\App\Models\Setting::get('social_twitter')
+                                &&
+                                !empty(\App\Models\Setting::get('social_twitter')))
+                                <a
+                                    href="{{ \App\Models\Setting::get('social_twitter') }}"
+                                    target="_blank"
+                                >
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                                @endif
+                                @if(\App\Models\Setting::get('social_youtube')
+                                &&
+                                !empty(\App\Models\Setting::get('social_youtube')))
+                                <a
+                                    href="{{ \App\Models\Setting::get('social_youtube') }}"
+                                    target="_blank"
+                                >
+                                    <i class="fab fa-youtube"></i>
+                                </a>
+                                @endif
+                                @if(\App\Models\Setting::get('social_linkedin')
+                                &&
+                                !empty(\App\Models\Setting::get('social_linkedin')))
+                                <a
+                                    href="{{ \App\Models\Setting::get('social_linkedin') }}"
+                                    target="_blank"
+                                >
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                                @endif
+                                @if(\App\Models\Setting::get('social_instagram')
+                                &&
+                                !empty(\App\Models\Setting::get('social_instagram')))
+                                <a
+                                    href="{{ \App\Models\Setting::get('social_instagram') }}"
+                                    target="_blank"
+                                >
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -177,9 +247,12 @@ Footer Area ==============================-->
             <div class="row justify-content-center gy-3 align-items-center">
                 <div class="col-lg-12">
                     <p class="copyright-text text-center">
-                        <i class="fal fa-copyright"></i> Copyright 2025
-                        <a href="{{ route('home') }}">Asn Upendo Village</a>.
-                        All Rights Reserved. | Designed by
+                        <i class="fal fa-copyright"></i> Copyright
+                        {{ date("Y") }}
+                        <a
+                            href="{{ route('home') }}"
+                            >{{ \App\Models\Setting::get('site_name', 'ASN Upendo Village') }}</a
+                        >. All Rights Reserved. | Designed by
                         <a target="_blank" href="https://breezetech.co.ke/"
                             >Breezetech
                         </a>
