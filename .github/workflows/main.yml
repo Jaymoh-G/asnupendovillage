@@ -1,0 +1,81 @@
+on: push
+name: 🚀 Deploy Laravel as ZIP + Extract Script
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v2
+
+      - name: 🧰 Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+
+      - name: 🔐 Copy .env.example to .env
+        run: cp .env.example .env
+
+      - name: 🧶 Install Composer dependencies
+        run: composer install --no-dev --prefer-dist --optimize-autoloader
+
+      - name: 🧰 Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: 📦 Install Node dependencies
+        run: npm install
+
+      - name: 🛠️ Build frontend assets
+        run: npm run build
+
+      - name: 🛠️ Ensure Laravel storage dirs exist
+        run: |
+          mkdir -p storage/framework/views
+          mkdir -p storage/framework/cache
+          mkdir -p storage/framework/sessions
+          mkdir -p storage/logs
+          chmod -R 775 storage
+          chmod -R 775 bootstrap/cache
+
+      - name: ⚙️ Laravel optimization
+        run: |
+          php artisan config:cache
+          php artisan route:cache
+          php artisan view:cache
+
+      - name: 🗜️ Zip deployment package
+        run: |
+          echo "Zipping project into deploy.zip"
+          zip -r deploy.zip . \
+            -x "node_modules/*" \
+               "tests/*" \
+               ".git/*" \
+               ".github/*" \
+               ".env" \
+               "storage/logs/*" \
+               "storage/app/*" \
+               "storage/debugbar/*" \
+               "deploy.zip"
+          ls -lh deploy.zip
+
+      - name: 💾 Upload deploy.zip to GitHub (as artifact)
+        uses: actions/upload-artifact@v4
+        with:
+          name: deploy-package
+          path: deploy.zip
+
+      - name: 📤 Upload deploy.zip and extract.php via FTP
+        uses: SamKirkland/FTP-Deploy-Action@4.3.0
+        with:
+          server: 41.80.37.31
+          username: ${{ secrets.ftp_username }}
+          password: ${{ secrets.ftp_password }}
+          server-dir: /staging.asnupendovillage.org/
+          local-dir: ./ # root of the repo
+          exclude: |
+            **/*
+            !deploy.zip
+            !e.php

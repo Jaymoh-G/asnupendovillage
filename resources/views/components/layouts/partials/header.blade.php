@@ -522,8 +522,8 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 40px;
-        height: 40px;
+        width: 32px;
+        height: 32px;
         border-radius: 50%;
         background: var(--theme-color, #1a685b);
         color: #fff;
@@ -540,7 +540,7 @@
     }
 
     .th-social i {
-        font-size: 16px;
+        font-size: 14px;
         display: flex;
         align-items: center;
         justify-content: center;
