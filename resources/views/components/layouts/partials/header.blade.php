@@ -480,3 +480,103 @@
         </div>
     </div>
 </header>
+
+<style>
+    /* Center Font Awesome icons in box-icon containers */
+    .box-icon {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .box-icon i {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+    }
+
+    .box-icon .bg-shape1,
+    .box-icon .bg-shape2 {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
+
+    /* Center social media icons in header */
+    .th-social {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .th-social a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--theme-color, #1a685b);
+        color: #fff;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: 2px solid var(--theme-color, #1a685b);
+    }
+
+    .th-social a:hover {
+        background: #fff;
+        color: var(--theme-color, #1a685b);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(26, 104, 91, 0.3);
+    }
+
+    .th-social i {
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Center social media icons in footer */
+    .th-social.style2 {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .th-social.style2 a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .th-social.style2 a:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+    }
+
+    .th-social.style2 i {
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>

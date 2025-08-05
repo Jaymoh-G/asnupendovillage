@@ -2,14 +2,19 @@
     <!--==============================
     Donation Banner Section
     ==============================-->
-    <section class="breadcumb-wrapper" data-bg-src="assets/img/bg/breadcumb-bg.jpg" data-overlay="theme">
+    <section
+        class="breadcumb-wrapper"
+        data-bg-src="assets/img/bg/breadcumb-bg.jpg"
+        data-overlay="theme"
+    >
         <div class="container">
             <div class="breadcumb-content text-center">
                 <h1 class="breadcumb-title text-white">Support Our Mission</h1>
                 <p class="breadcumb-text text-white-50 mb-4">
-                    Your generous donation helps us continue our work in supporting communities and making a positive impact in people's lives.
+                    Your generous donation helps us continue our work in
+                    supporting communities and making a positive impact in
+                    people's lives.
                 </p>
-
             </div>
         </div>
     </section>
@@ -18,14 +23,13 @@
     Donation Page Header
     ==============================-->
 
-
     <!--==============================
     Donation Form Section
     ==============================-->
     <section class="space-bottom">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-lg-10">
+                <div class="col-lg-12">
                     <div>
                         @if($showSuccess)
                         <div
@@ -67,74 +71,107 @@
                                 >
                                     <div class="row">
                                         <!-- Personal Information -->
-                                        <div class="col-md-6">
+                                        <div class="col-md-8">
                                             <h4 class="mb-4">
                                                 Personal Information
                                             </h4>
 
-                                            <div class="form-group mb-3">
-                                                <label
-                                                    for="donor_name"
-                                                    class="form-label"
-                                                    >Full Name *</label
-                                                >
-                                                <input
-                                                    type="text"
-                                                    class="form-control @error('donor_name') is-invalid @enderror"
-                                                    id="donor_name"
-                                                    wire:model="donor_name"
-                                                    placeholder="Enter your full name"
-                                                />
-                                                @error('donor_name')
-                                                <div class="invalid-feedback">
-                                                    {{ $message }}
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label
+                                                        for="donor_name"
+                                                        class="form-label"
+                                                        >Full Name *</label
+                                                    >
+                                                    <input
+                                                        type="text"
+                                                        class="form-control @error('donor_name') is-invalid @enderror"
+                                                        id="donor_name"
+                                                        wire:model="donor_name"
+                                                        placeholder="Enter your full name"
+                                                    />
+                                                    @error('donor_name')
+                                                    <div
+                                                        class="invalid-feedback"
+                                                    >
+                                                        {{ $message }}
+                                                    </div>
+                                                    @enderror
                                                 </div>
-                                                @enderror
+
+                                                <div class="col-md-4">
+                                                    <label
+                                                        for="donor_email"
+                                                        class="form-label"
+                                                        >Email Address *</label
+                                                    >
+                                                    <input
+                                                        type="email"
+                                                        class="form-control @error('donor_email') is-invalid @enderror"
+                                                        id="donor_email"
+                                                        wire:model="donor_email"
+                                                        placeholder="Your email address"
+                                                    />
+                                                    @error('donor_email')
+                                                    <div
+                                                        class="invalid-feedback"
+                                                    >
+                                                        {{ $message }}
+                                                    </div>
+                                                    @enderror
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <label
+                                                        for="donor_phone"
+                                                        class="form-label"
+                                                        >Phone Number *</label
+                                                    >
+                                                    <input
+                                                        type="tel"
+                                                        class="form-control @error('donor_phone') is-invalid @enderror"
+                                                        id="donor_phone"
+                                                        wire:model="donor_phone"
+                                                        placeholder="Your phone number"
+                                                    />
+                                                    @error('donor_phone')
+                                                    <div
+                                                        class="invalid-feedback"
+                                                    >
+                                                        {{ $message }}
+                                                    </div>
+                                                    @enderror
+                                                </div>
                                             </div>
 
-                                            <div class="form-group mb-3">
-                                                <label
-                                                    for="donor_email"
-                                                    class="form-label"
-                                                    >Email Address *</label
-                                                >
-                                                <input
-                                                    type="email"
-                                                    class="form-control @error('donor_email') is-invalid @enderror"
-                                                    id="donor_email"
-                                                    wire:model="donor_email"
-                                                    placeholder="Enter your email address"
-                                                />
-                                                @error('donor_email')
-                                                <div class="invalid-feedback">
-                                                    {{ $message }}
+                                            <div class="row mt-3">
+                                                <div class="col-md-12">
+                                                    <label
+                                                        for="message"
+                                                        class="form-label"
+                                                        >Message
+                                                        (Optional)</label
+                                                    >
+                                                    <textarea
+                                                        class="form-control @error('message') is-invalid @enderror"
+                                                        id="message"
+                                                        wire:model="message"
+                                                        rows="3"
+                                                        placeholder="Leave a message with your donation..."
+                                                    ></textarea>
+                                                    @error('message')
+                                                    <div
+                                                        class="invalid-feedback"
+                                                    >
+                                                        {{ $message }}
+                                                    </div>
+                                                    @enderror
                                                 </div>
-                                                @enderror
-                                            </div>
-
-                                            <div class="form-group mb-3">
-                                                <label
-                                                    for="donor_phone"
-                                                    class="form-label"
-                                                    >Phone Number *</label
-                                                >
-                                                <input
-                                                    type="tel"
-                                                    class="form-control @error('donor_phone') is-invalid @enderror"
-                                                    id="donor_phone"
-                                                    wire:model="donor_phone"
-                                                    placeholder="Enter your phone number"
-                                                />
-                                                @error('donor_phone')
-                                                <div class="invalid-feedback">
-                                                    {{ $message }}
-                                                </div>
-                                                @enderror
                                             </div>
                                         </div>
 
                                         <!-- Donation Details -->
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <h4 class="mb-4">
                                                 Donation Details
                                             </h4>
@@ -256,26 +293,6 @@
                                                 <div
                                                     class="text-danger small mt-1"
                                                 >
-                                                    {{ $message }}
-                                                </div>
-                                                @enderror
-                                            </div>
-
-                                            <div class="form-group mb-3">
-                                                <label
-                                                    for="message"
-                                                    class="form-label"
-                                                    >Message (Optional)</label
-                                                >
-                                                <textarea
-                                                    class="form-control @error('message') is-invalid @enderror"
-                                                    id="message"
-                                                    wire:model="message"
-                                                    rows="3"
-                                                    placeholder="Leave a message with your donation..."
-                                                ></textarea>
-                                                @error('message')
-                                                <div class="invalid-feedback">
                                                     {{ $message }}
                                                 </div>
                                                 @enderror
@@ -476,49 +493,6 @@
                                         </button>
                                     </div>
                                 </form>
-                            </div>
-                        </div>
-
-                        <!-- Donation Benefits -->
-                        <div class="row mt-5">
-                            <div class="col-md-4">
-                                <div class="text-center">
-                                    <i
-                                        class="fas fa-users fa-2x text-primary mb-3"
-                                    ></i>
-                                    <h5>Community Impact</h5>
-                                    <p>
-                                        Your donation directly supports
-                                        community development projects and helps
-                                        those in need.
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="text-center">
-                                    <i
-                                        class="fas fa-shield-alt fa-2x text-success mb-3"
-                                    ></i>
-                                    <h5>Secure Payment</h5>
-                                    <p>
-                                        All payments are processed securely
-                                        through trusted payment gateways to
-                                        protect your information.
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="text-center">
-                                    <i
-                                        class="fas fa-receipt fa-2x text-warning mb-3"
-                                    ></i>
-                                    <h5>Tax Deductible</h5>
-                                    <p>
-                                        Your donations may be tax deductible.
-                                        You'll receive a receipt for your
-                                        records.
-                                    </p>
-                                </div>
                             </div>
                         </div>
                     </div>

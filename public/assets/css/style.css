@@ -6219,7 +6219,7 @@ ol.wp-block-rss {
   margin-top: 20px;
 }
 .th-widget-contact .info-card .box-title {
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 600;
 }
 .th-widget-contact .info-card .box-title a {
@@ -6909,7 +6909,7 @@ ol.wp-block-rss {
 }
 .info-card .box-title {
   margin: 0 0 -0.2em 0;
-  font-size: 24px;
+  font-size: 16px;
   font-weight: 700;
 }
 @media (max-width: 1500px) {

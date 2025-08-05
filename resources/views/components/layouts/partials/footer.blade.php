@@ -89,7 +89,7 @@ Footer Area ==============================-->
                                     }}</a>
                                 </li>
                                 @endforeach @else
-                           
+
 
 
                                 <li>
@@ -195,16 +195,7 @@ Footer Area ==============================-->
                                     <i class="fab fa-facebook-f"></i>
                                 </a>
                                 @endif
-                                @if(\App\Models\Setting::get('social_twitter')
-                                &&
-                                !empty(\App\Models\Setting::get('social_twitter')))
-                                <a
-                                    href="{{ \App\Models\Setting::get('social_twitter') }}"
-                                    target="_blank"
-                                >
-                                    <i class="fab fa-twitter"></i>
-                                </a>
-                                @endif
+                              
                                 @if(\App\Models\Setting::get('social_youtube')
                                 &&
                                 !empty(\App\Models\Setting::get('social_youtube')))
