@@ -195,7 +195,7 @@ Footer Area ==============================-->
                                     <i class="fab fa-facebook-f"></i>
                                 </a>
                                 @endif
-                              
+
                                 @if(\App\Models\Setting::get('social_youtube')
                                 &&
                                 !empty(\App\Models\Setting::get('social_youtube')))
