@@ -88,29 +88,29 @@ jobs:
           echo "Deployment package size:"
           ls -lh deploy.zip
 
-      - name: 💾 Upload deploy.zip to GitHub (as artifact)
+      - name: 💾 Upload deploy.zip to GitHub (Manual Upload)
         uses: actions/upload-artifact@v4
         with:
           name: deploy-package
           path: deploy.zip
+          retention-days: 30
 
-      # Try with a different FTP action that handles large files better
-      - name: 📤 Upload deploy.zip via SCP (More Reliable)
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: 41.80.37.31
-          username: ${{ secrets.ftp_username }}
-          password: ${{ secrets.ftp_password }}
-          source: "deploy.zip"
-          target: "/staging.asnupendovillage.org/"
-          strip_components: 0
-
-      - name: 📤 Upload extract script via SCP
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: 41.80.37.31
-          username: ${{ secrets.ftp_username }}
-          password: ${{ secrets.ftp_password }}
-          source: "e.php"
-          target: "/staging.asnupendovillage.org/"
-          strip_components: 0
+      - name: 📋 Display download instructions
+        run: |
+          echo "=========================================="
+          echo "🚀 Deployment package created successfully!"
+          echo "=========================================="
+          echo ""
+          echo "📦 File: deploy.zip"
+          echo "📏 Size: $(ls -lh deploy.zip | awk '{print $5}')"
+          echo ""
+          echo "📥 To download:"
+          echo "1. Go to this workflow run"
+          echo "2. Scroll down to 'Artifacts' section"
+          echo "3. Click 'deploy-package' to download"
+          echo ""
+          echo "📤 Manual upload instructions:"
+          echo "1. Download deploy.zip from artifacts"
+          echo "2. Upload to: /staging.asnupendovillage.org/"
+          echo "3. Run: https://staging.asnupendovillage.org/e.php"
+          echo "=========================================="
