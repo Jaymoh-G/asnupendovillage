@@ -58,7 +58,14 @@ jobs:
                "storage/logs/*" \
                "storage/app/*" \
                "storage/debugbar/*" \
-               "deploy.zip"
+               "storage/framework/cache/*" \
+               "storage/framework/sessions/*" \
+               "storage/framework/views/*" \
+               "bootstrap/cache/*" \
+               "deploy.zip" \
+               "*.log" \
+               "*.tmp" \
+               "*.cache"
           ls -lh deploy.zip
 
       - name: 💾 Upload deploy.zip to GitHub (as artifact)
@@ -79,3 +86,5 @@ jobs:
             **/*
             !deploy.zip
             !e.php
+          dangerous-clean-slate: false
+
