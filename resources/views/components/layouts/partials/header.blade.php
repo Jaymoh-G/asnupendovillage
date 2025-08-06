@@ -20,7 +20,7 @@
                 />
                 @else
                 <img
-                    src="{{ asset('assets/img/logo.svg') }}"
+                    src="/assets/img/logo.svg"
                     alt="{{ \App\Models\Setting::get('site_name', 'ASN Upendo Village') }}"
                 />
                 @endif
@@ -174,7 +174,7 @@
                             />
                             @else
                             <img
-                                src="{{ asset('assets/img/Asn-upendo.jpg') }}"
+                                src="/assets/img/Asn-upendo.jpg"
                                 alt="{{ \App\Models\Setting::get('site_name', 'ASN Upendo Village') }}"
                             />
                             @endif
@@ -188,11 +188,11 @@
                                 <i class="fal fa-map-marker-alt"></i>
                                 <div
                                     class="bg-shape1"
-                                    data-mask-src="{{ asset('assets/img/shape/info_card_icon_bg_shape_1_1.png') }}"
+                                    data-mask-src="/assets/img/shape/info_card_icon_bg_shape_1_1.png"
                                 ></div>
                                 <div
                                     class="bg-shape2"
-                                    data-mask-src="{{ asset('assets/img/shape/info_card_icon_bg_shape_1_1.png') }}"
+                                    data-mask-src="/assets/img/shape/info_card_icon_bg_shape_1_1.png"
                                 ></div>
                             </div>
                             <div class="box-content">
@@ -218,11 +218,11 @@
                                 <i class="fal fa-phone"></i>
                                 <div
                                     class="bg-shape1"
-                                    data-mask-src="{{ asset('assets/img/shape/info_card_icon_bg_shape_1_1.png') }}"
+                                    data-mask-src="/assets/img/shape/info_card_icon_bg_shape_1_1.png"
                                 ></div>
                                 <div
                                     class="bg-shape2"
-                                    data-mask-src="{{ asset('assets/img/shape/info_card_icon_bg_shape_1_1.png') }}"
+                                    data-mask-src="/assets/img/shape/info_card_icon_bg_shape_1_1.png"
                                 ></div>
                             </div>
                             <div class="box-content">
@@ -241,11 +241,11 @@
                                 <i class="fal fa-envelope-open"></i>
                                 <div
                                     class="bg-shape1"
-                                    data-mask-src="{{ asset('assets/img/shape/info_card_icon_bg_shape_1_1.png') }}"
+                                    data-mask-src="/assets/img/shape/info_card_icon_bg_shape_1_1.png"
                                 ></div>
                                 <div
                                     class="bg-shape2"
-                                    data-mask-src="{{ asset('assets/img/shape/info_card_icon_bg_shape_1_1.png') }}"
+                                    data-mask-src="/assets/img/shape/info_card_icon_bg_shape_1_1.png"
                                 ></div>
                             </div>
                             <div class="box-content">
@@ -324,9 +324,7 @@
                                 />
                                 @else
                                 <img
-                                    src="{{
-                                        asset('assets/img/logo-white.svg')
-                                    }}"
+                                    src="/assets/img/logo-white.svg"
                                     alt="{{ \App\Models\Setting::get('site_name', 'ASN Upendo Village') }}"
                                 />
                                 @endif

@@ -267,9 +267,7 @@ About Area
                         </div>
                         <div class="about-shape1-1 jump">
                             <img
-                                src="{{
-                                    asset('assets/img/shape/about_shape1_1.png')
-                                }}"
+                                src="{{asset('assets/img/shape/about_shape1_1.png')}}"
                                 alt="img"
                             />
                         </div>
@@ -667,7 +665,7 @@ Video Area
                 <div class="col-xl-6">
                     <div class="video-thumb1-1 video-box-center">
                         <img
-                            src="assets/img/normal/video-thumb1-1.png"
+                            src="{{ asset('assets/img/normal/video-thumb1-1.png') }}"
                             alt="img"
                         />
                         @if($homePageContent->has('video-section') && $homePageContent['video-section']->video_url)
