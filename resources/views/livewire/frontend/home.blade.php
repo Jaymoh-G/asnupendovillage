@@ -753,7 +753,7 @@ Video Area
 ==============================-->
     <section
         class="space bg-gray"
-        data-bg-src="assets/img/bg/donation-bg1-1.png"
+        data-bg-src="{{ asset('assets/img/bg/donation-bg1-1.png') }}"
         id="project-sec"
     >
         <div
