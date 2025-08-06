@@ -14,6 +14,9 @@ return new class extends Migration {
             $table->text('body');
             $table->string('image')->nullable();
 
+
+    $table->unsignedInteger('sort_order')->default(0); // ✅ Add this line
+
             $table->foreignId('program_id')
                   ->nullable()
                   ->constrained('programs')

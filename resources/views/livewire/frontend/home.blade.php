@@ -356,14 +356,14 @@ Cta Area
             data-top="-12%"
             data-right="-5%"
         >
-            <img src="assets/img/shape/cta_shape2_2.png" alt="img" />
+            <img src="{{ asset('assets/img/shape/cta_shape2_2.png') }}" alt="img" />
         </div>
         <div
             class="cta-bg-shape2-3 shape-mockup jump-reverse d-md-block d-none"
             data-bottom="5%"
             data-left="0"
         >
-            <img src="assets/img/shape/cta_shape2_3.png" alt="img" />
+            <img src="{{ asset('assets/img/shape/cta_shape2_3.png') }}" alt="img" />
         </div>
         <div
             class="cta-bg-shape2-4 shape-mockup jump d-md-block d-none"
@@ -414,7 +414,7 @@ Story Area
                             </div>
                             <div class="story-shape1-1 jump-reverse">
                                 <img
-                                    src="assets/img/shape/story_shape1_1.png"
+                                    src="{{ asset('assets/img/shape/story_shape1_1.png') }}"
                                     alt="img"
                                 />
                             </div>
@@ -428,7 +428,7 @@ Story Area
                                 </p>
                                 <div
                                     class="quote-icon"
-                                    data-mask-src="assets/img/icon/quote.svg"
+                                    data-mask-src="{{ asset('assets/img/icon/quote.svg') }}"
                                 ></div>
                             </div>
                             <div class="year-counter">
