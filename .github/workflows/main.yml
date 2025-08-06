@@ -86,10 +86,21 @@ jobs:
           rm -rf deploy-temp/storage/framework/views/* 2>/dev/null || true
           rm -rf deploy-temp/bootstrap/cache/* 2>/dev/null || true
 
-          # Create optimized zip
+          # Create optimized zip with better error handling
           cd deploy-temp
-          zip -r ../deploy.zip . -x "*.log" "*.tmp" "*.cache"
+          echo "Creating zip file..."
+          zip -r ../deploy.zip . -x "*.log" "*.tmp" "*.cache" || {
+            echo "Error creating zip file"
+            exit 1
+          }
           cd ..
+
+          # Verify zip file integrity
+          echo "Verifying zip file integrity..."
+          unzip -t deploy.zip || {
+            echo "Error: Zip file is corrupted"
+            exit 1
+          }
 
           # Clean up
           rm -rf deploy-temp
@@ -97,11 +108,17 @@ jobs:
           echo "Deployment package size:"
           ls -lh deploy.zip
 
+          # Show zip file info
+          echo "Zip file contents:"
+          unzip -l deploy.zip | head -20
+
       - name: 💾 Upload deploy.zip to GitHub (Manual Upload)
         uses: actions/upload-artifact@v4
         with:
           name: deploy-package
-          path: deploy.zip
+          path: |
+            deploy.zip
+            extract.php
           retention-days: 30
 
       - name: 📋 Display download instructions
