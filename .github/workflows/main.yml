@@ -1,149 +1,17 @@
 on: push
-name: 🚀 Deploy Laravel as ZIP + Extract Script
-
+name: 🚀 Deploy website on push
 jobs:
-  build-and-deploy:
+  web-deploy:
+    name: 🎉 Deploy
     runs-on: ubuntu-latest
-
     steps:
-      - name: 📥 Checkout code
+      - name: 🚚 Get latest code
         uses: actions/checkout@v2
 
-      - name: 🧰 Set up PHP
-        uses: shivammathur/setup-php@v2
+      - name: 📂 Sync files
+        uses: SamKirkland/FTP-Deploy-Action@4.3.0
         with:
-          php-version: "8.2"
-
-      - name: 🔐 Copy .env.example to .env
-        run: cp .env.example .env
-
-      - name: 🧶 Install Composer dependencies
-        run: composer install --no-dev --prefer-dist --optimize-autoloader
-
-      - name: 🧰 Set up Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: "18"
-
-      - name: 📦 Install Node dependencies
-        run: npm install
-
-      - name: 🛠️ Build frontend assets
-        run: npm run build
-
-      - name: 🛠️ Ensure Laravel storage dirs exist
-        run: |
-          mkdir -p storage/framework/views
-          mkdir -p storage/framework/cache
-          mkdir -p storage/framework/sessions
-          mkdir -p storage/logs
-          chmod -R 775 storage
-          chmod -R 775 bootstrap/cache
-
-      - name: ⚙️ Laravel optimization
-        run: |
-          php artisan config:cache
-          php artisan route:cache
-          php artisan view:cache
-
-      - name: 🗜️ Zip deployment package (Optimized)
-        run: |
-          echo "Creating optimized deployment package..."
-
-          # Remove any existing zip file
-          rm -f deploy.zip
-
-          # Create a simple zip with essential files only
-          echo "Creating zip with essential files..."
-
-          # Create zip directly without temp directory
-          zip -r deploy.zip . \
-            -x "node_modules/*" \
-               "tests/*" \
-               ".git/*" \
-               ".github/*" \
-               ".env" \
-               "storage/logs/*" \
-               "storage/app/*" \
-               "storage/debugbar/*" \
-               "storage/framework/cache/*" \
-               "storage/framework/sessions/*" \
-               "storage/framework/views/*" \
-               "bootstrap/cache/*" \
-               "*.log" \
-               "*.tmp" \
-               "*.cache" \
-               "deploy.zip" \
-               "extract.php" \
-               "README.md" \
-               "package-lock.json" \
-               "yarn.lock" \
-               ".gitignore" \
-               ".gitattributes" \
-               "phpunit.xml" \
-               ".editorconfig" \
-               ".eslintrc.js" \
-               ".prettierrc" \
-               "webpack.mix.js" \
-               "vite.config.js" \
-               "postcss.config.js" \
-               "tailwind.config.js"
-
-          # Verify zip file was created and has content
-          if [ ! -f "deploy.zip" ]; then
-            echo "❌ Error: deploy.zip was not created!"
-            exit 1
-          fi
-
-          zipSize=$(stat -c%s "deploy.zip")
-          if [ "$zipSize" -eq 0 ]; then
-            echo "❌ Error: deploy.zip is empty!"
-            exit 1
-          fi
-
-          echo "✅ Zip file created successfully!"
-          echo "📦 File size: $(ls -lh deploy.zip | awk '{print $5}')"
-
-          # Test zip integrity
-          echo "🔍 Testing zip integrity..."
-          unzip -t deploy.zip > /dev/null 2>&1
-          if [ $? -eq 0 ]; then
-            echo "✅ Zip file integrity verified!"
-          else
-            echo "❌ Zip file integrity check failed!"
-            exit 1
-          fi
-
-          # Show zip contents
-          echo "📁 Zip contents (first 10 files):"
-          unzip -l deploy.zip | head -15
-
-      - name: 💾 Upload deploy.zip to GitHub (Manual Upload)
-        uses: actions/upload-artifact@v4
-        with:
-          name: deploy-package
-          path: |
-            deploy.zip
-            extract.php
-            manual-extract.sh
-          retention-days: 30
-
-      - name: 📋 Display download instructions
-        run: |
-          echo "=========================================="
-          echo "🚀 Deployment package created successfully!"
-          echo "=========================================="
-          echo ""
-          echo "📦 File: deploy.zip"
-          echo "📏 Size: $(ls -lh deploy.zip | awk '{print $5}')"
-          echo ""
-          echo "📥 To download:"
-          echo "1. Go to this workflow run"
-          echo "2. Scroll down to 'Artifacts' section"
-          echo "3. Click 'deploy-package' to download"
-          echo ""
-          echo "📤 Manual upload instructions:"
-          echo "1. Download deploy.zip from artifacts"
-          echo "2. Upload to: /staging.asnupendovillage.org/"
-          echo "3. Run: https://staging.asnupendovillage.org/e.php"
-          echo "=========================================="
+          server: 41.80.37.31
+          username: ${{ secrets.ftp_username }}
+          password: ${{ secrets.ftp_password }}
+          server-dir: /staging.asnupendovillage.org/
