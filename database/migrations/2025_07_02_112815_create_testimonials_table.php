@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,13 +13,13 @@ return new class extends Migration {
             $table->string('title')->nullable();
             $table->text('body');
             $table->string('image')->nullable();
-            $table->unsignedBigInteger('program_id')->nullable();
-            $table->timestamps();
 
-            $table->foreign('program_id')
-                  ->references('id')
-                  ->on('programs')
+            $table->foreignId('program_id')
+                  ->nullable()
+                  ->constrained('programs')
                   ->onDelete('set null');
+
+            $table->timestamps();
         });
     }
 
