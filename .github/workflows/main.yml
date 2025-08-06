@@ -46,26 +46,46 @@ jobs:
           php artisan route:cache
           php artisan view:cache
 
-      - name: 🗜️ Zip deployment package
+      - name: 🗜️ Zip deployment package (Optimized)
         run: |
-          echo "Zipping project into deploy.zip"
-          zip -r deploy.zip . \
-            -x "node_modules/*" \
-               "tests/*" \
-               ".git/*" \
-               ".github/*" \
-               ".env" \
-               "storage/logs/*" \
-               "storage/app/*" \
-               "storage/debugbar/*" \
-               "storage/framework/cache/*" \
-               "storage/framework/sessions/*" \
-               "storage/framework/views/*" \
-               "bootstrap/cache/*" \
-               "deploy.zip" \
-               "*.log" \
-               "*.tmp" \
-               "*.cache"
+          echo "Creating optimized deployment package..."
+
+          # Create a temporary directory for deployment files
+          mkdir -p deploy-temp
+
+          # Copy only necessary files
+          cp -r app deploy-temp/
+          cp -r bootstrap deploy-temp/
+          cp -r config deploy-temp/
+          cp -r database deploy-temp/
+          cp -r lang deploy-temp/
+          cp -r public deploy-temp/
+          cp -r resources deploy-temp/
+          cp -r routes deploy-temp/
+          cp -r storage deploy-temp/
+          cp -r vendor deploy-temp/
+          cp artisan deploy-temp/
+          cp composer.json deploy-temp/
+          cp composer.lock deploy-temp/
+
+          # Remove unnecessary files from storage
+          rm -rf deploy-temp/storage/logs/*
+          rm -rf deploy-temp/storage/app/*
+          rm -rf deploy-temp/storage/debugbar/*
+          rm -rf deploy-temp/storage/framework/cache/*
+          rm -rf deploy-temp/storage/framework/sessions/*
+          rm -rf deploy-temp/storage/framework/views/*
+          rm -rf deploy-temp/bootstrap/cache/*
+
+          # Create optimized zip
+          cd deploy-temp
+          zip -r ../deploy.zip . -x "*.log" "*.tmp" "*.cache"
+          cd ..
+
+          # Clean up
+          rm -rf deploy-temp
+
+          echo "Deployment package size:"
           ls -lh deploy.zip
 
       - name: 💾 Upload deploy.zip to GitHub (as artifact)
@@ -74,17 +94,23 @@ jobs:
           name: deploy-package
           path: deploy.zip
 
-      - name: 📤 Upload deploy.zip and extract.php via FTP
-        uses: SamKirkland/FTP-Deploy-Action@4.3.0
+      # Try with a different FTP action that handles large files better
+      - name: 📤 Upload deploy.zip via SCP (More Reliable)
+        uses: appleboy/scp-action@v0.1.7
         with:
-          server: 41.80.37.31
+          host: 41.80.37.31
           username: ${{ secrets.ftp_username }}
           password: ${{ secrets.ftp_password }}
-          server-dir: /staging.asnupendovillage.org/
-          local-dir: ./ # root of the repo
-          exclude: |
-            **/*
-            !deploy.zip
-            !e.php
-          dangerous-clean-slate: false
+          source: "deploy.zip"
+          target: "/staging.asnupendovillage.org/"
+          strip_components: 0
 
+      - name: 📤 Upload extract script via SCP
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: 41.80.37.31
+          username: ${{ secrets.ftp_username }}
+          password: ${{ secrets.ftp_password }}
+          source: "e.php"
+          target: "/staging.asnupendovillage.org/"
+          strip_components: 0
