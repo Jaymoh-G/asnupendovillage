@@ -488,6 +488,11 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        /* important for the icon size */
+        width: 35px !important;
+        height: 35px !important;
+        min-width: 35px !important;
+        min-height: 35px !important;
     }
 
     .box-icon i {
@@ -498,6 +503,7 @@
         justify-content: center;
         width: 100%;
         height: 100%;
+        font-size: 16px;
     }
 
     .box-icon .bg-shape1,
