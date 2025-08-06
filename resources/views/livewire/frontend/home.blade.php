@@ -349,7 +349,7 @@ Cta Area
             data-top="-22%"
             data-left="2%"
         >
-            <img src="assets/img/shape/cta_shape2_1.png" alt="img" />
+            <img src="{{ asset('assets/img/shape/cta_shape2_1.png') }}" alt="img" />
         </div>
         <div
             class="cta-bg-shape2-2 shape-mockup jump-reverse d-lg-block d-none"
@@ -370,7 +370,7 @@ Cta Area
             data-bottom="5%"
             data-right="0"
         >
-            <img src="assets/img/shape/cta_shape2_4.png" alt="img" />
+            <img src="{{ asset('assets/img/shape/cta_shape2_4.png') }}" alt="img" />
         </div>
         <div class="container">
             <div class="row justify-content-center">
@@ -598,14 +598,14 @@ Video Area
 ==============================-->
     <div class="video-area-1 space bg-theme overflow-hidden">
         <div class="shape-mockup video-bg-shape1-1" data-top="0" data-left="0">
-            <img src="assets/img/shape/video_shape1_1.png" alt="img" />
+            <img src="{{ asset('assets/img/shape/video_shape1_1.png') }}" alt="img" />
         </div>
         <div
             class="shape-mockup video-bg-shape1-2"
             data-bottom="0"
             data-right="0"
         >
-            <img src="assets/img/shape/video_shape1_2.png" alt="img" />
+            <img src="{{ asset('assets/img/shape/video_shape1_2.png') }}" alt="img" />
         </div>
         <div class="container">
             <div class="row gy-40 justify-content-between">
@@ -688,7 +688,7 @@ Video Area
 
     <div class="overflow-hidden brand-area-1">
         <div class="container">
-            <div class="brand-wrap1 bg-gray text-center" data-mask-src="assets/img/shape/brand-bg-shape1.png">
+            <div class="brand-wrap1 bg-gray text-center" data-mask-src="{{ asset('assets/img/shape/brand-bg-shape1.png') }}">
                 <h3 class="brand-wrap-title">Trusted by over <span class="text-theme2"><span class="counter-number">90</span>K+</span> companies worldwide</h3>
                 <div class="swiper th-slider" id="brandSlider1" data-slider-options='{"breakpoints":{"0":{"slidesPerView":2},"576":{"slidesPerView":"2"},"768":{"slidesPerView":"2"},"992":{"slidesPerView":"3"},"1200":{"slidesPerView":"4"},"1400":{"slidesPerView":"5", "spaceBetween": "90"}}}'>
                     <div class="swiper-wrapper">
@@ -761,7 +761,7 @@ Video Area
             data-bottom="0"
             data-right="0"
         >
-            <img src="assets/img/shape/donation-shape1-1.png" alt="shape" />
+            <img src="{{ asset('assets/img/shape/donation-shape1-1.png') }}" alt="shape" />
         </div>
         <div class="container">
             <div class="row justify-content-center">
