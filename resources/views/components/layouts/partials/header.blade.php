@@ -188,11 +188,11 @@
                                 <i class="fal fa-map-marker-alt"></i>
                                 <div
                                     class="bg-shape1"
-                                    data-mask-src="{{ asset('assets/img/shape/info_card_icon_bg_shape_1_1.png')}}"
+                                    data-mask-src="{{ asset('public/assets/img/shape/info_card_icon_bg_shape_1_1.png')}}"
                                 ></div>
                                 <div
                                     class="bg-shape2"
-                                    data-mask-src="{{asset('assets/img/shape/info_card_icon_bg_shape_1_1.png')}}"
+                                    data-mask-src="{{asset('public/assets/img/shape/info_card_icon_bg_shape_1_1.png')}}"
                                 ></div>
                             </div>
                             <div class="box-content">
@@ -218,7 +218,7 @@
                                 <i class="fal fa-phone"></i>
                                 <div
                                     class="bg-shape1"
-                                        data-mask-src="{{asset('assets/img/shape/info_card_icon_bg_shape_1_1.png')}}"
+                                        data-mask-src="{{asset('public/assets/img/shape/info_card_icon_bg_shape_1_1.png')}}"
                                 ></div>
                                 <div
                                     class="bg-shape2"
@@ -243,7 +243,7 @@
                                     class="bg-shape1"
                                     data-mask-src="{{
                                         asset(
-                                            'assets/img/shape/info_card_icon_bg_shape_1_1.png'
+                                            'public/assets/img/shape/info_card_icon_bg_shape_1_1.png'
                                         )
                                     }}"
                                 ></div>
@@ -251,7 +251,7 @@
                                     class="bg-shape2"
                                     data-mask-src="{{
                                         asset(
-                                            'assets/img/shape/info_card_icon_bg_shape_1_1.png'
+                                            'public/assets/img/shape/info_card_icon_bg_shape_1_1.png'
                                         )
                                     }}"
                                 ></div>
