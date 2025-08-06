@@ -11,7 +11,7 @@ jobs:
       - name: 📂 Sync files
         uses: SamKirkland/FTP-Deploy-Action@4.3.0
         with:
-          server: 41.80.37.31
-          username: ${{ secrets.ftp_username }}
-          password: ${{ secrets.ftp_password }}
-          server-dir: /staging.asnupendovillage.org/
+          server: 70.32.23.41
+          username: ${{ secrets.ftp_username1 }}
+          password: ${{ secrets.ftp_password1 }}
+          server-dir: /asn.breezetech.co.ke/
