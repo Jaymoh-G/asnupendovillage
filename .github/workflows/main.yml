@@ -53,29 +53,38 @@ jobs:
           # Create a temporary directory for deployment files
           mkdir -p deploy-temp
 
-          # Copy only necessary files
-          cp -r app deploy-temp/
-          cp -r bootstrap deploy-temp/
-          cp -r config deploy-temp/
-          cp -r database deploy-temp/
-          cp -r lang deploy-temp/
-          cp -r public deploy-temp/
-          cp -r resources deploy-temp/
-          cp -r routes deploy-temp/
-          cp -r storage deploy-temp/
-          cp -r vendor deploy-temp/
-          cp artisan deploy-temp/
-          cp composer.json deploy-temp/
-          cp composer.lock deploy-temp/
+          # Copy only necessary files and directories that exist
+          cp -r app deploy-temp/ 2>/dev/null || echo "app directory copied"
+          cp -r bootstrap deploy-temp/ 2>/dev/null || echo "bootstrap directory copied"
+          cp -r config deploy-temp/ 2>/dev/null || echo "config directory copied"
+          cp -r database deploy-temp/ 2>/dev/null || echo "database directory copied"
+          cp -r public deploy-temp/ 2>/dev/null || echo "public directory copied"
+          cp -r resources deploy-temp/ 2>/dev/null || echo "resources directory copied"
+          cp -r routes deploy-temp/ 2>/dev/null || echo "routes directory copied"
+          cp -r storage deploy-temp/ 2>/dev/null || echo "storage directory copied"
+          cp -r vendor deploy-temp/ 2>/dev/null || echo "vendor directory copied"
+
+          # Copy individual files that exist
+          cp artisan deploy-temp/ 2>/dev/null || echo "artisan file copied"
+          cp composer.json deploy-temp/ 2>/dev/null || echo "composer.json copied"
+          cp composer.lock deploy-temp/ 2>/dev/null || echo "composer.lock copied"
+
+          # Copy lang directory only if it exists
+          if [ -d "lang" ]; then
+            cp -r lang deploy-temp/
+            echo "lang directory copied"
+          else
+            echo "lang directory not found, skipping"
+          fi
 
           # Remove unnecessary files from storage
-          rm -rf deploy-temp/storage/logs/*
-          rm -rf deploy-temp/storage/app/*
-          rm -rf deploy-temp/storage/debugbar/*
-          rm -rf deploy-temp/storage/framework/cache/*
-          rm -rf deploy-temp/storage/framework/sessions/*
-          rm -rf deploy-temp/storage/framework/views/*
-          rm -rf deploy-temp/bootstrap/cache/*
+          rm -rf deploy-temp/storage/logs/* 2>/dev/null || true
+          rm -rf deploy-temp/storage/app/* 2>/dev/null || true
+          rm -rf deploy-temp/storage/debugbar/* 2>/dev/null || true
+          rm -rf deploy-temp/storage/framework/cache/* 2>/dev/null || true
+          rm -rf deploy-temp/storage/framework/sessions/* 2>/dev/null || true
+          rm -rf deploy-temp/storage/framework/views/* 2>/dev/null || true
+          rm -rf deploy-temp/bootstrap/cache/* 2>/dev/null || true
 
           # Create optimized zip
           cd deploy-temp
