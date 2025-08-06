@@ -50,67 +50,73 @@ jobs:
         run: |
           echo "Creating optimized deployment package..."
 
-          # Create a temporary directory for deployment files
-          mkdir -p deploy-temp
+          # Remove any existing zip file
+          rm -f deploy.zip
 
-          # Copy only necessary files and directories that exist
-          cp -r app deploy-temp/ 2>/dev/null || echo "app directory copied"
-          cp -r bootstrap deploy-temp/ 2>/dev/null || echo "bootstrap directory copied"
-          cp -r config deploy-temp/ 2>/dev/null || echo "config directory copied"
-          cp -r database deploy-temp/ 2>/dev/null || echo "database directory copied"
-          cp -r public deploy-temp/ 2>/dev/null || echo "public directory copied"
-          cp -r resources deploy-temp/ 2>/dev/null || echo "resources directory copied"
-          cp -r routes deploy-temp/ 2>/dev/null || echo "routes directory copied"
-          cp -r storage deploy-temp/ 2>/dev/null || echo "storage directory copied"
-          cp -r vendor deploy-temp/ 2>/dev/null || echo "vendor directory copied"
+          # Create a simple zip with essential files only
+          echo "Creating zip with essential files..."
 
-          # Copy individual files that exist
-          cp artisan deploy-temp/ 2>/dev/null || echo "artisan file copied"
-          cp composer.json deploy-temp/ 2>/dev/null || echo "composer.json copied"
-          cp composer.lock deploy-temp/ 2>/dev/null || echo "composer.lock copied"
+          # Create zip directly without temp directory
+          zip -r deploy.zip . \
+            -x "node_modules/*" \
+               "tests/*" \
+               ".git/*" \
+               ".github/*" \
+               ".env" \
+               "storage/logs/*" \
+               "storage/app/*" \
+               "storage/debugbar/*" \
+               "storage/framework/cache/*" \
+               "storage/framework/sessions/*" \
+               "storage/framework/views/*" \
+               "bootstrap/cache/*" \
+               "*.log" \
+               "*.tmp" \
+               "*.cache" \
+               "deploy.zip" \
+               "extract.php" \
+               "README.md" \
+               "package-lock.json" \
+               "yarn.lock" \
+               ".gitignore" \
+               ".gitattributes" \
+               "phpunit.xml" \
+               ".editorconfig" \
+               ".eslintrc.js" \
+               ".prettierrc" \
+               "webpack.mix.js" \
+               "vite.config.js" \
+               "postcss.config.js" \
+               "tailwind.config.js"
 
-          # Copy lang directory only if it exists
-          if [ -d "lang" ]; then
-            cp -r lang deploy-temp/
-            echo "lang directory copied"
-          else
-            echo "lang directory not found, skipping"
+          # Verify zip file was created and has content
+          if [ ! -f "deploy.zip" ]; then
+            echo "❌ Error: deploy.zip was not created!"
+            exit 1
           fi
 
-          # Remove unnecessary files from storage
-          rm -rf deploy-temp/storage/logs/* 2>/dev/null || true
-          rm -rf deploy-temp/storage/app/* 2>/dev/null || true
-          rm -rf deploy-temp/storage/debugbar/* 2>/dev/null || true
-          rm -rf deploy-temp/storage/framework/cache/* 2>/dev/null || true
-          rm -rf deploy-temp/storage/framework/sessions/* 2>/dev/null || true
-          rm -rf deploy-temp/storage/framework/views/* 2>/dev/null || true
-          rm -rf deploy-temp/bootstrap/cache/* 2>/dev/null || true
-
-          # Create optimized zip with better error handling
-          cd deploy-temp
-          echo "Creating zip file..."
-          zip -r ../deploy.zip . -x "*.log" "*.tmp" "*.cache" || {
-            echo "Error creating zip file"
+          zipSize=$(stat -c%s "deploy.zip")
+          if [ "$zipSize" -eq 0 ]; then
+            echo "❌ Error: deploy.zip is empty!"
             exit 1
-          }
-          cd ..
+          fi
 
-          # Verify zip file integrity
-          echo "Verifying zip file integrity..."
-          unzip -t deploy.zip || {
-            echo "Error: Zip file is corrupted"
+          echo "✅ Zip file created successfully!"
+          echo "📦 File size: $(ls -lh deploy.zip | awk '{print $5}')"
+
+          # Test zip integrity
+          echo "🔍 Testing zip integrity..."
+          unzip -t deploy.zip > /dev/null 2>&1
+          if [ $? -eq 0 ]; then
+            echo "✅ Zip file integrity verified!"
+          else
+            echo "❌ Zip file integrity check failed!"
             exit 1
-          }
+          fi
 
-          # Clean up
-          rm -rf deploy-temp
-
-          echo "Deployment package size:"
-          ls -lh deploy.zip
-
-          # Show zip file info
-          echo "Zip file contents:"
-          unzip -l deploy.zip | head -20
+          # Show zip contents
+          echo "📁 Zip contents (first 10 files):"
+          unzip -l deploy.zip | head -15
 
       - name: 💾 Upload deploy.zip to GitHub (Manual Upload)
         uses: actions/upload-artifact@v4
@@ -119,6 +125,7 @@ jobs:
           path: |
             deploy.zip
             extract.php
+            manual-extract.sh
           retention-days: 30
 
       - name: 📋 Display download instructions
