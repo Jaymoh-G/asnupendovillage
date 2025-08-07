@@ -120,6 +120,23 @@
         .breadcumb-wrapper .breadcumb-menu {
             margin-bottom: 0 !important;
         }
+
+        /* Semi-transparent black overlay */
+        .breadcumb-wrapper:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6) !important;
+            z-index: 1;
+        }
+
+        .breadcumb-wrapper .breadcumb-content {
+            position: relative;
+            z-index: 2;
+        }
     </style>
     <!--==============================
     Breadcumb
@@ -128,7 +145,6 @@
     <div
         class="breadcumb-wrapper"
         data-bg-src="{{ $pageBanner->effective_banner_url }}"
-        data-overlay="theme"
     >
         <div class="container">
             <div class="breadcumb-content">
@@ -142,23 +158,21 @@
             </div>
         </div>
     </div>
-    @endif
-    <div class="container space-top space-extra-bottom">
-        @if(!$pageBanner || !$pageBanner->effective_banner_url)
-        <div class="row mb-4">
-            <div class="col-12 text-center">
-                <h1 class="h2 mb-3">Downloads</h1>
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb justify-content-center">
-                        <li class="breadcrumb-item">
-                            <a href="{{ route('home') }}">Home</a>
-                        </li>
-                        <li class="breadcrumb-item active">Downloads</li>
-                    </ol>
-                </nav>
+    @else
+    <div class="breadcumb-wrapper" style="background-color: #000000">
+        <div class="container">
+            <div class="breadcumb-content">
+                <h1 class="breadcumb-title">Downloads</h1>
+                <ul class="breadcumb-menu">
+                    <li><a href="{{ route('home') }}">Home</a></li>
+                    <li>Downloads</li>
+                </ul>
             </div>
         </div>
-        @endif @if($programs->count() > 0)
+    </div>
+    @endif
+    <div class="container space-top space-extra-bottom">
+        @if($programs->count() > 0)
         <div class="row mb-4 justify-content-center">
             <div class="col-md-12 text-center">
                 <div class="btn-group" role="group" aria-label="Program Filter">
@@ -219,6 +233,12 @@
                                     <span class="meta-item">
                                         <i class="fas fa-weight me-2"></i>
                                         {{ number_format($download->file_size / 1048576, 1)
+
+
+
+
+
+
 
 
 

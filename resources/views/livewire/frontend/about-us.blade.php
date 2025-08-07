@@ -2,15 +2,16 @@
     <!--==============================
     Breadcumb
 ============================== -->
+    @if($pageBanner && $pageBanner->effective_banner_url)
     <div
         class="breadcumb-wrapper"
-        data-bg-src="{{ $pageBanner ? $pageBanner->effective_banner_url : asset('assets/img/bg/breadcumb-bg.jpg') }}"
+        data-bg-src="{{ $pageBanner->effective_banner_url }}"
         data-overlay="theme"
     >
         <div class="container">
             <div class="breadcumb-content">
                 <h1 class="breadcumb-title">
-                    {{ $pageBanner && $pageBanner->title ? $pageBanner->title : 'About Us' }}
+                    {{ $pageBanner->title ? $pageBanner->title : 'About Us' }}
                 </h1>
                 <ul class="breadcumb-menu">
                     <li><a href="{{ route('home') }}">Home</a></li>
@@ -19,8 +20,19 @@
             </div>
         </div>
     </div>
-
-    @if($pageContent)
+    @else
+    <div class="breadcumb-wrapper" style="background-color: #000000">
+        <div class="container">
+            <div class="breadcumb-content">
+                <h1 class="breadcumb-title">About Us</h1>
+                <ul class="breadcumb-menu">
+                    <li><a href="{{ route('home') }}">Home</a></li>
+                    <li>About Us</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    @endif @if($pageContent)
     <!--==============================
     Dynamic Content Area
     ==============================-->

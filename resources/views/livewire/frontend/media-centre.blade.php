@@ -167,25 +167,39 @@
         }
     </style>
     <!-- Banner Section -->
+    @if($pageBanner && $pageBanner->effective_banner_url)
     <div
         class="breadcumb-wrapper"
-        data-bg-src="{{ $pageBanner ? $pageBanner->effective_banner_url : '' }}"
+        data-bg-src="{{ $pageBanner->effective_banner_url }}"
         data-overlay="theme"
     >
         <div class="container">
             <div class="breadcumb-content">
                 <h1 class="breadcumb-title">
-                    {{ $pageBanner && $pageBanner->title ? $pageBanner->title : 'Media Centre' }}
+                    {{ $pageBanner->title ? $pageBanner->title : 'Media Centre' }}
                 </h1>
                 <ul class="breadcumb-menu">
                     <li><a href="{{ route('home') }}">Home</a></li>
                     <li>
-                        {{ $pageBanner && $pageBanner->title ? $pageBanner->title : 'Media Centre' }}
+                        {{ $pageBanner->title ? $pageBanner->title : 'Media Centre' }}
                     </li>
                 </ul>
             </div>
         </div>
     </div>
+    @else
+    <div class="breadcumb-wrapper" style="background-color: #000000">
+        <div class="container">
+            <div class="breadcumb-content">
+                <h1 class="breadcumb-title">Media Centre</h1>
+                <ul class="breadcumb-menu">
+                    <li><a href="{{ route('home') }}">Home</a></li>
+                    <li>Media Centre</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    @endif
 
     <div class="container space-top space-extra-bottom">
         <div class="row gy-40 gx-40">

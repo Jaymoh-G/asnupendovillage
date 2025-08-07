@@ -213,19 +213,39 @@
     <!--==============================
     Breadcumb
 ============================== -->
-    <div class="breadcumb-wrapper" data-bg-src="{{ $pageBanner ? $pageBanner->effective_banner_url : '' }}" data-overlay="theme">
+    @if($pageBanner && $pageBanner->effective_banner_url)
+    <div
+        class="breadcumb-wrapper"
+        data-bg-src="{{ $pageBanner->effective_banner_url }}"
+        data-overlay="theme"
+    >
         <div class="container">
             <div class="breadcumb-content">
                 <h1 class="breadcumb-title">
-                    {{ $pageBanner && $pageBanner->title ? $pageBanner->title : 'Gallery' }}
+                    {{ $pageBanner->title ? $pageBanner->title : 'Gallery' }}
                 </h1>
                 <ul class="breadcumb-menu">
                     <li><a href="{{ route('home') }}">Home</a></li>
-                    <li>{{ $pageBanner && $pageBanner->title ? $pageBanner->title : 'Gallery' }}</li>
+                    <li>
+                        {{ $pageBanner->title ? $pageBanner->title : 'Gallery' }}
+                    </li>
                 </ul>
             </div>
         </div>
     </div>
+    @else
+    <div class="breadcumb-wrapper" style="background-color: #000000">
+        <div class="container">
+            <div class="breadcumb-content">
+                <h1 class="breadcumb-title">Gallery</h1>
+                <ul class="breadcumb-menu">
+                    <li><a href="{{ route('home') }}">Home</a></li>
+                    <li>Gallery</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    @endif
 
     <!--==============================
 Gallery Area
@@ -237,19 +257,32 @@ Gallery Area
                 <div class="album-card">
                     <div class="album-img">
                         @if($album->cover_image_url)
-                        <img src="{{ $album->cover_image_url }}" alt="{{ $album->name }}">
+                        <img
+                            src="{{ $album->cover_image_url }}"
+                            alt="{{ $album->name }}"
+                        />
                         @else
-                        <img src="{{ asset('assets/img/gallery/gallery_1_1.png') }}" alt="{{ $album->name }}">
+                        <img
+                            src="{{
+                                asset('assets/img/gallery/gallery_1_1.png')
+                            }}"
+                            alt="{{ $album->name }}"
+                        />
                         @endif
                         <div class="album-overlay">
-                            <a href="{{ route('gallery.album', $album->slug) }}" class="icon-btn">
+                            <a
+                                href="{{ route('gallery.album', $album->slug) }}"
+                                class="icon-btn"
+                            >
                                 <i class="fas fa-eye"></i>
                             </a>
                         </div>
                     </div>
                     <div class="album-content">
                         <h3 class="album-title">
-                            <a href="{{ route('gallery.album', $album->slug) }}">
+                            <a
+                                href="{{ route('gallery.album', $album->slug) }}"
+                            >
                                 {{ \Illuminate\Support\Str::limit($album->name, 30) }}
                             </a>
                         </h3>

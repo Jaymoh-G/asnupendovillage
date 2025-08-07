@@ -1,6 +1,6 @@
 <div>
     <!-- Banner Section -->
-    @if($pageBanner)
+    @if($pageBanner && $pageBanner->effective_banner_url)
     <div
         class="breadcumb-wrapper"
         data-bg-src="{{ $pageBanner->effective_banner_url }}"
@@ -11,6 +11,18 @@
                 <h1 class="breadcumb-title">
                     {{ $pageBanner->title ?? 'Testimonials' }}
                 </h1>
+                <ul class="breadcumb-menu">
+                    <li><a href="{{ route('home') }}">Home</a></li>
+                    <li>Testimonials</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    @else
+    <div class="breadcumb-wrapper" style="background-color: #000000">
+        <div class="container">
+            <div class="breadcumb-content">
+                <h1 class="breadcumb-title">Testimonials</h1>
                 <ul class="breadcumb-menu">
                     <li><a href="{{ route('home') }}">Home</a></li>
                     <li>Testimonials</li>
@@ -81,6 +93,8 @@
                         </div>
                         <p class="testi-card_text">
                             "{{ Str::limit($testimonial->content ?? 'Stay informed about our upcoming events and campaigns. Whether it\'s a fundraising gala, a charity run, or a community outreach program, there are plenty of ways to get involved and support our cause. Check our event calendar for details.', 200)
+
+
 
 
 

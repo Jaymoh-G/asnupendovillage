@@ -1,6 +1,6 @@
 <div>
     <!-- Banner Section -->
-    @if($pageBanner)
+    @if($pageBanner && $pageBanner->effective_banner_url)
     <div
         class="breadcumb-wrapper"
         data-bg-src="{{ $pageBanner->effective_banner_url }}"
@@ -11,6 +11,19 @@
                 <h1 class="breadcumb-title">
                     {{ $pageBanner->title ?? 'Facility Details' }}
                 </h1>
+                <ul class="breadcumb-menu">
+                    <li><a href="{{ route('home') }}">Home</a></li>
+                    <li><a href="{{ route('facilities') }}">Facilities</a></li>
+                    <li>{{ $facility->name }}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    @else
+    <div class="breadcumb-wrapper" style="background-color: #000000;">
+        <div class="container">
+            <div class="breadcumb-content">
+                <h1 class="breadcumb-title">Facility Details</h1>
                 <ul class="breadcumb-menu">
                     <li><a href="{{ route('home') }}">Home</a></li>
                     <li><a href="{{ route('facilities') }}">Facilities</a></li>
