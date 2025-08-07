@@ -101,19 +101,39 @@
         .th-btn {
             margin-top: 10px;
         }
+
+        /* Reduce breadcrumb banner area by half */
+        .breadcumb-wrapper {
+            min-height: 200px !important;
+            padding: 40px 0 !important;
+        }
+
+        .breadcumb-wrapper .breadcumb-content {
+            padding: 20px 0 !important;
+        }
+
+        .breadcumb-wrapper .breadcumb-title {
+            font-size: 2rem !important;
+            margin-bottom: 10px !important;
+        }
+
+        .breadcumb-wrapper .breadcumb-menu {
+            margin-bottom: 0 !important;
+        }
     </style>
     <!--==============================
     Breadcumb
 ============================== -->
+    @if($pageBanner && $pageBanner->effective_banner_url)
     <div
         class="breadcumb-wrapper"
-        data-bg-src="{{ $pageBanner ? $pageBanner->effective_banner_url : asset('assets/img/bg/breadcumb-bg.jpg') }}"
+        data-bg-src="{{ $pageBanner->effective_banner_url }}"
         data-overlay="theme"
     >
         <div class="container">
             <div class="breadcumb-content">
                 <h1 class="breadcumb-title">
-                    {{ $pageBanner && $pageBanner->title ? $pageBanner->title : 'Downloads' }}
+                    {{ $pageBanner->title ? $pageBanner->title : 'Downloads' }}
                 </h1>
                 <ul class="breadcumb-menu">
                     <li><a href="{{ route('home') }}">Home</a></li>
@@ -122,7 +142,23 @@
             </div>
         </div>
     </div>
+    @endif
     <div class="container space-top space-extra-bottom">
+        @if(!$pageBanner || !$pageBanner->effective_banner_url)
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <h1 class="h2 mb-3">Downloads</h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb justify-content-center">
+                        <li class="breadcrumb-item">
+                            <a href="{{ route('home') }}">Home</a>
+                        </li>
+                        <li class="breadcrumb-item active">Downloads</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        @endif @if($programs->count() > 0)
         <div class="row mb-4 justify-content-center">
             <div class="col-md-12 text-center">
                 <div class="btn-group" role="group" aria-label="Program Filter">
@@ -143,6 +179,7 @@
                 </div>
             </div>
         </div>
+        @endif
         <div class="row gy-4 gx-4">
             @forelse($downloads as $download)
             <div class="col-md-4">
@@ -182,6 +219,9 @@
                                     <span class="meta-item">
                                         <i class="fas fa-weight me-2"></i>
                                         {{ number_format($download->file_size / 1048576, 1)
+
+
+
 
 
                                         }}MB

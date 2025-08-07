@@ -18,7 +18,11 @@ class Downloads extends Component
 
     public function mount($programId = null)
     {
-        $this->programs = Program::orderBy('title')->get();
+        // Get programs that have downloads
+        $this->programs = Program::whereHas('downloads', function ($query) {
+            $query->where('status', 'active');
+        })->orderBy('title')->get();
+
         if ($programId) {
             $this->selectedProgram = $programId;
         }
@@ -35,7 +39,7 @@ class Downloads extends Component
 
     public function render()
     {
-        $query = Download::orderByDesc('updated_at');
+        $query = Download::where('status', 'active')->orderByDesc('updated_at');
         if ($this->selectedProgram) {
             $query->where('program_id', $this->selectedProgram);
         }

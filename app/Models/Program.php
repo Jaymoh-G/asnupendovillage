@@ -77,4 +77,9 @@ class Program extends Model
     {
         return $this->hasMany(Facility::class);
     }
+
+    public function downloads()
+    {
+        return $this->hasMany(Download::class);
+    }
 }
