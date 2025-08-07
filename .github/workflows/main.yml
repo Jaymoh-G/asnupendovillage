@@ -12,6 +12,6 @@ jobs:
         uses: SamKirkland/FTP-Deploy-Action@4.3.0
         with:
           server: 70.32.23.41
-          username: ${{ secrets.ftp_username }}
-          password: ${{ secrets.ftp_password }}
+          username: ${{ secrets.ftp_username1 }}
+          password: ${{ secrets.ftp_password1 }}
           server-dir: /asn.breezetech.co.ke/
