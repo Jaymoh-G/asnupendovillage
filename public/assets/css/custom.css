@@ -1,0 +1,48 @@
+/* Custom styles for reduced breadcrumb banner area */
+
+/* Reduced breadcrumb banner area by half */
+.breadcumb-wrapper {
+  min-height: 200px !important;
+}
+
+.breadcumb-wrapper .breadcumb-content {
+  --space: 82px !important;
+  padding: calc(var(--space) + 15px) 0 var(--space) !important;
+}
+
+.breadcumb-wrapper .breadcumb-title {
+  font-size: 2rem !important;
+  margin-bottom: 10px !important;
+}
+
+.breadcumb-wrapper .breadcumb-menu {
+  margin-bottom: 0 !important;
+}
+
+/* Responsive adjustments for reduced banner */
+@media (max-width: 1199px) {
+  .breadcumb-wrapper .breadcumb-content {
+    --space: 70px !important;
+  }
+}
+
+@media (max-width: 991px) {
+  .breadcumb-wrapper .breadcumb-content {
+    --space: 55px !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .breadcumb-wrapper .breadcumb-content {
+    padding: 55px 0 !important;
+  }
+}
+
+@media (max-width: 575px) {
+  .breadcumb-wrapper .breadcumb-content {
+    padding: 50px 0 !important;
+  }
+  .breadcumb-wrapper .breadcumb-title {
+    font-size: 1.5rem !important;
+  }
+}
