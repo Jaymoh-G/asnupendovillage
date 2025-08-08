@@ -63,14 +63,14 @@
             },
             options
         );
-    
+
         return this.each(function () {
             var menu = $(this); // Select menu
-    
+
             // Menu Show & Hide
             function menuToggle() {
                 menu.toggleClass(opt.bodyToggleClass);
-    
+
                 // collapse submenu on menu hide or show
                 var subMenu = "." + opt.subMenuClass;
                 $(subMenu).each(function () {
@@ -81,7 +81,7 @@
                     }
                 });
             }
-    
+
             // Class Set Up for every submenu
             menu.find("." + opt.subMenuParent).each(function () {
                 var submenu = $(this).find("ul");
@@ -91,7 +91,7 @@
                 $(this).addClass(opt.thSubMenuParent); // Add th-item-has-children class
                 $(this).children("a").append(opt.appendElement);
             });
-    
+
             // Toggle Submenu
             function toggleDropDown($element) {
                 var submenu = $element.children("ul");
@@ -101,7 +101,7 @@
                     submenu.toggleClass(opt.subMenuToggleClass);
                 }
             }
-    
+
             // Submenu toggle Button
             var itemHasChildren = "." + opt.thSubMenuParent + " > a";
             $(itemHasChildren).each(function () {
@@ -110,45 +110,45 @@
                     toggleDropDown($(this).parent());
                 });
             });
-    
+
             // Menu Show & Hide On Toggle Btn click
             $(opt.menuToggleBtn).each(function () {
                 $(this).on("click", function () {
                     menuToggle();
                 });
             });
-    
+
             // Hide Menu On outside click
             menu.on("click", function (e) {
                 e.stopPropagation();
                 menuToggle();
             });
-    
+
             // Stop Hide full menu on menu click
             menu.find("div").on("click", function (e) {
                 e.stopPropagation();
             });
         });
     };
-    
+
     $(".th-menu-wrapper").thmobilemenu();
 
     /*---------- 04. Sticky fix ----------*/
     $(window).scroll(function () {
         var topPos = $(this).scrollTop();
         if (topPos > 500) {
-            $('.sticky-wrapper').addClass('sticky');
-            $('.category-menu').addClass('close-category');
+            $(".sticky-wrapper").addClass("sticky");
+            $(".category-menu").addClass("close-category");
         } else {
-            $('.sticky-wrapper').removeClass('sticky')
-            $('.category-menu').removeClass('close-category');
+            $(".sticky-wrapper").removeClass("sticky");
+            $(".category-menu").removeClass("close-category");
         }
-    })
+    });
 
     $(".menu-expand").each(function () {
         $(this).on("click", function (e) {
             e.preventDefault();
-            $('.category-menu').toggleClass('open-category');
+            $(".category-menu").toggleClass("open-category");
         });
     });
 
@@ -156,58 +156,65 @@
     function onePageNav(element) {
         if ($(element).length > 0) {
             $(element).each(function () {
-            var link = $(this).find('a');
-            $(this).find(link).each(function () {
-                $(this).on('click', function () {
-                var target = $(this.getAttribute('href'));
-                if (target.length) {
-                    event.preventDefault();
-                    $('html, body').stop().animate({
-                    scrollTop: target.offset().top - 10
-                    }, 1000);
-                };
-    
-                });
+                var link = $(this).find("a");
+                $(this)
+                    .find(link)
+                    .each(function () {
+                        $(this).on("click", function () {
+                            var target = $(this.getAttribute("href"));
+                            if (target.length) {
+                                event.preventDefault();
+                                $("html, body")
+                                    .stop()
+                                    .animate(
+                                        {
+                                            scrollTop: target.offset().top - 10,
+                                        },
+                                        1000
+                                    );
+                            }
+                        });
+                    });
             });
-            })
         }
-    };
-    onePageNav('.onepage-nav');
-    onePageNav('.scroll-down');
+    }
+    onePageNav(".onepage-nav");
+    onePageNav(".scroll-down");
 
     /*---------- 05. Scroll To Top ----------*/
-    if ($('.scroll-top').length > 0) {
-        
-        var scrollTopbtn = document.querySelector('.scroll-top');
-        var progressPath = document.querySelector('.scroll-top path');
+    if ($(".scroll-top").length > 0) {
+        var scrollTopbtn = document.querySelector(".scroll-top");
+        var progressPath = document.querySelector(".scroll-top path");
         var pathLength = progressPath.getTotalLength();
-        progressPath.style.transition = progressPath.style.WebkitTransition = 'none';
-        progressPath.style.strokeDasharray = pathLength + ' ' + pathLength;
+        progressPath.style.transition = progressPath.style.WebkitTransition =
+            "none";
+        progressPath.style.strokeDasharray = pathLength + " " + pathLength;
         progressPath.style.strokeDashoffset = pathLength;
         progressPath.getBoundingClientRect();
-        progressPath.style.transition = progressPath.style.WebkitTransition = 'stroke-dashoffset 10ms linear';		
+        progressPath.style.transition = progressPath.style.WebkitTransition =
+            "stroke-dashoffset 10ms linear";
         var updateProgress = function () {
             var scroll = $(window).scrollTop();
             var height = $(document).height() - $(window).height();
-            var progress = pathLength - (scroll * pathLength / height);
+            var progress = pathLength - (scroll * pathLength) / height;
             progressPath.style.strokeDashoffset = progress;
-        }
+        };
         updateProgress();
-        $(window).scroll(updateProgress);	
+        $(window).scroll(updateProgress);
         var offset = 50;
         var duration = 750;
-        jQuery(window).on('scroll', function() {
+        jQuery(window).on("scroll", function () {
             if (jQuery(this).scrollTop() > offset) {
-                jQuery(scrollTopbtn).addClass('show');
+                jQuery(scrollTopbtn).addClass("show");
             } else {
-                jQuery(scrollTopbtn).removeClass('show');
+                jQuery(scrollTopbtn).removeClass("show");
             }
-        });				
-        jQuery(scrollTopbtn).on('click', function(event) {
+        });
+        jQuery(scrollTopbtn).on("click", function (event) {
             event.preventDefault();
-            jQuery('html, body').animate({scrollTop: 0}, duration);
+            jQuery("html, body").animate({ scrollTop: 0 }, duration);
             return false;
-        })
+        });
     }
 
     /*---------- 06. Set Background Image Color & Mask ----------*/
@@ -219,69 +226,80 @@
         });
     }
 
-    if ($('[data-bg-color]').length > 0) {
-        $('[data-bg-color]').each(function () {
-          var color = $(this).attr('data-bg-color');
-          $(this).css('background-color', color);
-          $(this).removeAttr('data-bg-color');
+    if ($("[data-bg-color]").length > 0) {
+        $("[data-bg-color]").each(function () {
+            var color = $(this).attr("data-bg-color");
+            $(this).css("background-color", color);
+            $(this).removeAttr("data-bg-color");
         });
-    };
+    }
 
-    if ($('[data-theme-color]').length > 0) {
-        $('[data-theme-color]').each(function () {
-          var $color = $(this).attr('data-theme-color');
-          $(this).get(0).style.setProperty('--theme-color', $color);
-          $(this).removeAttr('data-theme-color');
+    if ($("[data-theme-color]").length > 0) {
+        $("[data-theme-color]").each(function () {
+            var $color = $(this).attr("data-theme-color");
+            $(this).get(0).style.setProperty("--theme-color", $color);
+            $(this).removeAttr("data-theme-color");
         });
-    };
+    }
 
-    $('[data-border]').each(function() {
-        var borderColor = $(this).data('border');
-        $(this).css('--th-border-color', borderColor);
+    $("[data-border]").each(function () {
+        var borderColor = $(this).data("border");
+        $(this).css("--th-border-color", borderColor);
     });
-      
-    if ($('[data-mask-src]').length > 0) {
-        $('[data-mask-src]').each(function () {
-          var mask = $(this).attr('data-mask-src');
-          $(this).css({
-            'mask-image': 'url(' + mask + ')',
-            '-webkit-mask-image': 'url(' + mask + ')'
-          });
-          $(this).addClass('bg-mask');
-          $(this).removeAttr('data-mask-src');
-        });
-    };
 
-    /*----------- 07. Global Slider ----------*/   
-    $('.th-slider').each(function () {
+    if ($("[data-mask-src]").length > 0) {
+        $("[data-mask-src]").each(function () {
+            var mask = $(this).attr("data-mask-src");
+            $(this).css({
+                "mask-image": "url(" + mask + ")",
+                "-webkit-mask-image": "url(" + mask + ")",
+            });
+            $(this).addClass("bg-mask");
+            $(this).removeAttr("data-mask-src");
+        });
+    }
+
+    /*----------- 07. Global Slider ----------*/
+    $(".th-slider").each(function () {
         var thSlider = $(this);
-        var settings = $(this).data('slider-options') || {};
-        
+        var settings = $(this).data("slider-options") || {};
+
         // Store references to the navigation buttons
-        var prevArrow = thSlider.find('.slider-prev');
-        var nextArrow = thSlider.find('.slider-next');
-        var paginationEl1 = thSlider.find('.slider-pagination').get(0);
-        var paginationEl2 = thSlider.find('.slider-pagination2');
-        var progressBarEl = thSlider.find('.slider-pagination-progressbar2 .slider-progressbar-fill');
-    
+        var prevArrow = thSlider.find(".slider-prev");
+        var nextArrow = thSlider.find(".slider-next");
+        var paginationEl1 = thSlider.find(".slider-pagination").get(0);
+        var paginationEl2 = thSlider.find(".slider-pagination2");
+        var progressBarEl = thSlider.find(
+            ".slider-pagination-progressbar2 .slider-progressbar-fill"
+        );
+
         var sliderDefault = {
             slidesPerView: 1,
             spaceBetween: settings.spaceBetween || 24,
             loop: settings.loop !== false,
             speed: settings.speed || 1000,
-            autoplay: settings.autoplay || { delay: 6000, disableOnInteraction: false },
+            autoplay: settings.autoplay || {
+                delay: 6000,
+                disableOnInteraction: false,
+            },
             navigation: {
                 prevEl: prevArrow.get(0),
                 nextEl: nextArrow.get(0),
             },
             pagination: {
                 el: paginationEl1,
-                type: settings.paginationType || 'bullets',
+                type: settings.paginationType || "bullets",
                 clickable: true,
                 renderBullet: function (index, className) {
                     var number = index + 1;
-                    var formattedNumber = number < 10 ? '0' + number : number;
-                    return '<span class="' + className + '" aria-label="Go to Slide ' + formattedNumber + '"></span>';
+                    var formattedNumber = number < 10 ? "0" + number : number;
+                    return (
+                        '<span class="' +
+                        className +
+                        '" aria-label="Go to Slide ' +
+                        formattedNumber +
+                        '"></span>'
+                    );
                 },
             },
             on: {
@@ -295,78 +313,83 @@
                 },
             },
         };
-    
+
         var options = $.extend({}, sliderDefault, settings);
         var swiperInstance = new Swiper(thSlider.get(0), options);
-    
+
         // Update Pagination and other UI elements
         function updatePagination(swiper) {
-            var activeIndex = swiper.realIndex + 1; 
+            var activeIndex = swiper.realIndex + 1;
             var totalSlides = swiper.slides.length;
             paginationEl2.html(
                 '<span class="current-slide">' +
-                (activeIndex < 10 ? '0' + activeIndex : activeIndex) +
-                '</span> <span class="divider"></span> <span class="total-slides">' +
-                (totalSlides < 10 ? '0' + totalSlides : totalSlides) +
-                '</span>'
+                    (activeIndex < 10 ? "0" + activeIndex : activeIndex) +
+                    '</span> <span class="divider"></span> <span class="total-slides">' +
+                    (totalSlides < 10 ? "0" + totalSlides : totalSlides) +
+                    "</span>"
             );
         }
-    
+
         function updateProgressBar(swiper) {
-            var progress = ((swiper.realIndex + 1) / swiper.slides.length) * 100;
-            progressBarEl.css('height', progress + '%');
+            var progress =
+                ((swiper.realIndex + 1) / swiper.slides.length) * 100;
+            progressBarEl.css("height", progress + "%");
         }
 
-        if ($('.slider-area').length > 0) {
-            $('.slider-area').closest(".container").parent().addClass("arrow-wrap");
+        if ($(".slider-area").length > 0) {
+            $(".slider-area")
+                .closest(".container")
+                .parent()
+                .addClass("arrow-wrap");
         }
-    
     });
-    
+
     // Function to add animation classes
     function animationProperties() {
-        $('[data-ani]').each(function () {
-            var animationName = $(this).data('ani');
+        $("[data-ani]").each(function () {
+            var animationName = $(this).data("ani");
             $(this).addClass(animationName);
         });
-    
-        $('[data-ani-delay]').each(function () {
-            var delayTime = $(this).data('ani-delay');
-            $(this).css('animation-delay', delayTime);
+
+        $("[data-ani-delay]").each(function () {
+            var delayTime = $(this).data("ani-delay");
+            $(this).css("animation-delay", delayTime);
         });
     }
     animationProperties();
-    
+
     // Add click event handlers for external slider arrows based on data attributes
-    $('[data-slider-prev], [data-slider-next]').on('click', function () {
-        var sliderSelector = $(this).data('slider-prev') || $(this).data('slider-next');
+    $("[data-slider-prev], [data-slider-next]").on("click", function () {
+        var sliderSelector =
+            $(this).data("slider-prev") || $(this).data("slider-next");
         var targetSlider = $(sliderSelector);
-    
+
         if (targetSlider.length) {
             var swiper = targetSlider[0].swiper;
-    
+
             if (swiper) {
-                if ($(this).data('slider-prev')) {
+                if ($(this).data("slider-prev")) {
                     swiper.slidePrev();
-                } else {navigator, 
-                    swiper.slideNext();
+                } else {
+                    navigator, swiper.slideNext();
                 }
             }
         }
-    });  
-    
+    });
 
     /*--------------. Slider Tab -------------*/
     function activateGlobalSliderTabs(tabSelector, sliderSelector) {
-        var $tabs = $(tabSelector).find('.tab-btn');
+        var $tabs = $(tabSelector).find(".tab-btn");
         var $line = $('<span class="indicator"></span>').appendTo(tabSelector);
         var $sliders = $(sliderSelector);
 
-        var swipers = $sliders.map(function () {
-            return this.swiper;
-        }).get();
+        var swipers = $sliders
+            .map(function () {
+                return this.swiper;
+            })
+            .get();
 
-        $tabs.on('click', function (e) {
+        $tabs.on("click", function (e) {
             e.preventDefault();
             var $clicked = $(this);
             var index = $clicked.index();
@@ -387,7 +410,10 @@
                 swiper.on("slideChange", function () {
                     var index = swiper.realIndex;
                     var $activeTab = $tabs.eq(index);
-                    $activeTab.addClass("active").siblings().removeClass("active");
+                    $activeTab
+                        .addClass("active")
+                        .siblings()
+                        .removeClass("active");
                     linePos($activeTab, $(tabSelector));
                 });
             }
@@ -401,8 +427,8 @@
 
         function linePos($el, $wrap) {
             var offset = $el.position();
-            var marginTop = parseInt($el.css('margin-top')) || 0;
-            var marginLeft = parseInt($el.css('margin-left')) || 0;
+            var marginTop = parseInt($el.css("margin-top")) || 0;
+            var marginLeft = parseInt($el.css("margin-left")) || 0;
 
             $line.css("--height-set", $el.outerHeight() + "px");
             $line.css("--width-set", $el.outerWidth() + "px");
@@ -410,9 +436,9 @@
             $line.css("--pos-x", offset.left + marginLeft + "px");
         }
     }
-    $(window).on('load', function () {
-        if ($('.hero-thumb-tab').length && $('.hero-slider4').length) {
-            activateGlobalSliderTabs('.hero-thumb-tab', '.hero-slider4');
+    $(window).on("load", function () {
+        if ($(".hero-thumb-tab").length && $(".hero-slider4").length) {
+            activateGlobalSliderTabs(".hero-thumb-tab", ".hero-slider4");
         }
     });
 
@@ -526,38 +552,43 @@
             $($searchBox).removeClass($toggleCls);
         });
     }
-    popupSarchBox( ".popup-search-box", ".searchBoxToggler", ".searchClose", "show" );
+    popupSarchBox(
+        ".popup-search-box",
+        ".searchBoxToggler",
+        ".searchClose",
+        "show"
+    );
 
     /*---------- 10. Popup Sidemenu ----------*/
     function popupSideMenu($sideMenu, $sideMunuOpen, $sideMenuCls, $toggleCls) {
         // Sidebar Popup
-        $($sideMunuOpen).on('click', function (e) {
-        e.preventDefault();
-        $($sideMenu).addClass($toggleCls);
+        $($sideMunuOpen).on("click", function (e) {
+            e.preventDefault();
+            $($sideMenu).addClass($toggleCls);
         });
-        $($sideMenu).on('click', function (e) {
-        e.stopPropagation();
-        $($sideMenu).removeClass($toggleCls)
+        $($sideMenu).on("click", function (e) {
+            e.stopPropagation();
+            $($sideMenu).removeClass($toggleCls);
         });
-        var sideMenuChild = $sideMenu + ' > div';
-        $(sideMenuChild).on('click', function (e) {
-        e.stopPropagation();
-        $($sideMenu).addClass($toggleCls)
+        var sideMenuChild = $sideMenu + " > div";
+        $(sideMenuChild).on("click", function (e) {
+            e.stopPropagation();
+            $($sideMenu).addClass($toggleCls);
         });
-        $($sideMenuCls).on('click', function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        $($sideMenu).removeClass($toggleCls);
+        $($sideMenuCls).on("click", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            $($sideMenu).removeClass($toggleCls);
         });
-    };
-    popupSideMenu('.sidemenu-cart', '.sideMenuToggler', '.sideMenuCls', 'show');
-    popupSideMenu('.sidemenu-info', '.sideMenuInfo', '.sideMenuCls', 'show');
+    }
+    popupSideMenu(".sidemenu-cart", ".sideMenuToggler", ".sideMenuCls", "show");
+    popupSideMenu(".sidemenu-info", ".sideMenuInfo", ".sideMenuCls", "show");
 
     /*----------- 11. Magnific Popup ----------*/
     /* magnificPopup img view */
     $(".popup-image").magnificPopup({
         type: "image",
-        mainClass: 'mfp-zoom-in', 
+        mainClass: "mfp-zoom-in",
         removalDelay: 260,
         gallery: {
             enabled: true,
@@ -567,7 +598,7 @@
     /* magnificPopup video view */
     $(".popup-video").magnificPopup({
         type: "iframe",
-        mainClass: 'mfp-zoom-in', 
+        mainClass: "mfp-zoom-in",
     });
 
     /* magnificPopup video view */
@@ -653,26 +684,30 @@
         }
     });
 
-    $(".masonary-active, .woocommerce-Reviews .comment-list").imagesLoaded(function () {
-        var $filter = ".masonary-active, .woocommerce-Reviews .comment-list",
-            $filterItem = ".filter-item, .woocommerce-Reviews .comment-list li";
+    $(".masonary-active, .woocommerce-Reviews .comment-list").imagesLoaded(
+        function () {
+            var $filter =
+                    ".masonary-active, .woocommerce-Reviews .comment-list",
+                $filterItem =
+                    ".filter-item, .woocommerce-Reviews .comment-list li";
 
-        if ($($filter).length > 0) {
-            $($filter).isotope({
-                itemSelector: $filterItem,
-                filter: "*",
-                masonry: {
-                    // use outer width of grid-sizer for columnWidth
-                    columnWidth: 1,
-                },
+            if ($($filter).length > 0) {
+                $($filter).isotope({
+                    itemSelector: $filterItem,
+                    filter: "*",
+                    masonry: {
+                        // use outer width of grid-sizer for columnWidth
+                        columnWidth: 1,
+                    },
+                });
+            }
+            $('[data-bs-toggle="tab"]').on("shown.bs.tab", function (e) {
+                $($filter).isotope({
+                    filter: "*",
+                });
             });
         }
-        $('[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
-            $($filter).isotope({
-                filter: "*",
-            });
-        });
-    });
+    );
 
     /*----------- 14. Counter Up ----------*/
     $(".counter-number").counterUp({
@@ -710,12 +745,15 @@
     }
 
     /*----------- 16. Progress Bar Animation ----------*/
-    $('.progress-bar').waypoint(function() {
-        $('.progress-bar').css({
-        animation: "animate-positive 1.8s",
-        opacity: "1"
-        });
-    }, { offset: '100%' });
+    $(".progress-bar").waypoint(
+        function () {
+            $(".progress-bar").css({
+                animation: "animate-positive 1.8s",
+                opacity: "1",
+            });
+        },
+        { offset: "100%" }
+    );
 
     /*----------- 17. Countdown ----------*/
     $.fn.countdown = function () {
@@ -819,17 +857,20 @@
     }
 
     $(".svg-img").inlineSvg();
-    
+
     /*---------- 19. Circle Progress ----------*/
     document.addEventListener("DOMContentLoaded", function () {
-        const progressBars = document.querySelectorAll('.circular-progress');
-    
-        progressBars.forEach(progressBar => {
-            const circle = progressBar.querySelector('.circle');
-            const percentageDisplay = progressBar.querySelector('.percentage');
-            const target = parseInt(progressBar.getAttribute('data-target'), 10);
+        const progressBars = document.querySelectorAll(".circular-progress");
+
+        progressBars.forEach((progressBar) => {
+            const circle = progressBar.querySelector(".circle");
+            const percentageDisplay = progressBar.querySelector(".percentage");
+            const target = parseInt(
+                progressBar.getAttribute("data-target"),
+                10
+            );
             let progressValue = 0;
-    
+
             const animateProgress = () => {
                 if (progressValue <= target) {
                     const offset = 100 - (progressValue * 100) / 100;
@@ -839,7 +880,7 @@
                     requestAnimationFrame(animateProgress);
                 }
             };
-    
+
             animateProgress();
         });
     });
@@ -918,122 +959,104 @@
         });
     });
 
-    // /*----------- 00.Color Scheme ----------*/
-    $('.color-switch-btns button').each(function () {
-        // Get color for button
-        const button = $(this);
-        const color = button.data('color');
-        button.css('--theme-color', color);
-
-        // Change theme color on click
-        button.on('click', function () {
-            const clickedColor = $(this).data('color');
-            $(':root').css('--theme-color', clickedColor);
-        });
-    });
-
-    $(document).on('click','.switchIcon',function() {
-        $('.color-scheme-wrap').toggleClass('active');
-    });
-
-    $('.secondary-color-switch-btns button').each(function () {
-        // Get color for button
-        const button = $(this);
-        const color = button.data('secondary-color');
-        button.css('--theme-color2', color);
-
-        // Change theme color on click
-        button.on('click', function () {
-            const clickedColor = $(this).data('secondary-color');
-            $(':root').css('--theme-color2', clickedColor);
-        });
-    });
-
     /*----------- Count pricing ----------*/
-    $(document).on('click', '.donate-amount-button-list li', function() {
+    $(document).on("click", ".donate-amount-button-list li", function () {
         // Get the clicked button's amount
-        let amount = $(this).data('amount');
-    
+        let amount = $(this).data("amount");
+
         // Set the value of the input to the clicked amount
-        $('.donate_amount').val(amount);
-    
+        $(".donate_amount").val(amount);
+
         // Remove 'active' class from all buttons
-        $('.donate-amount-button').removeClass('active');
-    
+        $(".donate-amount-button").removeClass("active");
+
         // Add 'active' class to the clicked button
-        $(this).addClass('active');
+        $(this).addClass("active");
     });
-    
+
     // Optional: Update the active button on input change for custom amount
-    $(document).on('keyup', '.donate_amount', function() {
+    $(document).on("keyup", ".donate_amount", function () {
         let inputAmount = $(this).val();
-    
+
         // Remove 'active' class from all buttons
-        $('.donate-amount-button').removeClass('active');
-    
+        $(".donate-amount-button").removeClass("active");
+
         // If the input is a custom amount, you may want to handle it differently
-        if (inputAmount && inputAmount !== '20' && inputAmount !== '50' && inputAmount !== '100' && inputAmount !== '150' && inputAmount !== '200') {
+        if (
+            inputAmount &&
+            inputAmount !== "20" &&
+            inputAmount !== "50" &&
+            inputAmount !== "100" &&
+            inputAmount !== "150" &&
+            inputAmount !== "200"
+        ) {
             // Add a custom class or handle the custom input
-            $('.donate-amount-button:last-child').addClass('active'); // Assuming the last button is for Custom Amount
+            $(".donate-amount-button:last-child").addClass("active"); // Assuming the last button is for Custom Amount
         }
     });
 
     /************lettering js***********/
     function injector(t, splitter, klass, after) {
-		var a = t.text().split(splitter), inject = '';
-		if (a.length) {
-			$(a).each(function(i, item) {
-				inject += '<span class="'+klass+(i+1)+'">'+item+'</span>'+after;
-			});	
-			t.empty().append(inject);
-		}
-	}
-	
-	var methods = {
-		init : function() {
+        var a = t.text().split(splitter),
+            inject = "";
+        if (a.length) {
+            $(a).each(function (i, item) {
+                inject +=
+                    '<span class="' +
+                    klass +
+                    (i + 1) +
+                    '">' +
+                    item +
+                    "</span>" +
+                    after;
+            });
+            t.empty().append(inject);
+        }
+    }
 
-			return this.each(function() {
-				injector($(this), '', 'char', '');
-			});
+    var methods = {
+        init: function () {
+            return this.each(function () {
+                injector($(this), "", "char", "");
+            });
+        },
 
-		},
+        words: function () {
+            return this.each(function () {
+                injector($(this), " ", "word", " ");
+            });
+        },
 
-		words : function() {
+        lines: function () {
+            return this.each(function () {
+                var r = "eefec303079ad17405c889e092e105b0";
+                // Because it's hard to split a <br/> tag consistently across browsers,
+                // (*ahem* IE *ahem*), we replaces all <br/> instances with an md5 hash
+                // (of the word "split").  If you're trying to use this plugin on that
+                // md5 hash string, it will fail because you're being ridiculous.
+                injector(
+                    $(this).children("br").replaceWith(r).end(),
+                    r,
+                    "line",
+                    ""
+                );
+            });
+        },
+    };
 
-			return this.each(function() {
-				injector($(this), ' ', 'word', ' ');
-			});
-
-		},
-		
-		lines : function() {
-
-			return this.each(function() {
-				var r = "eefec303079ad17405c889e092e105b0";
-				// Because it's hard to split a <br/> tag consistently across browsers,
-				// (*ahem* IE *ahem*), we replaces all <br/> instances with an md5 hash 
-				// (of the word "split").  If you're trying to use this plugin on that 
-				// md5 hash string, it will fail because you're being ridiculous.
-				injector($(this).children("br").replaceWith(r).end(), r, 'line', '');
-			});
-
-		}
-	};
-
-	$.fn.lettering = function( method ) {
-		// Method calling logic
-		if ( method && methods[method] ) {
-			return methods[ method ].apply( this, [].slice.call( arguments, 1 ));
-		} else if ( method === 'letters' || ! method ) {
-			return methods.init.apply( this, [].slice.call( arguments, 0 ) ); // always pass an array
-		}
-		$.error( 'Method ' +  method + ' does not exist on jQuery.lettering' );
-		return this;
-	};
-
+    $.fn.lettering = function (method) {
+        // Method calling logic
+        if (method && methods[method]) {
+            return methods[method].apply(this, [].slice.call(arguments, 1));
+        } else if (method === "letters" || !method) {
+            return methods.init.apply(this, [].slice.call(arguments, 0)); // always pass an array
+        }
+        $.error("Method " + method + " does not exist on jQuery.lettering");
+        return this;
+    };
 
     $(".circle-title-anime").lettering();
-    
+
     // /*----------- 00. Right Click Disable ----------*/
     //   window.addEventListener('contextmenu', function (e) {
     //     // do something here...
@@ -1058,13 +1081,4 @@
     //       return false;
     //     }
     //   }
-    
 })(jQuery);
-
-
-
-
-
-
-
-

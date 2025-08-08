@@ -113,48 +113,7 @@
         </div>
     </div>
 </div>
-<div class="color-scheme-wrap active">
-    <button class="switchIcon"><i class="fa-solid fa-palette"></i></button>
-    <h3 class="color-scheme-wrap-title text-center">Color Switcher</h3>
-    <h4 class="color-scheme-wrap-subtitle text-center">Theme Color</h4>
-    <div class="color-switch-btns">
-        <button data-color="#1A685B">
-            <i class="fa-solid fa-droplet"></i>
-        </button>
-        <button data-color="#f34e3a">
-            <i class="fa-solid fa-droplet"></i>
-        </button>
-        <button data-color="#FF4857">
-            <i class="fa-solid fa-droplet"></i>
-        </button>
-        <button data-color="#3843C1">
-            <i class="fa-solid fa-droplet"></i>
-        </button>
-        <button data-color="#FF7E02">
-            <i class="fa-solid fa-droplet"></i>
-        </button>
-    </div>
-    <h4 class="color-scheme-wrap-subtitle mt-20 text-center">
-        Secondary Color
-    </h4>
-    <div class="secondary-color-switch-btns">
-        <button data-secondary-color="#FFAC00">
-            <i class="fa-solid fa-droplet"></i>
-        </button>
-        <button data-secondary-color="#F41E1E">
-            <i class="fa-solid fa-droplet"></i>
-        </button>
-        <button data-secondary-color="#f34e3a">
-            <i class="fa-solid fa-droplet"></i>
-        </button>
-        <button data-secondary-color="#FF4857">
-            <i class="fa-solid fa-droplet"></i>
-        </button>
-        <button data-secondary-color="#3843C1">
-            <i class="fa-solid fa-droplet"></i>
-        </button>
-    </div>
-</div>
+
 <!--==============================
  Header Area
 ==============================-->
@@ -188,11 +147,19 @@
                                 <i class="fal fa-map-marker-alt"></i>
                                 <div
                                     class="bg-shape1"
-                                    data-mask-src="{{ asset('public/assets/img/shape/info_card_icon_bg_shape_1_1.png')}}"
+                                    data-mask-src="{{
+                                        asset(
+                                            'public/assets/img/shape/info_card_icon_bg_shape_1_1.png'
+                                        )
+                                    }}"
                                 ></div>
                                 <div
                                     class="bg-shape2"
-                                    data-mask-src="{{asset('public/assets/img/shape/info_card_icon_bg_shape_1_1.png')}}"
+                                    data-mask-src="{{
+                                        asset(
+                                            'public/assets/img/shape/info_card_icon_bg_shape_1_1.png'
+                                        )
+                                    }}"
                                 ></div>
                             </div>
                             <div class="box-content">
@@ -218,11 +185,19 @@
                                 <i class="fal fa-phone"></i>
                                 <div
                                     class="bg-shape1"
-                                        data-mask-src="{{asset('public/assets/img/shape/info_card_icon_bg_shape_1_1.png')}}"
+                                    data-mask-src="{{
+                                        asset(
+                                            'public/assets/img/shape/info_card_icon_bg_shape_1_1.png'
+                                        )
+                                    }}"
                                 ></div>
                                 <div
                                     class="bg-shape2"
-                                    data-mask-src="{{asset('assets/img/shape/info_card_icon_bg_shape_1_1.png')}}"
+                                    data-mask-src="{{
+                                        asset(
+                                            'assets/img/shape/info_card_icon_bg_shape_1_1.png'
+                                        )
+                                    }}"
                                 ></div>
                             </div>
                             <div class="box-content">

@@ -74,7 +74,9 @@
 
             <div class="field">
                 <div class="field-label">Message:</div>
-                <div class="field-value message-content">{{ $formMessage }}</div>
+                <div class="field-value message-content">
+                    {{ $formMessage }}
+                </div>
             </div>
 
             <hr
