@@ -16,9 +16,11 @@ class PageBannerResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-photo';
 
-    protected static ?string $navigationGroup = 'Site Management';
+    protected static ?string $navigationGroup = 'Content Management';
 
     protected static ?string $navigationLabel = 'Page Banners';
+
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {

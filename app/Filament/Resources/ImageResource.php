@@ -30,6 +30,8 @@ class ImageResource extends Resource
 
     protected static ?string $navigationGroup = 'Media Centre';
 
+    protected static ?int $navigationSort = 6;
+
     public static function form(Form $form): Form
     {
         return $form

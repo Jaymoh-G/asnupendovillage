@@ -18,11 +18,11 @@ class HomePageContentResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-home';
 
-    protected static ?string $navigationGroup = 'Site Management';
+    protected static ?string $navigationGroup = 'Content Management';
 
     protected static ?string $navigationLabel = 'Homepage Content';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {

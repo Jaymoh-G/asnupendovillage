@@ -44,6 +44,7 @@ Route::get('/donate-now', function () {
 })->name('donate-now');
 // contact us
 Route::get('/contact-us', ContactUs::class)->name('contact-us');
+Route::post('/contact/submit', [App\Http\Controllers\ContactController::class, 'submit'])->name('contact.submit');
 // gallery
 Route::get('/gallery', Gallery::class)->name('gallery');
 // album detail

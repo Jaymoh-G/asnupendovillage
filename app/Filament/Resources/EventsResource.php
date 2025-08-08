@@ -43,6 +43,8 @@ class EventsResource extends Resource
 
     protected static ?string $navigationGroup = 'Media Centre';
 
+    protected static ?int $navigationSort = 2;
+
     public static function form(Form $form): Form
     {
         return $form

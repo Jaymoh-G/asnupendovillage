@@ -113,57 +113,83 @@ Contact Area
 Contact Area
 ==============================-->
                         <div class="contact-form-v1 contact-page-form">
-                            <form
-                                action="mail.php"
-                                method="POST"
-                                class="contact-form style-border ajax-contact"
-                            >
-                                <div class="row">
-                                    <div class="form-group style-border col-12">
+                            <div class="contact-form">
+                                <div class="contact-form-header">
+                                    <h2>Get In Touch</h2>
+                                    <p>
+                                        We'd love to hear from you. Send us a
+                                        message and we'll respond as soon as
+                                        possible.
+                                    </p>
+                                </div>
+                                <form
+                                    method="post"
+                                    action="{{ route('contact.submit') }}"
+                                    id="contact-form"
+                                >
+                                    @csrf
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <input
+                                                    type="text"
+                                                    class="form-control"
+                                                    name="name"
+                                                    placeholder="Your Name"
+                                                    required
+                                                />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <input
+                                                    type="email"
+                                                    class="form-control"
+                                                    name="email"
+                                                    placeholder="Your Email"
+                                                    required
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
                                         <input
                                             type="text"
                                             class="form-control"
-                                            name="name"
-                                            id="name"
-                                            placeholder="Your Name"
+                                            name="subject"
+                                            placeholder="Your Subject"
+                                            required
                                         />
                                     </div>
-                                    <div class="form-group style-border col-12">
+                                    <div class="form-group">
                                         <input
-                                            type="email"
+                                            type="tel"
                                             class="form-control"
-                                            name="email"
-                                            id="email"
-                                            placeholder="Email Address"
+                                            name="phone"
+                                            placeholder="Your Phone Number"
                                         />
                                     </div>
-                                    <div class="form-group style-border col-12">
-                                        <input
-                                            type="number"
-                                            class="form-control"
-                                            name="number"
-                                            id="number"
-                                            placeholder="Phone Number"
-                                        />
-                                    </div>
-                                    <div class="form-group style-border col-12">
+                                    <div class="form-group">
                                         <textarea
                                             name="message"
-                                            id="message"
                                             cols="30"
-                                            rows="3"
+                                            rows="5"
                                             class="form-control"
-                                            placeholder="Type Your Message"
+                                            placeholder="Write Your Message"
+                                            required
                                         ></textarea>
                                     </div>
-                                    <div class="form-btn col-12">
-                                        <button class="th-btn">
-                                            Send a Message
-                                        </button>
+                                    <button type="submit" class="th-btn">
+                                        Send Message
+                                        <i class="far fa-paper-plane"></i>
+                                    </button>
+                                    <div class="col-md-12 mt-3">
+                                        <div
+                                            class="form-messege text-success"
+                                        ></div>
                                     </div>
-                                </div>
-                                <p class="form-messages mb-0 mt-3"></p>
-                            </form>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -172,3 +198,90 @@ Contact Area
     </div>
     @endsection
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document
+            .getElementById("contact-form")
+            .addEventListener("submit", function (e) {
+                e.preventDefault();
+
+                const form = this;
+                const submitBtn = form.querySelector('button[type="submit"]');
+                const messageDiv = form.querySelector(".form-messege");
+
+                // Disable submit button and show loading state
+                submitBtn.disabled = true;
+                submitBtn.innerHTML =
+                    'Sending... <i class="far fa-spinner fa-spin"></i>';
+
+                // Get form data
+                const formData = new FormData(form);
+
+                // Get CSRF token from meta tag or form input
+                let csrfToken = "";
+                const metaTag = document.querySelector(
+                    'meta[name="csrf-token"]'
+                );
+                if (metaTag) {
+                    csrfToken = metaTag.getAttribute("content");
+                } else {
+                    // Fallback: get from form input if meta tag is not found
+                    const csrfInput = form.querySelector(
+                        'input[name="_token"]'
+                    );
+                    if (csrfInput) {
+                        csrfToken = csrfInput.value;
+                    }
+                }
+
+                // Send AJAX request
+                fetch(form.action, {
+                    method: "POST",
+                    body: formData,
+                    headers: {
+                        "X-Requested-With": "XMLHttpRequest",
+                        "X-CSRF-TOKEN": csrfToken,
+                    },
+                })
+                    .then((response) => {
+                        // Check if response is JSON
+                        const contentType =
+                            response.headers.get("content-type");
+                        if (
+                            contentType &&
+                            contentType.includes("application/json")
+                        ) {
+                            return response.json();
+                        } else {
+                            throw new Error("Invalid response format");
+                        }
+                    })
+                    .then((data) => {
+                        if (data.success) {
+                            messageDiv.innerHTML =
+                                '<div class="alert alert-success">' +
+                                data.message +
+                                "</div>";
+                            form.reset();
+                        } else {
+                            messageDiv.innerHTML =
+                                '<div class="alert alert-danger">' +
+                                data.message +
+                                "</div>";
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Error:", error);
+                        messageDiv.innerHTML =
+                            '<div class="alert alert-danger">An error occurred. Please try again.</div>';
+                    })
+                    .finally(() => {
+                        // Re-enable submit button
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML =
+                            'Send Message <i class="far fa-paper-plane"></i>';
+                    });
+            });
+    });
+</script>
