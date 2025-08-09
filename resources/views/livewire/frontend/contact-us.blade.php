@@ -3,6 +3,25 @@
     <!--==============================
     Breadcumb
 ============================== -->
+    @if($pageBanner && $pageBanner->effective_banner_url)
+    <div
+        class="breadcumb-wrapper"
+        data-bg-src="{{ $pageBanner->effective_banner_url }}"
+        data-overlay="theme"
+    >
+        <div class="container">
+            <div class="breadcumb-content">
+                <h1 class="breadcumb-title">
+                    {{ $pageBanner->title ? $pageBanner->title : 'Contact us' }}
+                </h1>
+                <ul class="breadcumb-menu">
+                    <li><a href="{{ route('home') }}">Home</a></li>
+                    <li>Contact us</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    @else
     <div class="breadcumb-wrapper" style="background-color: #000000">
         <div class="container">
             <div class="breadcumb-content">
@@ -14,6 +33,7 @@
             </div>
         </div>
     </div>
+    @endif
     <!--==============================
 Contact Area
 ==============================-->

@@ -47,6 +47,14 @@ class PageBannerSeeder extends Seeder
                 'is_active' => true,
             ],
             [
+                'page_name' => 'events',
+                'title' => 'Events & Activities',
+                'description' => 'Discover our upcoming events and community activities.',
+                'banner_image_path' => null,
+                'banner_image_alt' => 'Events Banner',
+                'is_active' => true,
+            ],
+            [
                 'page_name' => 'contact-us',
                 'title' => 'Contact Us',
                 'description' => 'Get in touch with us for any inquiries or support.',

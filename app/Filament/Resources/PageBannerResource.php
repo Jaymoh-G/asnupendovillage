@@ -35,6 +35,7 @@ class PageBannerResource extends Resource
                                 'founder' => 'Founder',
                                 'downloads' => 'Downloads',
                                 'news' => 'News',
+                                'events' => 'Events',
                                 'contact-us' => 'Contact Us',
                                 'gallery' => 'Gallery',
                                 'team' => 'Team',
@@ -102,10 +103,11 @@ class PageBannerResource extends Resource
                     ->label('Title')
                     ->searchable()
                     ->limit(30),
-                Tables\Columns\ImageColumn::make('banner_image_path')
+                Tables\Columns\ImageColumn::make('banner_image_url')
                     ->label('Banner')
                     ->size(60)
-                    ->circular(),
+                    ->circular()
+                    ->openUrlInNewTab(),
                 Tables\Columns\IconColumn::make('is_active')
                     ->label('Status')
                     ->boolean()

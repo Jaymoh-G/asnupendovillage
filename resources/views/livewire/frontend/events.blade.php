@@ -1,5 +1,24 @@
 <div>
     <!-- Banner Section -->
+    @if($pageBanner && $pageBanner->effective_banner_url)
+    <div
+        class="breadcumb-wrapper"
+        data-bg-src="{{ $pageBanner->effective_banner_url }}"
+        data-overlay="theme"
+    >
+        <div class="container">
+            <div class="breadcumb-content">
+                <h1 class="breadcumb-title">
+                    {{ $pageBanner->title ? $pageBanner->title : 'Events' }}
+                </h1>
+                <ul class="breadcumb-menu">
+                    <li><a href="{{ route('home') }}">Home</a></li>
+                    <li>Events</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    @else
     <div class="breadcumb-wrapper" style="background-color: #000000">
         <div class="container">
             <div class="breadcumb-content">
@@ -11,6 +30,7 @@
             </div>
         </div>
     </div>
+    @endif
 
     <div class="container space-top space-extra-bottom">
         <div class="title-area text-center mb-5">
