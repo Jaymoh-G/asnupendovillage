@@ -159,16 +159,6 @@ class HomeSliderResource extends Resource
                     ->label('Featured Sliders'),
             ])
             ->actions([
-                Tables\Actions\Action::make('view_images')
-                    ->label('View Images')
-                    ->icon('heroicon-o-photo')
-                    ->modalHeading(function (HomeSlider $record) {
-                        return "Images for {$record->title}";
-                    })
-                    ->modalContent(function (HomeSlider $record) {
-                        return view('filament.resources.home-slider-resource.modals.view-images', ['slider' => $record]);
-                    })
-                    ->modalWidth('7xl'),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
