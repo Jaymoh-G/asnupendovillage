@@ -108,11 +108,26 @@ class HomeSliderResource extends Resource
                             ->tabs([
                                 Forms\Components\Tabs\Tab::make('Select from Existing')
                                     ->schema([
-                                        \App\Filament\Components\ExistingImagePicker::make('existing_images')
+                                        Forms\Components\Select::make('existing_images')
                                             ->label('Choose from Existing Images')
-                                            ->directory('images')
-                                            ->maxFiles(10)
-                                            ->placeholder('Browse existing images')
+                                            ->multiple()
+                                            ->options(function () {
+                                                $disk = \Illuminate\Support\Facades\Storage::disk('public');
+                                                $images = [];
+
+                                                if ($disk->exists('images')) {
+                                                    $files = $disk->allFiles('images');
+                                                    foreach ($files as $file) {
+                                                        if (in_array(pathinfo($file, PATHINFO_EXTENSION), ['jpg', 'jpeg', 'png', 'webp', 'gif'])) {
+                                                            $images[$file] = basename($file);
+                                                        }
+                                                    }
+                                                }
+
+                                                return $images;
+                                            })
+                                            ->searchable()
+                                            ->maxItems(10)
                                             ->helperText('Select from images already uploaded to the system. You can search by filename.'),
                                     ]),
                                 Forms\Components\Tabs\Tab::make('Upload New Images')

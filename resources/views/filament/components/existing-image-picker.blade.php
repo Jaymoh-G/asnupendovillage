@@ -7,12 +7,41 @@
 
     <div
         x-data="{
-            selectedImages: @entangle($getStatePath()).live,
+            selectedImages: [],
             maxFiles: {{ $maxFiles }},
             searchTerm: '',
             filteredImages: @js($existingImages),
             init() {
+                // Initialize selectedImages from the field value
+                this.selectedImages = @entangle($getStatePath()).live || [];
+
+                // Ensure selectedImages is always an array
+                if (!Array.isArray(this.selectedImages)) {
+                    this.selectedImages = [];
+                }
+
+                // Filter out any non-string items and ensure all items are strings
+                this.selectedImages = this.selectedImages.filter(item => typeof item === 'string');
+
+                // Debug logging
+                console.log('ExistingImagePicker initialized:', {
+                    selectedImages: this.selectedImages,
+                    filteredImages: this.filteredImages,
+                    maxFiles: this.maxFiles
+                });
+
                 this.filterImages();
+
+                // Watch for changes and sync with Livewire
+                this.$watch('selectedImages', (value) => {
+                    // Ensure we're always working with an array of strings
+                    if (Array.isArray(value)) {
+                        const cleanValue = value.filter(item => typeof item === 'string');
+                        if (JSON.stringify(cleanValue) !== JSON.stringify(value)) {
+                            this.selectedImages = cleanValue;
+                        }
+                    }
+                });
             },
             filterImages() {
                 if (!this.searchTerm) {
@@ -24,14 +53,24 @@
                 }
             },
             toggleImageSelection(imagePath) {
-                if (this.selectedImages.includes(imagePath)) {
-                    this.selectedImages = this.selectedImages.filter(path => path !== imagePath);
+                // Ensure we're working with the path string
+                const path = typeof imagePath === 'string' ? imagePath : imagePath.path;
+
+                if (this.selectedImages.includes(path)) {
+                    this.selectedImages = this.selectedImages.filter(item => {
+                        const itemPath = typeof item === 'string' ? item : item.path;
+                        return itemPath !== path;
+                    });
                 } else if (this.selectedImages.length < this.maxFiles) {
-                    this.selectedImages.push(imagePath);
+                    this.selectedImages.push(path);
                 }
             },
             isSelected(imagePath) {
-                return this.selectedImages.includes(imagePath);
+                const path = typeof imagePath === 'string' ? imagePath : imagePath.path;
+                return this.selectedImages.some(item => {
+                    const itemPath = typeof item === 'string' ? item : item.path;
+                    return itemPath === path;
+                });
             },
             selectedCount() {
                 return this.selectedImages.length;
@@ -152,6 +191,20 @@
             <h4 class="text-sm font-medium text-gray-700 mb-2">
                 Selected Images:
             </h4>
+
+            <!-- Debug info (remove in production) -->
+            <div
+                x-show="false"
+                class="mb-2 p-2 bg-gray-100 text-xs text-gray-600 rounded"
+            >
+                <strong>Debug:</strong>
+                <span
+                    x-text="'Type: ' + typeof selectedImages + ', Length: ' + selectedImages.length"
+                ></span>
+                <br />
+                <span x-text="'Data: ' + JSON.stringify(selectedImages)"></span>
+            </div>
+
             <div class="flex flex-wrap gap-2">
                 <template x-for="imagePath in selectedImages" :key="imagePath">
                     <div
@@ -159,7 +212,20 @@
                     >
                         <span
                             class="text-sm text-blue-700"
-                            x-text="imagePath.split('/').pop()"
+                            x-text="(() => {
+                                try {
+                                    if (typeof imagePath === 'string') {
+                                        return imagePath.split('/').pop() || 'Unknown';
+                                    } else if (imagePath && typeof imagePath === 'object' && imagePath.name) {
+                                        return imagePath.name;
+                                    } else {
+                                        return 'Unknown';
+                                    }
+                                } catch (e) {
+                                    console.error('Error processing imagePath:', imagePath, e);
+                                    return 'Error';
+                                }
+                            })()"
                         ></span>
                         <button
                             type="button"

@@ -132,8 +132,9 @@ class HomeSlider extends Model
         }
 
         foreach ($existingImagePaths as $imagePath) {
-            // Skip if the path is empty or null
-            if (empty($imagePath)) {
+            // Skip if the path is empty, null, or not a string
+            if (empty($imagePath) || !is_string($imagePath)) {
+                Log::warning("Invalid image path provided: " . var_export($imagePath, true));
                 continue;
             }
 
@@ -157,15 +158,20 @@ class HomeSlider extends Model
                 }
 
                 // Create a new image record for this slider
-                $this->images()->create([
-                    'filename' => basename($imagePath),
-                    'original_name' => basename($imagePath),
-                    'path' => $imagePath,
-                    'mime_type' => $this->getMimeType(pathinfo($imagePath, PATHINFO_EXTENSION)),
-                    'size' => $fileSize,
-                    'alt_text' => pathinfo($imagePath, PATHINFO_FILENAME),
-                    'sort_order' => $this->images()->count(),
-                ]);
+                try {
+                    $this->images()->create([
+                        'filename' => basename($imagePath),
+                        'original_name' => basename($imagePath),
+                        'path' => $imagePath,
+                        'mime_type' => $this->getMimeType(pathinfo($imagePath, PATHINFO_EXTENSION)),
+                        'size' => $fileSize,
+                        'alt_text' => pathinfo($imagePath, PATHINFO_FILENAME),
+                        'sort_order' => $this->images()->count(),
+                    ]);
+                } catch (\Exception $e) {
+                    Log::error("Failed to create image record for {$imagePath}: " . $e->getMessage());
+                    continue;
+                }
             }
         }
     }
