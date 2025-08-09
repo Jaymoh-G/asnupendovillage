@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 use App\Traits\HasImages;
 
 class HomeSlider extends Model
@@ -131,17 +132,37 @@ class HomeSlider extends Model
         }
 
         foreach ($existingImagePaths as $imagePath) {
+            // Skip if the path is empty or null
+            if (empty($imagePath)) {
+                continue;
+            }
+
             // Check if image already exists for this slider
             $existingImage = $this->images()->where('path', $imagePath)->first();
 
             if (!$existingImage) {
+                // Validate that the image path exists in storage
+                if (!Storage::disk('public')->exists($imagePath)) {
+                    Log::warning("Image path does not exist in storage: {$imagePath}");
+                    continue;
+                }
+
+                // Get file size with error handling
+                $fileSize = 0;
+                try {
+                    $fileSize = Storage::disk('public')->size($imagePath);
+                } catch (\Exception $e) {
+                    Log::warning("Could not get file size for {$imagePath}: " . $e->getMessage());
+                    // Continue with size 0 if we can't get the actual size
+                }
+
                 // Create a new image record for this slider
                 $this->images()->create([
                     'filename' => basename($imagePath),
                     'original_name' => basename($imagePath),
                     'path' => $imagePath,
                     'mime_type' => $this->getMimeType(pathinfo($imagePath, PATHINFO_EXTENSION)),
-                    'size' => Storage::disk('public')->size($imagePath),
+                    'size' => $fileSize,
                     'alt_text' => pathinfo($imagePath, PATHINFO_FILENAME),
                     'sort_order' => $this->images()->count(),
                 ]);

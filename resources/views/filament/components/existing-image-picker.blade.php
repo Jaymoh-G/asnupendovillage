@@ -1,81 +1,182 @@
 <x-dynamic-component :component="$getFieldWrapperView()" :field="$field">
-    @php
-        $maxFiles = method_exists($field, 'getMaxFiles') ? $field->getMaxFiles() : 5;
-    @endphp
+    @php $maxFiles = method_exists($field, 'getMaxFiles') ?
+    $field->getMaxFiles() : 5; $directory = method_exists($field,
+    'getDirectory') ? $field->getDirectory() : 'images'; $existingImages =
+    method_exists($field, 'getExistingImages') ? $field->getExistingImages() :
+    []; @endphp
 
     <div
         x-data="{
-            selectedImages: [],
+            selectedImages: @entangle($getStatePath()).live,
             maxFiles: {{ $maxFiles }},
+            searchTerm: '',
+            filteredImages: @js($existingImages),
             init() {
-                this.$refs.input.addEventListener('change', (event) => {
-                    const files = Array.from(event.target.files);
-                    for (const file of files) {
-                        if (this.selectedImages.length < this.maxFiles) {
-                            const reader = new FileReader();
-                            reader.onload = (e) => {
-                                this.selectedImages.push({
-                                    name: file.name,
-                                    url: e.target.result,
-                                });
-                            };
-                            reader.readAsDataURL(file);
-                        }
-                    }
-                });
+                this.filterImages();
             },
-            removeImage(index) {
-                this.selectedImages.splice(index, 1);
+            filterImages() {
+                if (!this.searchTerm) {
+                    this.filteredImages = @js($existingImages);
+                } else {
+                    this.filteredImages = @js($existingImages).filter(img =>
+                        img.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+                    );
+                }
+            },
+            toggleImageSelection(imagePath) {
+                if (this.selectedImages.includes(imagePath)) {
+                    this.selectedImages = this.selectedImages.filter(path => path !== imagePath);
+                } else if (this.selectedImages.length < this.maxFiles) {
+                    this.selectedImages.push(imagePath);
+                }
+            },
+            isSelected(imagePath) {
+                return this.selectedImages.includes(imagePath);
             },
             selectedCount() {
                 return this.selectedImages.length;
             }
         }"
-        class="space-y-2"
+        class="space-y-4"
     >
-        <label class="block text-sm font-medium text-gray-700">
-            Upload Images
-        </label>
+        <div class="flex items-center justify-between">
+            <label class="block text-sm font-medium text-gray-700">
+                Select from Existing Images
+            </label>
+            <span class="text-sm text-gray-500">
+                <span x-text="selectedCount()"></span> of
+                {{ $maxFiles }} selected
+            </span>
+        </div>
 
+        <!-- Search input -->
+        <div class="relative">
+            <input
+                type="text"
+                x-model="searchTerm"
+                @input="filterImages()"
+                placeholder="Search images by filename..."
+                class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            />
+            <div
+                class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+            >
+                <svg
+                    class="h-5 w-5 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    ></path>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Hidden input for form submission -->
         <input
-            type="file"
-            {{ $applyStateBindingModifiers('wire:model') }}="{{ $getStatePath() }}"
-            multiple
-            x-ref="input"
-            accept="image/*"
-            id="{{ $getId() }}"
-            dusk="filament.forms.file-upload.{{ $getStatePath() }}"
-            class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4
-                   file:rounded-full file:border-0 file:text-sm file:font-semibold
-                   file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+            type="hidden"
+            name="{{ $getStatePath() }}"
+            x-model="selectedImages"
         />
 
-        <template x-if="selectedImages.length > 0">
-            <div>
-                <label class="block text-sm font-medium text-gray-700">
-                    Selected Images (<span x-text="selectedCount()"></span> of {{ $maxFiles }} max)
-                </label>
+        <!-- Images grid -->
+        <div
+            class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3"
+        >
+            <template x-for="image in filteredImages" :key="image.path">
+                <div
+                    class="relative border-2 rounded-lg overflow-hidden cursor-pointer transition-all duration-200 hover:shadow-md"
+                    :class="isSelected(image.path) ? 'border-blue-500 ring-2 ring-blue-200' : 'border-gray-200 hover:border-gray-300'"
+                    @click="toggleImageSelection(image.path)"
+                >
+                    <img
+                        :src="image.url"
+                        :alt="image.name"
+                        class="w-full h-24 object-cover"
+                        loading="lazy"
+                    />
 
-                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 mt-2">
-                    <template x-for="(image, index) in selectedImages" :key="index">
-                        <div class="relative border rounded overflow-hidden group">
-                            <img :src="image.url" class="w-full h-32 object-cover" />
+                    <!-- Selection indicator -->
+                    <div
+                        x-show="isSelected(image.path)"
+                        class="absolute top-2 right-2 bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold"
+                    >
+                        ✓
+                    </div>
 
-                            <button type="button"
-                                @click="removeImage(index)"
-                                class="absolute top-0 right-0 mt-1 mr-1 bg-white rounded-full p-1 shadow text-red-600 hover:bg-red-100">
-                                &times;
-                            </button>
-                        </div>
-                    </template>
+                    <!-- Image info overlay -->
+                    <div
+                        class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white text-xs p-1"
+                    >
+                        <div class="truncate" x-text="image.name"></div>
+                        <div
+                            class="text-gray-300"
+                            x-text="(image.size / 1024).toFixed(1) + ' KB'"
+                        ></div>
+                    </div>
                 </div>
+            </template>
+        </div>
+
+        <!-- No images message -->
+        <div
+            x-show="filteredImages.length === 0"
+            class="text-center py-8 text-gray-500"
+        >
+            <svg
+                class="mx-auto h-12 w-12 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+            >
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                ></path>
+            </svg>
+            <p
+                class="mt-2"
+                x-text="searchTerm ? 'No images found matching your search.' : 'No images found in this directory.'"
+            ></p>
+        </div>
+
+        <!-- Selected images summary -->
+        <div x-show="selectedImages.length > 0" class="border-t pt-4">
+            <h4 class="text-sm font-medium text-gray-700 mb-2">
+                Selected Images:
+            </h4>
+            <div class="flex flex-wrap gap-2">
+                <template x-for="imagePath in selectedImages" :key="imagePath">
+                    <div
+                        class="flex items-center space-x-2 bg-blue-50 border border-blue-200 rounded-full px-3 py-1"
+                    >
+                        <span
+                            class="text-sm text-blue-700"
+                            x-text="imagePath.split('/').pop()"
+                        ></span>
+                        <button
+                            type="button"
+                            @click="toggleImageSelection(imagePath)"
+                            class="text-blue-500 hover:text-blue-700"
+                        >
+                            ×
+                        </button>
+                    </div>
+                </template>
             </div>
-        </template>
+        </div>
     </div>
 
     @if ($errors->has($getStatePath()))
-        <p class="text-sm text-red-600 mt-2">
-            {{ $errors->first($getStatePath()) }}
-        </p>
+    <p class="text-sm text-red-600 mt-2">
+        {{ $errors->first($getStatePath()) }}
+    </p>
     @endif
 </x-dynamic-component>

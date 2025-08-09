@@ -4,6 +4,7 @@ namespace App\Filament\Components;
 
 use Filament\Forms\Components\Field;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class ExistingImagePicker extends Field
@@ -51,56 +52,67 @@ class ExistingImagePicker extends Field
         $images = [];
         $disk = Storage::disk('public');
 
-        // Get all files from the directory
-        $files = $disk->allFiles($this->directory);
+        try {
+            // Check if directory exists
+            if (!$disk->exists($this->directory)) {
+                return [];
+            }
 
-        foreach ($files as $file) {
-            try {
-                // Check if file exists and is accessible
-                if (!$disk->exists($file)) {
+            // Get all files from the directory
+            $files = $disk->allFiles($this->directory);
+
+            foreach ($files as $file) {
+                try {
+                    // Check if file exists and is accessible
+                    if (!$disk->exists($file)) {
+                        continue;
+                    }
+
+                    $extension = pathinfo($file, PATHINFO_EXTENSION);
+                    $mimeType = $this->getMimeType($extension);
+
+                    if (in_array($mimeType, $this->acceptedFileTypes)) {
+                        // Get file size with error handling
+                        $fileSize = 0;
+                        try {
+                            $fileSize = $disk->size($file);
+                        } catch (\Exception $e) {
+                            // If we can't get file size, use 0
+                            $fileSize = 0;
+                        }
+
+                        // Get last modified with error handling
+                        $lastModified = time();
+                        try {
+                            $lastModified = $disk->lastModified($file);
+                        } catch (\Exception $e) {
+                            // If we can't get last modified, use current time
+                            $lastModified = time();
+                        }
+
+                        $images[] = [
+                            'path' => $file,
+                            'url' => asset('storage/' . $file),
+                            'name' => basename($file),
+                            'size' => $fileSize,
+                            'last_modified' => $lastModified,
+                        ];
+                    }
+                } catch (\Exception $e) {
+                    // Skip files that cause errors
                     continue;
                 }
-
-                $extension = pathinfo($file, PATHINFO_EXTENSION);
-                $mimeType = $this->getMimeType($extension);
-
-                if (in_array($mimeType, $this->acceptedFileTypes)) {
-                    // Get file size with error handling
-                    $fileSize = 0;
-                    try {
-                        $fileSize = $disk->size($file);
-                    } catch (\Exception $e) {
-                        // If we can't get file size, use 0
-                        $fileSize = 0;
-                    }
-
-                    // Get last modified with error handling
-                    $lastModified = time();
-                    try {
-                        $lastModified = $disk->lastModified($file);
-                    } catch (\Exception $e) {
-                        // If we can't get last modified, use current time
-                        $lastModified = time();
-                    }
-
-                    $images[] = [
-                        'path' => $file,
-                        'url' => asset('storage/' . $file),
-                        'name' => basename($file),
-                        'size' => $fileSize,
-                        'last_modified' => $lastModified,
-                    ];
-                }
-            } catch (\Exception $e) {
-                // Skip files that cause errors
-                continue;
             }
-        }
 
-        // Sort by last modified (newest first)
-        usort($images, function ($a, $b) {
-            return $b['last_modified'] <=> $a['last_modified'];
-        });
+            // Sort by last modified (newest first)
+            usort($images, function ($a, $b) {
+                return $b['last_modified'] <=> $a['last_modified'];
+            });
+        } catch (\Exception $e) {
+            // Log error and return empty array
+            Log::error('Error getting existing images: ' . $e->getMessage());
+            return [];
+        }
 
         return $images;
     }
