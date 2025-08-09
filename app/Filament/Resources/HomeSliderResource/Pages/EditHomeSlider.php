@@ -22,12 +22,5 @@ class EditHomeSlider extends EditRecord
         return $this->getResource()::getUrl('index');
     }
 
-    protected function afterSave(): void
-    {
-        // Process existing images if any were selected
-        $existingImages = $this->data['existing_images'] ?? null;
-        if ($existingImages) {
-            $this->record->processExistingImages($existingImages);
-        }
-    }
+    // No need for afterSave() since Filament handles the image upload automatically
 }

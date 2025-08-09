@@ -30,43 +30,46 @@ class HomeSliderResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Slider Information')
+                Forms\Components\Section::make('Slider Content')
                     ->schema([
                         Forms\Components\TextInput::make('title')
-                            ->label('Title')
+                            ->label('Slider Title')
                             ->required()
-                            ->maxLength(255)
-                            ->live('onBlur')
-                            ->afterStateUpdated(function ($operation, $state, Forms\Set $set) {
-                                if ($operation === 'create') {
-                                    $set('slug', Str::slug($state));
-                                }
-                            }),
-
-                        Forms\Components\TextInput::make('slug')
-                            ->label('Slug')
-                            ->required()
-                            ->maxLength(255)
-                            ->unique('home_sliders', 'slug', fn($record) => $record),
-
+                            ->maxLength(255),
                         Forms\Components\TextInput::make('subtitle')
                             ->label('Subtitle')
                             ->maxLength(255),
-
                         Forms\Components\Textarea::make('description')
                             ->label('Description')
                             ->rows(3)
-                            ->maxLength(1000),
-
+                            ->maxLength(500),
                         Forms\Components\TextInput::make('button_text')
                             ->label('Button Text')
-                            ->maxLength(100),
-
+                            ->maxLength(50),
                         Forms\Components\TextInput::make('button_url')
                             ->label('Button URL')
                             ->url()
                             ->maxLength(255),
+                    ])
+                    ->columns(2),
 
+                Forms\Components\Section::make('Slider Image')
+                    ->schema([
+                        Forms\Components\FileUpload::make('image')
+                            ->label('Slider Image')
+                            ->image()
+                            ->imageEditor()
+                            ->imageCropAspectRatio('16:9')
+                            ->imageResizeTargetWidth('1920')
+                            ->imageResizeTargetHeight('1080')
+                            ->directory('home-sliders')
+                            ->visibility('public')
+                            ->maxSize(5120)
+                            ->helperText('Upload a high-quality image for the slider. Recommended size: 1920x1080px.'),
+                    ]),
+
+                Forms\Components\Section::make('Settings')
+                    ->schema([
                         Forms\Components\Select::make('status')
                             ->label('Status')
                             ->options([
@@ -75,79 +78,30 @@ class HomeSliderResource extends Resource
                             ])
                             ->default('active')
                             ->required(),
-
+                        Forms\Components\Toggle::make('is_featured')
+                            ->label('Featured Slider')
+                            ->default(false),
                         Forms\Components\TextInput::make('sort_order')
                             ->label('Sort Order')
                             ->numeric()
                             ->default(0)
                             ->minValue(0),
+                    ])
+                    ->columns(3),
 
-                        Forms\Components\Toggle::make('is_featured')
-                            ->label('Featured Slider')
-                            ->default(false),
-                    ])->columns(2),
-
-                Forms\Components\Section::make('SEO Information')
+                Forms\Components\Section::make('SEO')
                     ->schema([
                         Forms\Components\TextInput::make('meta_title')
                             ->label('Meta Title')
-                            ->maxLength(255),
-
+                            ->maxLength(60)
+                            ->helperText('Recommended: 50-60 characters'),
                         Forms\Components\Textarea::make('meta_description')
                             ->label('Meta Description')
+                            ->maxLength(160)
                             ->rows(2)
-                            ->maxLength(500),
-                    ])->columns(2),
-
-                Forms\Components\Section::make('Slider Images')
-                    ->schema([
-                        Forms\Components\View::make('filament.resources.home-slider-resource.components.existing-images')
-                            ->label('Current Images'),
-
-                        Forms\Components\Tabs::make('Image Selection')
-                            ->tabs([
-                                Forms\Components\Tabs\Tab::make('Select from Existing')
-                                    ->schema([
-                                        Forms\Components\Select::make('existing_images')
-                                            ->label('Choose from Existing Images')
-                                            ->multiple()
-                                            ->options(function () {
-                                                $disk = \Illuminate\Support\Facades\Storage::disk('public');
-                                                $images = [];
-
-                                                if ($disk->exists('images')) {
-                                                    $files = $disk->allFiles('images');
-                                                    foreach ($files as $file) {
-                                                        if (in_array(pathinfo($file, PATHINFO_EXTENSION), ['jpg', 'jpeg', 'png', 'webp', 'gif'])) {
-                                                            $images[$file] = basename($file);
-                                                        }
-                                                    }
-                                                }
-
-                                                return $images;
-                                            })
-                                            ->searchable()
-                                            ->maxItems(10)
-                                            ->helperText('Select from images already uploaded to the system. You can search by filename.'),
-                                    ]),
-                                Forms\Components\Tabs\Tab::make('Upload New Images')
-                                    ->schema([
-                                        Forms\Components\FileUpload::make('images')
-                                            ->label('Upload New Images')
-                                            ->multiple()
-                                            ->image()
-                                            ->imageEditor()
-                                            ->imageCropAspectRatio('16:9')
-                                            ->imageResizeTargetWidth('1920')
-                                            ->imageResizeTargetHeight('1080')
-                                            ->directory('home-sliders')
-                                            ->visibility('public')
-                                            ->maxSize(5120)
-                                            ->helperText('Upload high-quality images for the slider. Recommended aspect ratio: 16:9, minimum width: 1920px.')
-                                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp']),
-                                    ]),
-                            ]),
-                    ]),
+                            ->helperText('Recommended: 150-160 characters'),
+                    ])
+                    ->columns(2),
             ]);
     }
 
@@ -155,41 +109,26 @@ class HomeSliderResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('image')
+                Tables\Columns\ImageColumn::make('image_url')
                     ->label('Image')
-                    ->html()
-                    ->formatStateUsing(function ($record) {
-                        $imageUrl = $record->featured_image_url;
-                        if ($imageUrl) {
-                            return "<img src='{$imageUrl}' style='width: 60px; height: 60px; border-radius: 50%; object-fit: cover;' alt='Slider Image' />";
-                        } else {
-                            return "<div style='width: 60px; height: 60px; border-radius: 50%; background-color: #f3f4f6; display: flex; align-items: center; justify-content: center; color: #9ca3af; font-size: 12px;'>No Image</div>";
-                        }
-                    }),
+                    ->size(60)
+                    ->openUrlInNewTab(),
 
                 Tables\Columns\TextColumn::make('title')
                     ->label('Title')
                     ->searchable()
                     ->sortable()
-                    ->limit(50),
+                    ->limit(30),
 
                 Tables\Columns\TextColumn::make('subtitle')
                     ->label('Subtitle')
                     ->searchable()
-                    ->limit(30)
-                    ->toggleable(),
+                    ->limit(25),
 
-                Tables\Columns\TextColumn::make('images_count')
-                    ->label('Images')
-                    ->counts('images')
-                    ->sortable(),
-
-                Tables\Columns\BadgeColumn::make('status')
+                Tables\Columns\TextColumn::make('status')
                     ->label('Status')
-                    ->colors([
-                        'success' => 'active',
-                        'danger' => 'inactive',
-                    ]),
+                    ->badge()
+                    ->color(fn($record) => $record->status === 'active' ? 'success' : 'danger'),
 
                 Tables\Columns\IconColumn::make('is_featured')
                     ->label('Featured')
@@ -200,8 +139,9 @@ class HomeSliderResource extends Resource
                     ->falseColor('gray'),
 
                 Tables\Columns\TextColumn::make('sort_order')
-                    ->label('Sort Order')
-                    ->sortable(),
+                    ->label('Order')
+                    ->sortable()
+                    ->toggleable(true),
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Created')

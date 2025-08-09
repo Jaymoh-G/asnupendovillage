@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\HomeSlider;
-use App\Models\Image;
 use Illuminate\Database\Seeder;
 
 class HomeSliderImageSeeder extends Seeder
@@ -28,16 +27,9 @@ class HomeSliderImageSeeder extends Seeder
             // Get a hero image (cycle through the available ones)
             $imagePath = $heroImages[$index % count($heroImages)];
 
-            // Create image record for this slider
-            $image = $slider->images()->create([
-                'filename' => basename($imagePath),
-                'original_name' => basename($imagePath),
-                'path' => $imagePath,
-                'mime_type' => 'image/jpeg',
-                'size' => 1024000, // 1MB placeholder
-                'alt_text' => $slider->title,
-                'featured' => true,
-                'sort_order' => 1,
+            // Update the slider with the image path directly
+            $slider->update([
+                'image' => $imagePath
             ]);
         }
     }

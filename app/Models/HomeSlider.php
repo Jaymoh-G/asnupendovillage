@@ -6,12 +6,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Log;
-use App\Traits\HasImages;
 
 class HomeSlider extends Model
 {
-    use HasFactory, HasImages;
+    use HasFactory;
 
     protected $fillable = [
         'title',
@@ -24,6 +22,7 @@ class HomeSlider extends Model
         'is_featured',
         'meta_title',
         'meta_description',
+        'image', // Add simple image field like facilities
     ];
 
     protected $casts = [
@@ -77,24 +76,22 @@ class HomeSlider extends Model
     }
 
     /**
+     * Get the image URL for display (like facilities)
+     */
+    public function getImageUrlAttribute(): ?string
+    {
+        if ($this->image) {
+            return asset('storage/' . $this->image);
+        }
+        return null;
+    }
+
+    /**
      * Get the featured image URL for display
      */
     public function getFeaturedImageUrlAttribute()
     {
-        // Get the first featured image explicitly
-        $featuredImage = $this->images()->where('featured', true)->first();
-        if ($featuredImage) {
-            return $featuredImage->display_url;
-        }
-
-        // If no featured image, get the first image
-        $firstImage = $this->images()->first();
-        if ($firstImage) {
-            return $firstImage->display_url;
-        }
-
-        // Return a fallback image if no images exist
-        return asset('assets/img/hero/hero_bg_1_1.jpg');
+        return $this->getImageUrlAttribute() ?: asset('assets/img/hero/hero_bg_1_1.jpg');
     }
 
     /**
@@ -102,7 +99,6 @@ class HomeSlider extends Model
      */
     public function getThumbnailUrlAttribute()
     {
-        // Use the same logic as featured image URL
         return $this->getFeaturedImageUrlAttribute();
     }
 
@@ -119,76 +115,6 @@ class HomeSlider extends Model
      */
     public static function getFeaturedSliders()
     {
-        return static::active()->featured()->ordered()->get();
-    }
-
-    /**
-     * Process existing images selection and create image records
-     */
-    public function processExistingImages($existingImagePaths)
-    {
-        if (!is_array($existingImagePaths) || empty($existingImagePaths)) {
-            return;
-        }
-
-        foreach ($existingImagePaths as $imagePath) {
-            // Skip if the path is empty, null, or not a string
-            if (empty($imagePath) || !is_string($imagePath)) {
-                Log::warning("Invalid image path provided: " . var_export($imagePath, true));
-                continue;
-            }
-
-            // Check if image already exists for this slider
-            $existingImage = $this->images()->where('path', $imagePath)->first();
-
-            if (!$existingImage) {
-                // Validate that the image path exists in storage
-                if (!Storage::disk('public')->exists($imagePath)) {
-                    Log::warning("Image path does not exist in storage: {$imagePath}");
-                    continue;
-                }
-
-                // Get file size with error handling
-                $fileSize = 0;
-                try {
-                    $fileSize = Storage::disk('public')->size($imagePath);
-                } catch (\Exception $e) {
-                    Log::warning("Could not get file size for {$imagePath}: " . $e->getMessage());
-                    // Continue with size 0 if we can't get the actual size
-                }
-
-                // Create a new image record for this slider
-                try {
-                    $this->images()->create([
-                        'filename' => basename($imagePath),
-                        'original_name' => basename($imagePath),
-                        'path' => $imagePath,
-                        'mime_type' => $this->getMimeType(pathinfo($imagePath, PATHINFO_EXTENSION)),
-                        'size' => $fileSize,
-                        'alt_text' => pathinfo($imagePath, PATHINFO_FILENAME),
-                        'sort_order' => $this->images()->count(),
-                    ]);
-                } catch (\Exception $e) {
-                    Log::error("Failed to create image record for {$imagePath}: " . $e->getMessage());
-                    continue;
-                }
-            }
-        }
-    }
-
-    /**
-     * Get MIME type from file extension
-     */
-    protected function getMimeType($extension)
-    {
-        $mimeTypes = [
-            'jpg' => 'image/jpeg',
-            'jpeg' => 'image/jpeg',
-            'png' => 'image/png',
-            'gif' => 'image/gif',
-            'webp' => 'image/webp',
-        ];
-
-        return $mimeTypes[strtolower($extension)] ?? 'application/octet-stream';
+        return static::featured()->ordered()->get();
     }
 }

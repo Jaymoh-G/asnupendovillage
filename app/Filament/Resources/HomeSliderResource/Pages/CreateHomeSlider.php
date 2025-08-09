@@ -15,12 +15,5 @@ class CreateHomeSlider extends CreateRecord
         return $this->getResource()::getUrl('index');
     }
 
-    protected function afterCreate(): void
-    {
-        // Process existing images if any were selected
-        $existingImages = $this->data['existing_images'] ?? null;
-        if ($existingImages) {
-            $this->record->processExistingImages($existingImages);
-        }
-    }
+    // No need for afterCreate() since Filament handles the image upload automatically
 }
