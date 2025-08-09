@@ -286,7 +286,7 @@
                                         </h4>
                                         <div class="recent-post-meta">
                                             <a
-                                                href="#"
+                                                href="{{ route('projects.detail', $relatedProject->slug) }}"
                                                 >{{ $relatedProject->program->title ?? 'General' }}</a
                                             >
                                         </div>

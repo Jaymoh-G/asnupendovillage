@@ -88,11 +88,14 @@
                             >
                         </div>
                         <h3 class="box-title">
-                            <a href="#">
+                            <a href="{{ route('event.show', $event->slug) }}">
                                 {{ \Illuminate\Support\Str::limit($event->title, 50) }}
                             </a>
                         </h3>
-                        <a href="#" class="th-btn">
+                        <a
+                            href="{{ route('event.show', $event->slug) }}"
+                            class="th-btn"
+                        >
                             Read More <i class="fas fa-arrow-up-right ms-2"></i>
                         </a>
                     </div>

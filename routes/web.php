@@ -94,6 +94,10 @@ Route::get('/projects/{slug}', function ($slug) {
 Route::get('/events', function () {
     return view('events-page');
 })->name('events');
+// event detail
+Route::get('/events/{slug}', function ($slug) {
+    return view('event-detail-page', ['slug' => $slug]);
+})->name('event.show');
 
 // facilities
 Route::get('/facilities', function () {
