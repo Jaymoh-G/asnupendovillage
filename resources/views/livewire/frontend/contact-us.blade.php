@@ -122,10 +122,17 @@ Contact Area
                 <div class="row gy-40">
                     <div class="col-xl-6 align-self-end">
                         <div class="contact-thumb1-1">
+                            @if($pageContent && $pageContent->featured_image)
+                            <img
+                                src="{{ $pageContent->featured_image_url }}"
+                                alt="{{ $pageContent->title ?: 'Contact Us' }}"
+                            />
+                            @else
                             <img
                                 src="assets/img/normal/contact_1_1.png"
-                                alt="img"
+                                alt="Contact Us"
                             />
+                            @endif
                         </div>
                     </div>
                     <div class="col-xl-6">
@@ -135,11 +142,11 @@ Contact Area
                         <div class="contact-form-v1 contact-page-form">
                             <div class="contact-form">
                                 <div class="contact-form-header">
-                                    <h2>Get In Touch</h2>
+                                    <h2>
+                                        {{ $pageContent && $pageContent->title ? $pageContent->title : 'Get In Touch' }}
+                                    </h2>
                                     <p>
-                                        We'd love to hear from you. Send us a
-                                        message and we'll respond as soon as
-                                        possible.
+                                        {{ $pageContent && $pageContent->excerpt ? $pageContent->excerpt : "We'd love to hear from you. Send us a message and we'll respond as soon as possible." }}
                                     </p>
                                 </div>
                                 <form

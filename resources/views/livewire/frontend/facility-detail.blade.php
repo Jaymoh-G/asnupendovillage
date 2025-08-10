@@ -8,9 +8,7 @@
     >
         <div class="container">
             <div class="breadcumb-content">
-                <h1 class="breadcumb-title">
-                    {{ $pageBanner->title ?? 'Facility Details' }}
-                </h1>
+                <h1 class="breadcumb-title">{{ $facility->name }}</h1>
                 <ul class="breadcumb-menu">
                     <li><a href="{{ route('home') }}">Home</a></li>
                     <li><a href="{{ route('facilities') }}">Facilities</a></li>
@@ -20,10 +18,10 @@
         </div>
     </div>
     @else
-    <div class="breadcumb-wrapper" style="background-color: #000000;">
+    <div class="breadcumb-wrapper" style="background-color: #000000">
         <div class="container">
             <div class="breadcumb-content">
-                <h1 class="breadcumb-title">Facility Details</h1>
+                <h1 class="breadcumb-title">{{ $facility->name }}</h1>
                 <ul class="breadcumb-menu">
                     <li><a href="{{ route('home') }}">Home</a></li>
                     <li><a href="{{ route('facilities') }}">Facilities</a></li>
@@ -39,7 +37,8 @@
         <div class="container">
             <div class="row gx-40">
                 <div class="col-xxl-8 col-lg-7">
-                    <div class="page-img">
+                    <!-- Featured Facility Image - At the top -->
+                    <div class="page-img mb-4">
                         @if($facility->image_url)
                         <img
                             src="{{ $facility->image_url }}"
@@ -54,288 +53,191 @@
                             alt="{{ $facility->name }}"
                         />
                         @endif @if($facility->program)
-                        <div class="tag">{{ $facility->program->title }}</div>
+                        <div class="tag">
+                            {{ $facility->program->title }}
+                        </div>
                         @endif
                     </div>
+
                     <div class="blog-content">
                         <h2 class="h3 page-title mt-n2">
                             {{ $facility->name }}
                         </h2>
 
                         @if($facility->description)
-                        <p class="mb-35">{{ $facility->description }}</p>
+                        <div class="mb-45">{!! $facility->description !!}</div>
+                        @endif @if($facility->content)
+                        <div class="mb-45">{!! $facility->content !!}</div>
                         @endif
 
-                        <div class="donation-progress-wrap mb-55">
-                            <div class="media-left">
-                                <div class="progress">
-                                    <div
-                                        class="progress-bar"
-                                        style="width: {{ $facility->status === 'active' ? '100' : '50' }}%;"
-                                    >
-                                        <div class="progress-value">
-                                            {{ $facility->status === 'active' ? '100' : '50'
-
-                                            }}%
+                        <!-- Additional Facility Images Section - At the bottom -->
+                        <div class="facility-images-section mb-45">
+                            <h3 class="h4 mb-4">Facility Images</h3>
+                            @if($facility->images()->count() > 0)
+                            <div class="row g-3">
+                                @foreach($facility->images()->ordered()->get()
+                                as $image)
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="facility-image-item">
+                                        <img
+                                            src="{{ $image->display_url }}"
+                                            alt="{{ $image->alt_text ?? $facility->name }}"
+                                            class="img-fluid rounded"
+                                            style="
+                                                filter: none !important;
+                                                width: 100%;
+                                                height: 200px;
+                                                object-fit: cover;
+                                            "
+                                        />
+                                        @if($image->featured)
+                                        <div class="featured-badge">
+                                            <i class="fas fa-star"></i> Featured
                                         </div>
+                                        @endif
                                     </div>
                                 </div>
-                                <div class="donation-progress-content">
-                                    <span class="donation-card_raise"
-                                        >Status:
-                                        <span
-                                            class="donation-card_raise-number"
-                                            >{{ ucfirst($facility->status) }}</span
-                                        ></span
-                                    >
-                                    @if($facility->capacity)
-                                    <span class="donation-card_goal"
-                                        >Capacity:
-                                        <span class="donation-card_goal-number"
-                                            >{{ $facility->capacity }}
-                                            people</span
-                                        ></span
-                                    >
-                                    @endif
-                                </div>
+                                @endforeach
                             </div>
-                            <div class="btn-wrap">
-                                <a
-                                    class="th-btn"
-                                    href="{{ route('facilities') }}"
-                                    >View All Facilities
-                                    <i class="fas fa-arrow-up-right ms-2"></i
-                                ></a>
+                            @else
+                            <div class="text-center text-muted">
+                                <i class="fas fa-images fa-3x mb-3"></i>
+                                <p>No additional facility images available</p>
                             </div>
+                            @endif
                         </div>
 
-                        @if($facility->program)
-                        <h3 class="mb-15">About The Program</h3>
-                        <p class="mb-45">
-                            This facility is part of our
-                            {{ $facility->program->title }} program, designed to
-                            provide essential services and support to our
-                            community. Our dedicated team works tirelessly to
-                            ensure this facility meets the highest standards of
-                            quality and accessibility.
-                        </p>
-                        @endif
-
-                        <h3 class="mb-15">Facility Features</h3>
-                        <p class="mb-45">
-                            Our facility is equipped with modern amenities and
-                            is staffed by trained professionals who are
-                            committed to providing excellent service. We
-                            maintain high standards of cleanliness and safety to
-                            ensure a comfortable environment for all users.
-                        </p>
-
-                        <h3 class="mb-15">Accessibility</h3>
-                        <p class="mb-35">
-                            We are committed to making our facilities accessible
-                            to everyone. Our facility is designed to accommodate
-                            individuals with different needs and abilities,
-                            ensuring that all members of our community can
-                            benefit from our services.
-                        </p>
-
-                        <div class="row gx-40 gy-30 align-items-center">
-                            <div class="col-xl-6">
-                                <div class="page-img mb-0">
-                                    @if($facility->image_url)
-                                    <img
-                                        src="{{ $facility->image_url }}"
-                                        alt="{{ $facility->name }}"
-                                        style="filter: none !important"
-                                    />
-                                    @else
-                                    <img
-                                        src="{{
-                                            asset(
-                                                'assets/img/service/service_card_1_2.png'
-                                            )
-                                        }}"
-                                        alt="{{ $facility->name }}"
-                                    />
-                                    @endif
-                                </div>
-                            </div>
-                            <div class="col-xl-6">
-                                <div class="checklist">
-                                    <ul>
-                                        <li>
-                                            <i class="fas fa-check"></i>Modern
-                                            and well-maintained facilities
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-check"></i>Trained
-                                            and professional staff
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-check"></i>Safe and
-                                            secure environment
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-check"></i
-                                            >Accessible to all community members
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-check"></i>Regular
-                                            maintenance and updates
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-check"></i
-                                            >Emergency response protocols
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-check"></i
-                                            >Community-focused services
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
+                        <!-- Support Button - At the bottom -->
+                        <div class="btn-wrap text-center">
+                            <a class="th-btn" href="{{ route('donate-now') }}"
+                                >Support This Facility
+                                <i class="fas fa-arrow-up-right ms-2"></i
+                            ></a>
                         </div>
-
-                        <p class="mb-40 mt-30">
-                            Our facility is more than just a building - it's a
-                            hub of community activity and support. We regularly
-                            host events, workshops, and programs that bring
-                            people together and strengthen our community bonds.
-                            Your support helps us maintain and improve these
-                            essential community resources.
-                        </p>
                     </div>
                 </div>
                 <div class="col-xxl-4 col-lg-5">
                     <aside class="sidebar-area donation-sidebar">
-                        <div
-                            class="widget"
-                            data-bg-src="{{
-                                asset('assets/img/bg/gray-bg2.png')
-                            }}"
-                            data-overlay="gray"
-                            data-opacity="5"
-                        >
-                            <div class="author-widget-wrap">
-                                <div class="author-tag">Program:</div>
-                                <div class="avater">
-                                    @if($facility->program &&
-                                    $facility->program->image_url)
-                                    <img
-                                        src="{{ $facility->program->image_url }}"
-                                        alt="{{ $facility->program->title }}"
-                                    />
-                                    @else
-                                    <img
-                                        src="{{
-                                            asset(
-                                                'assets/img/blog/blog-author.jpg'
-                                            )
-                                        }}"
-                                        alt="Program"
-                                    />
-                                    @endif
+                        @if($facility->program)
+                        <div class="widget widget_categories">
+                            <h3 class="widget_title">Program Information</h3>
+                            <ul>
+                                <li>
+                                    <strong
+                                        >This facility is under the
+                                        program:</strong
+                                    >
+                                    <a
+                                        href="{{ route('programs.detail', $facility->program->slug) }}"
+                                    >
+                                        {{ $facility->program->title }}
+                                    </a>
+                                </li>
+                                @if($facility->program->excerpt)
+                                <li>
+                                    <strong>Description:</strong>
+                                    {{ \Illuminate\Support\Str::limit($facility->program->excerpt, 100) }}
+                                </li>
+                                @endif @if($facility->capacity)
+                                <li>
+                                    <strong>Capacity:</strong>
+                                    {{ $facility->capacity }} people
+                                </li>
+                                @endif
+                            </ul>
+                        </div>
+                        @endif
+
+                        <div class="widget widget_categories">
+                            <h3 class="widget_title">Support This Facility</h3>
+                            <div class="support-facility-banner">
+                                <div class="support-icon">
+                                    <i class="fas fa-building"></i>
                                 </div>
-                                <div class="author-info">
-                                    <h4 class="name">
-                                        <a
-                                            class="text-inherit"
-                                            href="#"
-                                            >{{ $facility->program->title ?? 'General' }}</a
-                                        >
-                                    </h4>
-                                    <span class="meta">
-                                        <a href="#"
-                                            ><i class="fas fa-building"></i
-                                            >Facility</a
-                                        >
-                                    </span>
-                                    @if($facility->capacity)
-                                    <span class="meta">
-                                        <a href="#"
-                                            ><i class="fas fa-users"></i
-                                            >Capacity:
-                                            {{ $facility->capacity }}</a
-                                        >
-                                    </span>
-                                    @endif
+                                <h4 class="support-title">Help Us Maintain</h4>
+                                <p class="support-description">
+                                    Your support helps us maintain and improve
+                                    this facility, ensuring it continues to
+                                    serve our community with excellence.
+                                </p>
+                                <div class="support-actions">
+                                    <a
+                                        class="th-btn support-btn"
+                                        href="{{ route('donate-now') }}"
+                                    >
+                                        <i
+                                            class="fas fa-hand-holding-heart"
+                                        ></i>
+                                        Support Facility
+                                    </a>
+                                    <a
+                                        class="th-btn-outline share-btn"
+                                        href="#"
+                                        onclick="shareFacility()"
+                                    >
+                                        <i class="fas fa-share-alt"></i>
+                                        Share Facility
+                                    </a>
                                 </div>
                             </div>
                         </div>
-                        <div
-                            class="widget"
-                            data-bg-src="{{
-                                asset('assets/img/bg/gray-bg2.png')
-                            }}"
-                            data-overlay="gray"
-                            data-opacity="5"
-                        >
-                            <div class="widget-donation-wrap">
-                                <div class="donate-price">
-                                    {{ ucfirst($facility->status) }}
-                                </div>
-                                <h4 class="title">Facility Status</h4>
-                                <a
-                                    class="th-btn"
-                                    href="{{ route('facilities') }}"
-                                    >View All Facilities</a
-                                >
-                            </div>
-                        </div>
-                        <div
-                            class="widget"
-                            data-bg-src="{{
-                                asset('assets/img/bg/gray-bg2.png')
-                            }}"
-                            data-overlay="gray"
-                            data-opacity="5"
-                        >
-                            <h3 class="widget_title">Other Facilities</h3>
-                            <div class="recent-donate-wrap">
-                                @foreach($otherFacilities as $otherFacility)
-                                <div class="recent-post">
-                                    <div class="media-img">
-                                        <a
-                                            href="{{ route('facilities.detail', $otherFacility->slug) }}"
-                                        >
-                                            @if($otherFacility->image_url)
-                                            <img
-                                                src="{{ $otherFacility->image_url }}"
-                                                alt="{{ $otherFacility->name }}"
-                                                style="filter: none !important"
-                                            />
-                                            @else
-                                            <img
-                                                src="{{
-                                                    asset(
-                                                        'assets/img/widget/donor_1_1.jpg'
-                                                    )
-                                                }}"
-                                                alt="{{ $otherFacility->name }}"
-                                            />
-                                            @endif
-                                        </a>
+
+                        <div class="widget widget_categories">
+                            <h3 class="widget_title">Related Facilities</h3>
+                            <div class="related-facilities">
+                                @forelse($otherFacilities as $otherFacility)
+                                <div class="related-facility-item">
+                                    <div class="facility-thumb">
+                                        @if($otherFacility->image_url)
+                                        <img
+                                            src="{{ $otherFacility->image_url }}"
+                                            alt="{{ $otherFacility->name }}"
+                                        />
+                                        @else
+                                        <img
+                                            src="{{
+                                                asset(
+                                                    'assets/img/widget/donor_1_1.jpg'
+                                                )
+                                            }}"
+                                            alt="{{ $otherFacility->name }}"
+                                        />
+                                        @endif
                                     </div>
-                                    <div class="media-body">
-                                        <h4 class="post-title">
+                                    <div class="facility-info">
+                                        <h4 class="facility-title">
                                             <a
-                                                class="text-inherit"
                                                 href="{{ route('facilities.detail', $otherFacility->slug) }}"
                                             >
-                                                {{ \Illuminate\Support\Str::limit($otherFacility->name, 25) }}
+                                                {{ \Illuminate\Support\Str::limit($otherFacility->name, 40) }}
                                             </a>
                                         </h4>
-                                        <div class="recent-post-meta">
-                                            @if($otherFacility->program)
-                                            <a
-                                                href="#"
-                                                >{{ $otherFacility->program->title }}</a
-                                            >
+                                        @if($otherFacility->program)
+                                        <div class="facility-meta">
+                                            <span class="facility-program">
+                                                <i class="fas fa-tags"></i>
+                                                {{ $otherFacility->program->title }}
+                                            </span>
+                                            @if($otherFacility->capacity)
+                                            <span class="facility-capacity">
+                                                <i class="fas fa-users"></i>
+                                                {{ $otherFacility->capacity }}
+                                                people
+                                            </span>
                                             @endif
                                         </div>
+                                        @endif
                                     </div>
                                 </div>
-                                @endforeach
+                                @empty
+                                <div class="related-facility-item">
+                                    <div class="facility-info">
+                                        <p class="text-muted">
+                                            No related facilities found.
+                                        </p>
+                                    </div>
+                                </div>
+                                @endforelse
                             </div>
                         </div>
                     </aside>
@@ -427,5 +329,291 @@
             color: #6c757d;
             font-size: 12px;
         }
+
+        /* Status Badge Styling */
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-active {
+            background: #1a685b;
+            color: white;
+            border: 1px solid #1a685b;
+            box-shadow: 0 2px 8px rgba(26, 104, 91, 0.3);
+        }
+
+        .status-inactive {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+            color: white;
+            border: 1px solid #6c757d;
+        }
+
+        .status-maintenance {
+            background: #ffac00;
+            color: #212529;
+            border: 1px solid #ffac00;
+            box-shadow: 0 2px 8px rgba(255, 172, 0, 0.3);
+        }
+
+        /* Support Facility Banner Styling */
+        .support-facility-banner {
+            text-align: center;
+            padding: 25px 20px;
+            background: #1a685b;
+            border-radius: 12px;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .support-icon {
+            margin-bottom: 15px;
+        }
+
+        .support-icon i {
+            font-size: 2.5rem;
+            color: #ffac00;
+            animation: pulse 2s infinite;
+            text-shadow: 0 0 20px rgba(255, 172, 0, 0.5);
+        }
+
+        .support-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .support-description {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .support-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .support-btn {
+            background: #ffac00 !important;
+            color: white !important;
+            border: 2px solid #ffac00 !important;
+            font-weight: 600;
+            padding: 12px 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 172, 0, 0.3);
+        }
+
+        .support-btn:hover {
+            background: white !important;
+            color: #ffac00 !important;
+            border-color: #ffac00 !important;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 172, 0, 0.4);
+        }
+
+        .share-btn {
+            background: transparent !important;
+            color: white !important;
+            border: 2px solid rgba(255, 172, 0, 0.8) !important;
+            font-weight: 600;
+            padding: 12px 20px;
+            transition: all 0.3s ease;
+        }
+
+        .share-btn:hover {
+            background: rgba(255, 172, 0, 0.1) !important;
+            color: #ffac00 !important;
+            border-color: #ffac00 !important;
+            transform: translateY(-2px);
+        }
+
+        .support-btn i,
+        .share-btn i {
+            margin-right: 8px;
+        }
+
+        /* Related Facilities Styling */
+        .related-facilities {
+            margin-top: 20px;
+        }
+
+        .related-facility-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .related-facility-item:hover {
+            border-color: #ffac00;
+            box-shadow: 0 4px 12px rgba(255, 172, 0, 0.25);
+            background: rgba(255, 172, 0, 0.02);
+        }
+
+        .related-facility-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .facility-thumb {
+            flex-shrink: 0;
+            width: 80px;
+            height: 60px;
+            margin-right: 15px;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .facility-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: none !important;
+        }
+
+        .facility-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .facility-title {
+            margin: 0 0 8px 0;
+            font-size: 14px;
+            line-height: 1.3;
+        }
+
+        .facility-title a {
+            color: #333;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .facility-title a:hover {
+            color: #ffac00;
+            text-shadow: 0 0 8px rgba(255, 172, 0, 0.2);
+        }
+
+        .facility-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .facility-meta span {
+            font-size: 12px;
+            color: #666;
+            display: flex;
+            align-items: center;
+        }
+
+        .facility-meta i {
+            margin-right: 6px;
+            color: #ffac00;
+            width: 14px;
+            text-shadow: 0 0 8px rgba(255, 172, 0, 0.3);
+        }
+
+        .facility-program,
+        .facility-capacity {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Facility Images Styling */
+        .facility-image-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .facility-image-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .facility-image-item img {
+            transition: transform 0.3s ease;
+        }
+
+        .facility-image-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .featured-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: linear-gradient(45deg, #ffac00, #ff8c00);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(255, 172, 0, 0.3);
+        }
+
+        .featured-badge i {
+            margin-right: 4px;
+            color: white;
+        }
+
+        .facility-images-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+        }
+
+        .facility-images-section h3 {
+            color: #1a685b;
+            border-bottom: 2px solid #ffac00;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
     </style>
+
+    <script>
+        function shareFacility() {
+            if (navigator.share) {
+                navigator.share({
+                    title: "{{ $facility->name }}",
+                    text: "Check out this amazing facility: {{ $facility->name }}",
+                    url: window.location.href,
+                });
+            } else {
+                // Fallback for browsers that don't support Web Share API
+                const url = window.location.href;
+                const text =
+                    "Check out this amazing facility: {{ $facility->name }}";
+
+                // Copy to clipboard
+                navigator.clipboard
+                    .writeText(`${text}\n${url}`)
+                    .then(() => {
+                        alert("Facility link copied to clipboard!");
+                    })
+                    .catch(() => {
+                        // Fallback: open in new window
+                        window.open(
+                            `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+                                text
+                            )}&url=${encodeURIComponent(url)}`,
+                            "_blank"
+                        );
+                    });
+            }
+        }
+    </script>
 </div>

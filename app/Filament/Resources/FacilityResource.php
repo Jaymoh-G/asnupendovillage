@@ -11,6 +11,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class FacilityResource extends Resource
@@ -31,33 +32,22 @@ class FacilityResource extends Resource
                             ->label('Facility Name')
                             ->required()
                             ->maxLength(255),
+                        Forms\Components\TextInput::make('slug')
+                            ->label('Slug')
+                            ->unique('facilities', 'slug', fn($record) => $record)
+                            ->maxLength(255)
+                            ->helperText('Leave empty to auto-generate from facility name'),
                         Forms\Components\Select::make('program_id')
                             ->label('Program')
-                            ->options(\App\Models\Program::pluck('title', 'id'))
-                            ->required()
+                            ->relationship('program', 'title')
                             ->searchable()
-                            ->preload(),
-                        Forms\Components\Textarea::make('description')
-                            ->label('Description')
-                            ->rows(4)
-                            ->maxLength(1000),
-                        Forms\Components\FileUpload::make('image')
-                            ->label('Facility Image')
-                            ->image()
-                            ->imageEditor()
-                            ->imageCropAspectRatio('16:9')
-                            ->imageResizeTargetWidth('800')
-                            ->imageResizeTargetHeight('450')
-                            ->directory('facilities')
-                            ->visibility('public')
-                            ->maxSize(4096)
-                            ->helperText('Upload an image for the facility.'),
-
-                    ])
-                    ->columns(2),
-
-                Forms\Components\Section::make('Settings')
-                    ->schema([
+                            ->preload()
+                            ->nullable(),
+                        Forms\Components\TextInput::make('capacity')
+                            ->label('Capacity')
+                            ->numeric()
+                            ->minValue(1)
+                            ->helperText('Maximum number of people this facility can accommodate'),
                         Forms\Components\Select::make('status')
                             ->label('Status')
                             ->options([
@@ -66,8 +56,49 @@ class FacilityResource extends Resource
                             ])
                             ->default('active')
                             ->required(),
+                        Forms\Components\Textarea::make('meta_description')
+                            ->label('Meta Description')
+                            ->rows(3)
+                            ->maxLength(160)
+                            ->helperText('SEO meta description (max 160 characters). This will be used for search engine results and social media sharing.'),
                     ])
                     ->columns(2),
+
+                Forms\Components\Section::make('Content')
+                    ->schema([
+                        Forms\Components\Textarea::make('description')
+                            ->label('Short Description')
+                            ->rows(3)
+                            ->maxLength(500)
+                            ->helperText('Brief description of the facility (max 500 characters)'),
+                        Forms\Components\RichEditor::make('content')
+                            ->label('Facility Content')
+                            ->required()
+                            ->columnSpanFull()
+                            ->helperText('Rich content with formatting, images, and attachments'),
+                    ])
+                    ->columns(1),
+
+                Forms\Components\Section::make('Images')
+                    ->schema([
+                        Forms\Components\FileUpload::make('temp_images')
+                            ->label('Upload Images')
+                            ->multiple()
+                            ->image()
+                            ->imageEditor()
+                            ->imageCropAspectRatio('16:9')
+                            ->imageResizeTargetWidth('800')
+                            ->imageResizeTargetHeight('450')
+                            ->directory('facilities')
+                            ->visibility('public')
+                            ->maxSize(4096)
+                            ->helperText('Upload multiple images for the facility. Images will be processed and stored properly.')
+                            ->afterStateUpdated(function ($state, $set) {
+                                // This will be handled in the page class
+                            }),
+                    ])
+                    ->columns(1),
+
             ]);
     }
 
@@ -75,8 +106,8 @@ class FacilityResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('image_url')
-                    ->label('Image')
+                Tables\Columns\ImageColumn::make('featured_image_url')
+                    ->label('Featured Image')
                     ->size(60)
                     ->openUrlInNewTab(),
 
@@ -88,14 +119,23 @@ class FacilityResource extends Resource
                 Tables\Columns\TextColumn::make('program.title')
                     ->label('Program')
                     ->searchable()
-                    ->sortable()
-                    ->badge()
-                    ->color('success'),
+                    ->sortable(),
 
-                Tables\Columns\TextColumn::make('status')
+                Tables\Columns\TextColumn::make('capacity')
+                    ->label('Capacity')
+                    ->sortable(),
+
+                Tables\Columns\BadgeColumn::make('status')
                     ->label('Status')
-                    ->badge()
-                    ->color(fn($record) => $record->status === 'active' ? 'success' : 'danger'),
+                    ->colors([
+                        'success' => 'active',
+                        'danger' => 'inactive',
+                    ]),
+
+                Tables\Columns\TextColumn::make('slug')
+                    ->label('Slug')
+                    ->searchable()
+                    ->toggleable(true),
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Created')
@@ -104,16 +144,14 @@ class FacilityResource extends Resource
                     ->toggleable(true),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('program_id')
-                    ->label('Program')
-                    ->relationship('program', 'title'),
-
                 Tables\Filters\SelectFilter::make('status')
-                    ->label('Status')
                     ->options([
                         'active' => 'Active',
                         'inactive' => 'Inactive',
                     ]),
+                Tables\Filters\SelectFilter::make('program_id')
+                    ->relationship('program', 'title')
+                    ->label('Program'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -131,6 +169,16 @@ class FacilityResource extends Resource
         return [
             //
         ];
+    }
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['name', 'slug', 'content', 'meta_description'];
+    }
+
+    public static function getGlobalSearchResultTitle(Model $record): string
+    {
+        return $record->name;
     }
 
     public static function getPages(): array

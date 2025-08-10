@@ -67,30 +67,16 @@
 
                         <div class="donation-progress-wrap mb-55">
                             <div class="media-left">
-                                <div class="progress">
-                                    <div
-                                        class="progress-bar"
-                                        style="width: 100%"
-                                    >
-                                        <div class="progress-value">100%</div>
-                                    </div>
-                                </div>
+                                @if($program->featured)
                                 <div class="donation-progress-content">
-                                    <span class="donation-card_raise"
-                                        >Status:
-                                        <span class="donation-card_raise-number"
-                                            >Active</span
-                                        ></span
-                                    >
-                                    @if($program->featured)
                                     <span class="donation-card_goal"
                                         >Featured:
                                         <span class="donation-card_goal-number"
                                             >Yes</span
                                         ></span
                                     >
-                                    @endif
                                 </div>
+                                @endif
                             </div>
                             <div class="btn-wrap">
                                 <a class="th-btn" href="{{ route('programs') }}"
@@ -251,13 +237,13 @@
                             data-opacity="5"
                         >
                             <div class="widget-donation-wrap">
-                                <div class="donate-price">
-                                    {{ $program->featured ? 'Featured' : 'Active' }}
+                                <div class="btn-wrap">
+                                    <a
+                                        class="th-btn"
+                                        href="{{ route('programs') }}"
+                                        >View All Programs</a
+                                    >
                                 </div>
-                                <h4 class="title">Program Status</h4>
-                                <a class="th-btn" href="{{ route('programs') }}"
-                                    >View All Programs</a
-                                >
                             </div>
                         </div>
                         <div

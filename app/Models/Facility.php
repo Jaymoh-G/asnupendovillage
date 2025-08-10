@@ -4,19 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Traits\HasImages;
 use Illuminate\Support\Str;
 
 class Facility extends Model
 {
+    use HasImages;
 
     protected $fillable = [
         'name',
+        'slug',
         'description',
-        'program_id',
-        'image',
+        'content',
         'status',
         'capacity',
-        'slug',
+        'program_id',
+        'meta_description',
     ];
 
     protected $casts = [
@@ -28,17 +31,23 @@ class Facility extends Model
         return $this->belongsTo(Program::class);
     }
 
+    /**
+     * Get the image URL for display (fallback to HasImages trait)
+     */
     public function getImageUrlAttribute(): ?string
     {
+        // First try to get image from HasImages trait
+        $featuredImageUrl = $this->featured_image_url;
+        if ($featuredImageUrl) {
+            return $featuredImageUrl;
+        }
+
+        // Fallback to the old image field
         if ($this->image) {
             return asset('storage/' . $this->image);
         }
-        return null;
-    }
 
-    public function getFeaturedImageUrlAttribute(): ?string
-    {
-        return $this->getImageUrlAttribute();
+        return null;
     }
 
     public function scopeActive($query)

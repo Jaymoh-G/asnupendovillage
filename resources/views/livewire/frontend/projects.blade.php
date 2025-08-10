@@ -60,15 +60,15 @@
                                 </h3>
                                 <div class="project-description mb-3">
                                     <p>
+                                        @if($project->content) {!!
+                                        \Illuminate\Support\Str::limit(strip_tags($project->content),
+                                        120) !!} @else
                                         {{ \Illuminate\Support\Str::limit($project->description, 120) }}
+                                        @endif
                                     </p>
                                 </div>
                                 <div class="donation-card_progress-wrap">
                                     <div class="donation-card_progress-content">
-                                        <span class="donation-card_raise"
-                                            >Status -
-                                            {{ ucfirst($project->status) }}</span
-                                        >
                                         <span class="donation-card_goal"
                                             >Program -
                                             {{ $project->program->title ?? 'General' }}</span
