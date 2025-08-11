@@ -11,12 +11,33 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('facilities', function (Blueprint $table) {
-            // Add content field
-            $table->text('content')->nullable()->after('description');
+        // First, check if the foreign key constraint exists and drop it safely
+        if (Schema::hasTable('facilities')) {
+            Schema::table('facilities', function (Blueprint $table) {
+                // Check if foreign key exists before trying to drop it
+                try {
+                    $table->dropForeign(['program_id']);
+                } catch (\Exception $e) {
+                    // Foreign key doesn't exist, continue
+                }
 
-            // Drop unnecessary fields
-            $table->dropColumn([
+                // Check if index exists before trying to drop it
+                try {
+                    $table->dropIndex(['program_id']);
+                } catch (\Exception $e) {
+                    // Index doesn't exist, continue
+                }
+            });
+        }
+
+        Schema::table('facilities', function (Blueprint $table) {
+            // Add content field if it doesn't exist
+            if (!Schema::hasColumn('facilities', 'content')) {
+                $table->text('content')->nullable()->after('description');
+            }
+
+            // Drop columns safely - check if they exist first
+            $columnsToDrop = [
                 'program_description',
                 'features',
                 'accessibility_info',
@@ -25,7 +46,13 @@ return new class extends Migration
                 'program_id',
                 'status',
                 'capacity'
-            ]);
+            ];
+
+            foreach ($columnsToDrop as $column) {
+                if (Schema::hasColumn('facilities', $column)) {
+                    $table->dropColumn($column);
+                }
+            }
         });
     }
 
@@ -47,7 +74,9 @@ return new class extends Migration
 
             // Drop content field
             $table->dropColumn('content');
+        });
 
+        Schema::table('facilities', function (Blueprint $table) {
             // Recreate foreign key and indexes
             $table->foreign('program_id')->references('id')->on('programs')->onDelete('set null');
             $table->index('program_id');

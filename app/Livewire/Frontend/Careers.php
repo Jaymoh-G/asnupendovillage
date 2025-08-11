@@ -12,7 +12,13 @@ class Careers extends Component
 
     public function mount()
     {
-        $this->careers = Career::orderByDesc('updated_at')->get();
+        $this->careers = Career::where('status', 'open')
+            ->where(function($query) {
+                $query->whereNull('application_deadline')
+                      ->orWhere('application_deadline', '>', now());
+            })
+            ->orderByDesc('updated_at')
+            ->get();
     }
 
     public function show($id)

@@ -10,12 +10,17 @@ class Career extends Model
     protected $fillable = [
         'title',
         'description',
-        'location',
+        'content',
+        'pdf_file',
         'type',
         'status',
         'application_deadline',
         'contact_email',
         'slug',
+    ];
+
+    protected $casts = [
+        'application_deadline' => 'date',
     ];
 
     protected static function boot()
@@ -34,5 +39,16 @@ class Career extends Model
     public function scopeActive($query)
     {
         return $query->where('status', 'open');
+    }
+
+    /**
+     * Get the PDF file URL
+     */
+    public function getPdfUrlAttribute(): ?string
+    {
+        if ($this->pdf_file) {
+            return asset('storage/' . $this->pdf_file);
+        }
+        return null;
     }
 }

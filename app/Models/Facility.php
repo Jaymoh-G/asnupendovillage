@@ -16,7 +16,6 @@ class Facility extends Model
         'slug',
         'description',
         'content',
-        'status',
         'capacity',
         'program_id',
         'meta_description',
@@ -48,11 +47,6 @@ class Facility extends Model
         }
 
         return null;
-    }
-
-    public function scopeActive($query)
-    {
-        return $query->where('status', 'active');
     }
 
     public function scopeOrdered($query)

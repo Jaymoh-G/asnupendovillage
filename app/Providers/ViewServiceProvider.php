@@ -24,9 +24,7 @@ class ViewServiceProvider extends ServiceProvider
     {
         // Share facilities and programs data with header view
         View::composer('components.layouts.partials.header', function ($view) {
-            $facilities = Facility::where('status', 'active')
-                ->orderBy('name')
-                ->get();
+            $facilities = Facility::ordered()->get();
 
             $programs = Program::orderBy('title')
                 ->get();

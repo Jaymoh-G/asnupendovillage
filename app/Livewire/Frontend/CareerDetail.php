@@ -5,10 +5,14 @@ namespace App\Livewire\Frontend;
 use Livewire\Component;
 use App\Models\Career;
 use Illuminate\Support\Facades\Mail;
+use App\Traits\HasPageBanner;
 
 class CareerDetail extends Component
 {
+    use HasPageBanner;
+
     public $career;
+    public $pageBanner;
     public $applicantName;
     public $applicantEmail;
     public $applicantMessage;
@@ -22,6 +26,9 @@ class CareerDetail extends Component
         } else {
             $this->career = Career::where('slug', $slug)->firstOrFail();
         }
+
+        // Get page banner for careers
+        $this->pageBanner = $this->getPageBanner('careers');
     }
 
     public function applyNow()
@@ -35,7 +42,7 @@ class CareerDetail extends Component
         Mail::raw(
             "Application for: {$this->career->title}\n\nName: {$this->applicantName}\nEmail: {$this->applicantEmail}\nMessage: {$this->applicantMessage}",
             function ($message) {
-                $message->to($this->career->email)
+                $message->to($this->career->contact_email)
                     ->subject('New Career Application: ' . $this->career->title);
             }
         );

@@ -29,25 +29,73 @@ class CareerResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('title')->label('Title')->required()->maxLength(255),
-                Forms\Components\Textarea::make('description')->label('Description')->rows(4),
-                Forms\Components\TextInput::make('location')->label('Location')->maxLength(255),
+                Forms\Components\TextInput::make('title')
+                    ->label('Title')
+                    ->required()
+                    ->maxLength(255),
+
+                Forms\Components\Textarea::make('description')
+                    ->label('Short Description')
+                    ->rows(3)
+                    ->maxLength(500)
+                    ->helperText('A brief summary of the position (max 500 characters)'),
+
+                Forms\Components\RichEditor::make('content')
+                    ->label('Detailed Content')
+                    ->toolbarButtons([
+                        'bold',
+                        'italic',
+                        'underline',
+                        'strike',
+                        'link',
+                        'bulletList',
+                        'orderedList',
+                        'h2',
+                        'h3',
+                        'h4',
+                        'blockquote',
+                        'codeBlock',
+                    ])
+                    ->columnSpanFull()
+                    ->helperText('Detailed job description with formatting options'),
+
+                Forms\Components\FileUpload::make('pdf_file')
+                    ->label('Job Description PDF')
+                    ->acceptedFileTypes(['application/pdf'])
+                    ->maxSize(4096) // 4MB
+                    ->helperText('Upload a PDF file for the complete job description (max 4MB)')
+                    ->directory('careers')
+                    ->visibility('public'),
+
                 Forms\Components\Select::make('type')
-                    ->label('Type')
+                    ->label('Employment Type')
                     ->options([
                         'full-time' => 'Full-time',
                         'part-time' => 'Part-time',
                         'contract' => 'Contract',
                         'internship' => 'Internship',
-                    ])->default('full-time')->required(),
+                    ])
+                    ->default('full-time')
+                    ->required(),
+
                 Forms\Components\Select::make('status')
                     ->label('Status')
                     ->options([
                         'open' => 'Open',
                         'closed' => 'Closed',
-                    ])->default('open')->required(),
-                Forms\Components\DatePicker::make('application_deadline')->label('Application Deadline'),
-                Forms\Components\TextInput::make('contact_email')->label('Contact Email')->email()->maxLength(255),
+                    ])
+                    ->default('open')
+                    ->required(),
+
+                Forms\Components\DatePicker::make('application_deadline')
+                    ->label('Application Deadline')
+                    ->helperText('Set the deadline for applications'),
+
+                Forms\Components\TextInput::make('contact_email')
+                    ->label('Contact Email')
+                    ->email()
+                    ->maxLength(255)
+                    ->helperText('Email address for job inquiries'),
             ]);
     }
 
@@ -55,17 +103,80 @@ class CareerResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')->sortable(),
-                Tables\Columns\TextColumn::make('title')->label('Title')->searchable(),
-                Tables\Columns\TextColumn::make('location')->label('Location'),
-                Tables\Columns\BadgeColumn::make('type')->label('Type'),
-                Tables\Columns\BadgeColumn::make('status')->label('Status'),
-                Tables\Columns\TextColumn::make('application_deadline')->label('Deadline')->date(),
-                Tables\Columns\TextColumn::make('contact_email')->label('Contact Email'),
-                Tables\Columns\TextColumn::make('created_at')->label('Created')->dateTime()->sortable(),
+                Tables\Columns\TextColumn::make('id')
+                    ->sortable()
+                    ->toggleable(true),
+
+                Tables\Columns\TextColumn::make('title')
+                    ->label('Title')
+                    ->searchable()
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('type')
+                    ->label('Type')
+                    ->badge()
+                    ->color(function (string $state): string {
+                        if ($state === 'full-time') return 'success';
+                        if ($state === 'part-time') return 'info';
+                        if ($state === 'contract') return 'warning';
+                        if ($state === 'internship') return 'primary';
+                        return 'gray';
+                    }),
+
+                Tables\Columns\TextColumn::make('status')
+                    ->label('Status')
+                    ->badge()
+                    ->color(function (string $state): string {
+                        if ($state === 'open') return 'success';
+                        if ($state === 'closed') return 'danger';
+                        return 'gray';
+                    }),
+
+                Tables\Columns\TextColumn::make('application_deadline')
+                    ->label('Deadline')
+                    ->date()
+                    ->sortable()
+                    ->color(function ($record) {
+                        if (!$record->application_deadline) return 'gray';
+
+                        $deadline = \Carbon\Carbon::parse($record->application_deadline);
+                        return $deadline->isPast() ? 'danger' : 'success';
+                    }),
+
+                Tables\Columns\TextColumn::make('contact_email')
+                    ->label('Contact Email')
+                    ->searchable(),
+
+                Tables\Columns\IconColumn::make('pdf_file')
+                    ->label('PDF')
+                    ->boolean()
+                    ->trueIcon('heroicon-o-document-text')
+                    ->falseIcon('heroicon-o-minus')
+                    ->trueColor('success')
+                    ->falseColor('gray'),
+
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Created')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(true),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('type')
+                    ->label('Employment Type')
+                    ->options([
+                        'full-time' => 'Full-time',
+                        'part-time' => 'Part-time',
+                        'contract' => 'Contract',
+                        'internship' => 'Internship',
+                    ]),
+
+                Tables\Filters\SelectFilter::make('status')
+                    ->label('Status')
+                    ->options([
+                        'open' => 'Open',
+                        'closed' => 'Closed',
+                    ]),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

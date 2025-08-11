@@ -71,10 +71,13 @@
 
                         <!-- Additional Program Images Section - At the bottom -->
                         <div class="program-images-section mb-45">
-                            <h3 class="h4 mb-4">{{ $program->title }} Program Images</h3>
+                            <h3 class="h4 mb-4">
+                                {{ $program->title }} Program Images
+                            </h3>
                             @if($program->images()->count() > 0)
                             <div class="row g-3">
-                                @foreach($program->images()->ordered()->get() as $image)
+                                @foreach($program->images()->ordered()->get() as
+                                $image)
                                 <div class="col-md-6 col-lg-6">
                                     <div class="program-image-item">
                                         <img

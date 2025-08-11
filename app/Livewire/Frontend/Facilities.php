@@ -20,8 +20,7 @@ class Facilities extends Component
 
     public function render()
     {
-        $facilities = Facility::active()
-            ->ordered()
+        $facilities = Facility::ordered()
             ->paginate(9);
 
         return view('livewire.frontend.facilities', [

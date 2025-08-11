@@ -46,6 +46,7 @@
             flex-wrap: wrap;
             gap: 15px;
             flex-shrink: 0;
+            margin-bottom: 15px;
         }
 
         .meta-item {
@@ -63,8 +64,54 @@
             white-space: nowrap;
         }
 
+        .deadline-meta-item {
+            max-width: 180px !important;
+        }
+
         .meta-item i {
             color: var(--theme-color);
+            margin-right: 5px;
+        }
+
+        .career-description {
+            color: var(--body-color);
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .deadline-meta-item {
+            color: var(--body-color);
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .deadline-meta-item.urgent {
+            color: #ff4757;
+            font-weight: 600;
+            animation: pulse 2s infinite;
+        }
+
+        .pdf-meta-item {
+            background: linear-gradient(135deg, #2ed573, #1e90ff) !important;
+            color: white !important;
+            padding: 5px 10px !important;
+            min-width: auto !important;
+            max-width: none !important;
+        }
+
+        .pdf-meta-item a {
+            color: white !important;
+            text-decoration: none;
+        }
+
+        .pdf-meta-item:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(46, 213, 115, 0.3);
         }
 
         /* Content and icon side by side layout */
@@ -99,13 +146,25 @@
         }
 
         .th-btn {
-            margin-top: 10px;
+            margin-top: auto;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
         }
     </style>
     <div class="container space-top space-extra-bottom">
         <div class="row gy-4 gx-4">
             @forelse($careers as $careerItem)
-            <div class="col-md-4">
+            <div class="col-md-6 col-lg-4">
                 <div class="feature-card">
                     <div class="box-content">
                         <div class="content-icon-row">
@@ -114,30 +173,46 @@
                             </div>
                             <div class="content-stack">
                                 <h3 class="box-title">
-                                    {{ \Illuminate\Support\Str::limit($careerItem->title ?? 'Career', 25) }}
+                                    {{ \Illuminate\Support\Str::limit($careerItem->title ?? 'Career', 30) }}
                                 </h3>
                                 <div class="career-meta">
-                                    @if($careerItem->location)
+                                    @if($careerItem->type)
                                     <span class="meta-item">
-                                        <i
-                                            class="fas fa-map-marker-alt me-2"
-                                        ></i>
-                                        {{ \Illuminate\Support\Str::limit($careerItem->location, 15) }}
+                                        <i class="fas fa-clock"></i>
+                                        {{ ucfirst(str_replace('-', ' ', $careerItem->type)) }}
                                     </span>
-                                    @endif @if($careerItem->type)
-                                    <span class="meta-item">
-                                        <i class="fas fa-clock me-2"></i>
-                                        {{ \Illuminate\Support\Str::limit($careerItem->type, 12) }}
+                                    @endif @if($careerItem->pdf_file)
+                                    <span class="meta-item pdf-meta-item">
+                                        <a
+                                            href="{{ $careerItem->pdf_url }}"
+                                            target="_blank"
+                                            title="View Job Description PDF"
+                                        >
+                                            <i class="fas fa-file-pdf"></i>
+                                        </a>
                                     </span>
-                                    @endif @if($careerItem->department)
-                                    <span class="meta-item">
-                                        <i class="fas fa-building me-2"></i>
-                                        {{ \Illuminate\Support\Str::limit($careerItem->department, 15) }}
+                                    @endif @if($careerItem->application_deadline
+                                    &&
+                                    !$careerItem->application_deadline->isPast())
+                                    <span class="meta-item deadline-meta-item">
+                                        @if($careerItem->application_deadline->diffInDays(now())
+                                        <= 7) Apply by
+                                        {{ $careerItem->application_deadline->format('M d') }}
+                                        @else
+                                        {{ $careerItem->application_deadline->format('M d, Y') }}
+                                        @endif
                                     </span>
                                     @endif
                                 </div>
                             </div>
                         </div>
+
+                        @if($careerItem->description)
+                        <div class="career-description">
+                            {{ \Illuminate\Support\Str::limit($careerItem->description, 120) }}
+                        </div>
+                        @endif
+
                         <a
                             href="{{ route('careers.detail', $careerItem->slug ?? $careerItem->id) }}"
                             class="th-btn btn-sm"
@@ -149,7 +224,15 @@
             </div>
             @empty
             <div class="col-12 text-center">
-                No career opportunities available at the moment.
+                <div class="py-5">
+                    <i class="fas fa-briefcase fa-3x text-muted mb-3"></i>
+                    <h4 class="text-muted">
+                        No Career Opportunities Available
+                    </h4>
+                    <p class="text-muted">
+                        Please check back later for new job openings.
+                    </p>
+                </div>
             </div>
             @endforelse
         </div>

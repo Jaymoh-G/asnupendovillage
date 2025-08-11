@@ -61,8 +61,8 @@ class StatsOverview extends BaseWidget
                 ->color('warning')
                 ->chart([17, 16, 14, 15, 14, 13, 12]),
 
-            Stat::make('Facilities', Facility::active()->count())
-                ->description('Available facilities')
+            Stat::make('Facilities', Facility::count())
+                ->description('Total facilities')
                 ->descriptionIcon('heroicon-m-building-office')
                 ->color('info')
                 ->chart([15, 4, 5, 2, 10, 2, 7]),
