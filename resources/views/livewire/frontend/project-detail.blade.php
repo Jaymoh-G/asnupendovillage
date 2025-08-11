@@ -81,8 +81,7 @@
                             </h3>
                             @if($project->images()->count() > 0)
                             <div class="row g-3">
-                                @foreach($project->images()->ordered()->get() as
-                                $image)
+                                @foreach($project->images()->ordered()->get() as $image)
                                 <div class="col-md-6 col-lg-6">
                                     <div class="project-image-item">
                                         <img
