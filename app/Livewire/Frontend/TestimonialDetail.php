@@ -10,15 +10,15 @@ class TestimonialDetail extends Component
 {
     use HasPageBanner;
 
-    public $id;
+    public $slug;
     public $testimonial;
     public $pageBanner;
     public $otherTestimonials;
 
-    public function mount($id)
+    public function mount($slug)
     {
-        $this->id = $id;
-        $this->testimonial = Testimonial::findOrFail($id);
+        $this->slug = $slug;
+        $this->testimonial = Testimonial::where('slug', $slug)->firstOrFail();
         $this->pageBanner = $this->getPageBanner('testimonials');
 
         // Get other testimonials for sidebar (excluding current testimonial)

@@ -72,12 +72,12 @@
 
                         <!-- Additional Facility Images Section - At the bottom -->
                         <div class="facility-images-section mb-45">
-                            <h3 class="h4 mb-4">Facility Images</h3>
+                            <h3 class="h4 mb-4">{{ $facility->name }} Facility Images</h3>
                             @if($facility->images()->count() > 0)
                             <div class="row g-3">
                                 @foreach($facility->images()->ordered()->get()
                                 as $image)
-                                <div class="col-md-6 col-lg-4">
+                                <div class="col-md-6 col-lg-6">
                                     <div class="facility-image-item">
                                         <img
                                             src="{{ $image->display_url }}"
@@ -107,13 +107,7 @@
                             @endif
                         </div>
 
-                        <!-- Support Button - At the bottom -->
-                        <div class="btn-wrap text-center">
-                            <a class="th-btn" href="{{ route('donate-now') }}"
-                                >Support This Facility
-                                <i class="fas fa-arrow-up-right ms-2"></i
-                            ></a>
-                        </div>
+
                     </div>
                 </div>
                 <div class="col-xxl-4 col-lg-5">
@@ -183,7 +177,7 @@
                         </div>
 
                         <div class="widget widget_categories">
-                            <h3 class="widget_title">Related Facilities</h3>
+                            <h3 class="widget_title">Other Facilities</h3>
                             <div class="related-facilities">
                                 @forelse($otherFacilities as $otherFacility)
                                 <div class="related-facility-item">

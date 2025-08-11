@@ -162,7 +162,7 @@
                             <div class="media-left">
                                 <h3 class="testi-card_name">
                                     <a
-                                        href="{{ route('testimonials.detail', $otherTestimonial->id) }}"
+                                                                                    href="{{ route('testimonials.detail', $otherTestimonial->slug) }}"
                                         >{{ $otherTestimonial->name }}</a
                                     >
                                 </h3>

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Traits\HasImages;
+use Illuminate\Support\Str;
 
 class Testimonial extends Model
 {
@@ -12,6 +13,7 @@ class Testimonial extends Model
 
     protected $fillable = [
         'name',
+        'slug',
         'program_id',
         'content',
         'image',
@@ -25,14 +27,32 @@ class Testimonial extends Model
     ];
 
     /**
+     * Boot method to automatically generate slug
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($testimonial) {
+            if (empty($testimonial->slug)) {
+                $testimonial->slug = Str::slug($testimonial->name);
+            }
+        });
+
+        static::updating(function ($testimonial) {
+            if ($testimonial->isDirty('name') && empty($testimonial->slug)) {
+                $testimonial->slug = Str::slug($testimonial->name);
+            }
+        });
+    }
+
+    /**
      * Get the program this testimonial belongs to
      */
     public function program(): BelongsTo
     {
         return $this->belongsTo(Program::class);
     }
-
-
 
     /**
      * Scope to get featured testimonials

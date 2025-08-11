@@ -56,8 +56,8 @@ Route::get('/testimonials', function () {
     return view('testimonials-page');
 })->name('testimonials');
 // testimonial detail
-Route::get('/testimonials/{id}', function ($id) {
-    return view('testimonial-detail-page', ['id' => $id]);
+Route::get('/testimonials/{slug}', function ($slug) {
+    return view('testimonial-detail-page', ['slug' => $slug]);
 })->name('testimonials.detail');
 // news
 Route::get('/news', function () {

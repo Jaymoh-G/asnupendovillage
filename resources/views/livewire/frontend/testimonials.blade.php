@@ -82,7 +82,7 @@
                             <div class="media-left">
                                 <h3 class="testi-card_name">
                                     <a
-                                        href="{{ route('testimonials.detail', $testimonial->id) }}"
+                                        href="{{ route('testimonials.detail', $testimonial->slug) }}"
                                         >{{ $testimonial->name }}</a
                                     >
                                 </h3>
