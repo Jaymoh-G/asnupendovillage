@@ -17,6 +17,7 @@ class Testimonial extends Model
         'program_id',
         'content',
         'image',
+        'pdf_file',
         'is_featured',
         'sort_order',
     ];
@@ -88,6 +89,17 @@ class Testimonial extends Model
             return asset('storage/' . $this->image);
         }
 
+        return null;
+    }
+
+    /**
+     * Get the PDF URL for download
+     */
+    public function getPdfUrlAttribute(): ?string
+    {
+        if ($this->pdf_file) {
+            return asset('storage/' . $this->pdf_file);
+        }
         return null;
     }
 }

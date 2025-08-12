@@ -72,7 +72,9 @@
 
                         <!-- Additional Facility Images Section - At the bottom -->
                         <div class="facility-images-section mb-45">
-                            <h3 class="h4 mb-4">{{ $facility->name }} Facility Images</h3>
+                            <h3 class="h4 mb-4">
+                                {{ $facility->name }} Facility Images
+                            </h3>
                             @if($facility->images()->count() > 0)
                             <div class="row g-3">
                                 @foreach($facility->images()->ordered()->get()
@@ -106,8 +108,6 @@
                             </div>
                             @endif
                         </div>
-
-
                     </div>
                 </div>
                 <div class="col-xxl-4 col-lg-5">

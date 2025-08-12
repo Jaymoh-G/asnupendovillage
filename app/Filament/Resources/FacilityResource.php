@@ -37,25 +37,8 @@ class FacilityResource extends Resource
                             ->unique('facilities', 'slug', fn($record) => $record)
                             ->maxLength(255)
                             ->helperText('Leave empty to auto-generate from facility name'),
-                        Forms\Components\Select::make('program_id')
-                            ->label('Program')
-                            ->relationship('program', 'title')
-                            ->searchable()
-                            ->preload()
-                            ->nullable(),
-                        Forms\Components\TextInput::make('capacity')
-                            ->label('Capacity')
-                            ->numeric()
-                            ->minValue(1)
-                            ->helperText('Maximum number of people this facility can accommodate'),
-                        Forms\Components\Select::make('status')
-                            ->label('Status')
-                            ->options([
-                                'active' => 'Active',
-                                'inactive' => 'Inactive',
-                            ])
-                            ->default('active')
-                            ->required(),
+
+
                         Forms\Components\Textarea::make('meta_description')
                             ->label('Meta Description')
                             ->rows(3)
@@ -66,11 +49,6 @@ class FacilityResource extends Resource
 
                 Forms\Components\Section::make('Content')
                     ->schema([
-                        Forms\Components\Textarea::make('description')
-                            ->label('Short Description')
-                            ->rows(3)
-                            ->maxLength(500)
-                            ->helperText('Brief description of the facility (max 500 characters)'),
                         Forms\Components\RichEditor::make('content')
                             ->label('Facility Content')
                             ->required()
@@ -116,21 +94,9 @@ class FacilityResource extends Resource
                     ->searchable()
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('program.title')
-                    ->label('Program')
-                    ->searchable()
-                    ->sortable(),
 
-                Tables\Columns\TextColumn::make('capacity')
-                    ->label('Capacity')
-                    ->sortable(),
 
-                Tables\Columns\BadgeColumn::make('status')
-                    ->label('Status')
-                    ->colors([
-                        'success' => 'active',
-                        'danger' => 'inactive',
-                    ]),
+
 
                 Tables\Columns\TextColumn::make('slug')
                     ->label('Slug')
@@ -149,9 +115,7 @@ class FacilityResource extends Resource
                         'active' => 'Active',
                         'inactive' => 'Inactive',
                     ]),
-                Tables\Filters\SelectFilter::make('program_id')
-                    ->relationship('program', 'title')
-                    ->label('Program'),
+
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

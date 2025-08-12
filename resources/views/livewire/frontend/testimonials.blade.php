@@ -54,8 +54,22 @@
                             }}"
                         ></div>
                         <div class="testi-card_review">
-                            <i class="fas fa-star"></i>
-                            {{ $testimonial->rating ?? '5.0' }}
+                            <div class="review-left">
+                                <i class="fas fa-star"></i>
+                                {{ $testimonial->rating ?? '5.0' }}
+                            </div>
+                            @if($testimonial->pdf_file)
+                            <div class="review-right">
+                                <a
+                                    href="{{ $testimonial->pdf_url }}"
+                                    target="_blank"
+                                    class="pdf-link"
+                                    title="View PDF"
+                                >
+                                    <i class="fas fa-file-pdf"></i>
+                                </a>
+                            </div>
+                            @endif
                         </div>
                         <div class="testi-card_profile">
                             <div class="box-thumb">
@@ -93,6 +107,7 @@
                         </div>
                         <p class="testi-card_text">
                             "{{ Str::limit($testimonial->content ?? 'Stay informed about our upcoming events and campaigns. Whether it\'s a fundraising gala, a charity run, or a community outreach program, there are plenty of ways to get involved and support our cause. Check our event calendar for details.', 200)
+
 
 
 
@@ -145,12 +160,44 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
         .testi-card_review {
-            color: #ffac00;
-            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 20px;
         }
-        .testi-card_review i {
+        .review-left {
+            color: #ffac00;
+            font-weight: bold;
+        }
+        .review-left i {
             margin-right: 5px;
+        }
+        .review-right {
+            display: flex;
+            align-items: center;
+        }
+        .pdf-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: var(--theme-color, #007bff);
+            color: white;
+            border-radius: 50%;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(var(--theme-color-rgb, 0, 123, 255), 0.3);
+        }
+        .pdf-link:hover {
+            background: var(--theme-color2, #0056b3);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px
+                rgba(var(--theme-color-rgb, 0, 123, 255), 0.4);
+        }
+        .pdf-link i {
+            font-size: 14px;
         }
         .quote-icon {
             position: absolute;

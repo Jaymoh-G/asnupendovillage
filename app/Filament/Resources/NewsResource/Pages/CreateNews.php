@@ -19,12 +19,12 @@ class CreateNews extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        // Remove images from data as we'll handle them separately
-        $images = $data['images'] ?? null;
-        unset($data['images']);
+        // Remove temp_images from data as we'll handle them separately
+        $tempImages = $data['temp_images'] ?? null;
+        unset($data['temp_images']);
 
         // Store for afterCreate
-        $this->data['images'] = $images;
+        $this->data['temp_images'] = $tempImages;
 
         return $data;
     }
@@ -32,21 +32,27 @@ class CreateNews extends CreateRecord
     protected function afterCreate(): void
     {
         $record = $this->record;
-        $images = $this->data['images'] ?? null;
+        $tempImages = $this->data['temp_images'] ?? null;
 
-        // Handle new uploaded images
-        if ($images && $record) {
-            foreach ($images as $imagePath) {
-                // Create image record for the uploaded file
-                $record->images()->create([
-                    'filename' => basename($imagePath),
-                    'original_name' => basename($imagePath),
-                    'path' => $imagePath,
-                    'mime_type' => mime_content_type(Storage::disk('public')->path($imagePath)),
-                    'size' => Storage::disk('public')->size($imagePath),
-                    'alt_text' => pathinfo(basename($imagePath), PATHINFO_FILENAME),
-                ]);
+        // Handle new uploaded images using the HasImages trait
+        if ($tempImages && $record) {
+            $this->processImages($record, $tempImages);
+        }
+    }
+
+    protected function processImages($record, array $tempImages): void
+    {
+        foreach ($tempImages as $tempImage) {
+            if ($tempImage instanceof \Illuminate\Http\UploadedFile) {
+                // Upload the image using the HasImages trait
+                $record->uploadImages([$tempImage], 'news');
             }
+        }
+
+        // Set the first image as featured if no featured image exists
+        if ($record->images()->count() > 0 && !$record->featuredImage()->exists()) {
+            $firstImage = $record->images()->first();
+            $record->setFeaturedImage($firstImage->id);
         }
     }
 }

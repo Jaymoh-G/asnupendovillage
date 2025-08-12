@@ -91,7 +91,38 @@ class NewsResource extends Resource
 
                 Section::make('News Images')
                     ->schema([
-                        FileUpload::make('images')
+                        // Display existing images
+                        Forms\Components\Placeholder::make('existing_images')
+                            ->label('Current Images')
+                            ->content(function ($record) {
+                                if (!$record || !$record->exists) {
+                                    return 'No images uploaded yet.';
+                                }
+
+                                $images = $record->images()->ordered()->get();
+                                if ($images->isEmpty()) {
+                                    return 'No images uploaded yet.';
+                                }
+
+                                $html = '<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px;">';
+                                foreach ($images as $image) {
+                                    $isFeatured = $image->featured ? ' (Featured)' : '';
+                                    $featuredClass = $image->featured ? 'featured-image' : '';
+                                    $html .= '<div class="' . $featuredClass . '" style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px; text-align: center; position: relative;">';
+                                    $html .= '<img src="' . asset('storage/' . $image->path) . '" style="width: 100%; height: 120px; object-fit: cover; border-radius: 4px; margin-bottom: 8px;" alt="' . $image->alt_text . '">';
+                                    $html .= '<p style="margin: 0; font-size: 12px; color: #6b7280;">' . $image->original_name . $isFeatured . '</p>';
+                                    $html .= '</div>';
+                                }
+                                $html .= '</div>';
+
+                                return new \Illuminate\Support\HtmlString($html);
+                            })
+                            ->columnSpanFull()
+                            ->visible(fn($record) => $record && $record->exists),
+
+                        // Upload new images
+                        FileUpload::make('temp_images')
+                            ->label('Upload New Images')
                             ->multiple()
                             ->image()
                             ->imageEditor()
@@ -99,9 +130,11 @@ class NewsResource extends Resource
                             ->imageResizeTargetWidth('1920')
                             ->imageResizeTargetHeight('1080')
                             ->directory('news')
-                            ->columnSpanFull(),
+                            ->columnSpanFull()
+                            ->helperText('Upload new images for the news article. Images will be processed and stored properly.'),
                     ]),
-            ]);
+            ])
+            ->extraAttributes(['class' => 'news-resource-form']);
     }
 
     public static function table(Table $table): Table
@@ -173,5 +206,10 @@ class NewsResource extends Resource
             'create' => Pages\CreateNews::route('/create'),
             'edit' => Pages\EditNews::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
     }
 }

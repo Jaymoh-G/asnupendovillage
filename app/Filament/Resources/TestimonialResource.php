@@ -38,11 +38,19 @@ class TestimonialResource extends Resource
                             ->required()
                             ->searchable(),
 
-                        Forms\Components\Textarea::make('content')
+                        Forms\Components\RichEditor::make('content')
                             ->label('Testimonial Content')
                             ->required()
-                            ->rows(4)
-                            ->maxLength(1000),
+                            ->columnSpanFull()
+                            ->helperText('Rich content with formatting, images, and attachments'),
+
+                        Forms\Components\FileUpload::make('pdf_file')
+                            ->label('PDF Document')
+                            ->acceptedFileTypes(['application/pdf'])
+                            ->directory('testimonials/pdfs')
+                            ->visibility('public')
+                            ->maxSize(4096)
+                            ->helperText('Upload a PDF document (optional, max 4MB)'),
 
                         Forms\Components\FileUpload::make('image')
                             ->label('Profile Image')
@@ -99,7 +107,16 @@ class TestimonialResource extends Resource
                 Tables\Columns\TextColumn::make('content')
                     ->label('Content')
                     ->limit(80)
-                    ->wrap(),
+                    ->wrap()
+                    ->html(),
+
+                Tables\Columns\IconColumn::make('pdf_file')
+                    ->label('PDF')
+                    ->boolean()
+                    ->trueIcon('heroicon-o-document-text')
+                    ->falseIcon('heroicon-o-minus')
+                    ->trueColor('success')
+                    ->falseColor('gray'),
 
                 Tables\Columns\ToggleColumn::make('is_featured')
                     ->label('Featured'),

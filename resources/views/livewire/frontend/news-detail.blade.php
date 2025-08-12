@@ -63,7 +63,34 @@
                                 {!! $news->content !!}
                             </div>
 
-                            @if($news->tags && is_array($news->tags) &&
+                            <!-- News Image Gallery -->
+                            @if($news->images()->count() > 1)
+                            <div class="news-images-section mb-45">
+                                <h3 class="h4 mb-4">
+                                    {{ $news->title }} Images
+                                </h3>
+                                <div class="row g-3">
+                                    @foreach($news->images()->where('featured',
+                                    false)->ordered()->get() as $image)
+                                    <div class="col-md-6 col-lg-6">
+                                        <div class="news-image-item">
+                                            <img
+                                                src="{{ asset('storage/' . $image->path) }}"
+                                                alt="{{ $image->alt_text ?? $news->title }}"
+                                                class="img-fluid rounded"
+                                                style="
+                                                    filter: none !important;
+                                                    width: 100%;
+                                                    height: 200px;
+                                                    object-fit: cover;
+                                                "
+                                            />
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                            @endif @if($news->tags && is_array($news->tags) &&
                             count($news->tags) > 0)
                             <div class="share-links clearfix">
                                 <div class="row justify-content-between">
@@ -212,4 +239,42 @@
             </div>
         </div>
     </section>
+
+    <style>
+        /* News Images Styling - Matching Facility Style */
+        .news-image-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .news-image-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .news-image-item img {
+            transition: transform 0.3s ease;
+        }
+
+        .news-image-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .news-images-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+        }
+
+        .news-images-section h3 {
+            color: #1a685b;
+            border-bottom: 2px solid #ffac00;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
 </div>

@@ -14,21 +14,13 @@ class Facility extends Model
     protected $fillable = [
         'name',
         'slug',
-        'description',
         'content',
-        'capacity',
-        'program_id',
         'meta_description',
     ];
 
-    protected $casts = [
-        'status' => 'string',
-    ];
 
-    public function program(): BelongsTo
-    {
-        return $this->belongsTo(Program::class);
-    }
+
+
 
     /**
      * Get the image URL for display (fallback to HasImages trait)

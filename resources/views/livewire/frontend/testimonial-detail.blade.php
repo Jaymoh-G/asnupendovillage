@@ -52,8 +52,12 @@
                         <div class="about-card">
                             <div class="about-card-title-wrap">
                                 <div class="media-left">
-                                    <h2 class="h3 about-card_title mt-n2">{{ $testimonial->name }}</h2>
-                                    <p class="about-card_desig">{{ $testimonial->program->title ?? 'General Testimonial' }}</p>
+                                    <h2 class="h3 about-card_title mt-n2">
+                                        {{ $testimonial->name }}
+                                    </h2>
+                                    <p class="about-card_desig">
+                                        {{ $testimonial->program->title ?? 'General Testimonial' }}
+                                    </p>
                                     <div class="testimonial-rating">
                                         <i class="fas fa-star"></i>
                                         <i class="fas fa-star"></i>
@@ -69,20 +73,37 @@
                             </div>
 
                             <div class="testimonial-content">
-                                <p class="testimonial-text">
-                                    "{{ $testimonial->content }}"
-                                </p>
+                                <div class="testimonial-text">
+                                    {!! $testimonial->content !!}
+                                </div>
                             </div>
-
                             <div class="testimonial-details-info">
-                                @if($testimonial->program)
+                                @if($testimonial->pdf_file)
+                                <div class="about-contact">
+                                    <div class="icon">
+                                        <i class="fas fa-file-pdf"></i>
+                                    </div>
+                                    <div class="media-left">
+                                        <h6 class="about-contact-title">
+                                            PDF
+                                        </h6>
+                                        <a
+                                            href="{{ $testimonial->pdf_url }}"
+                                            target="_blank"
+                                            class="about-contact-text"
+                                        >
+                                            View or Download PDF
+                                        </a>
+                                    </div>
+                                </div>
+                                @endif @if($testimonial->program)
                                 <div class="about-contact">
                                     <div class="icon">
                                         <i class="fas fa-heart"></i>
                                     </div>
                                     <div class="media-left">
                                         <h6 class="about-contact-title">
-                                            Related Program
+                                            Program
                                         </h6>
                                         <p class="about-contact-text">
                                             {{ $testimonial->program->title }}
@@ -162,7 +183,7 @@
                             <div class="media-left">
                                 <h3 class="testi-card_name">
                                     <a
-                                                                                    href="{{ route('testimonials.detail', $otherTestimonial->slug) }}"
+                                        href="{{ route('testimonials.detail', $otherTestimonial->slug) }}"
                                         >{{ $otherTestimonial->name }}</a
                                     >
                                 </h3>
@@ -172,9 +193,11 @@
                                 >
                             </div>
                         </div>
-                        <p class="testi-card_text">
-                            "{{ Str::limit($otherTestimonial->content, 150) }}"
-                        </p>
+                        <div class="testi-card_text">
+                            {!!
+                            Str::limit(strip_tags($otherTestimonial->content),
+                            150) !!}
+                        </div>
                     </div>
                 </div>
                 @endforeach
@@ -226,10 +249,15 @@
         }
         .testimonial-text {
             font-size: 18px;
-            font-style: italic;
             line-height: 1.8;
             color: #555;
             margin: 0;
+        }
+        .testimonial-text p {
+            margin-bottom: 15px;
+        }
+        .testimonial-text p:last-child {
+            margin-bottom: 0;
         }
         .about-contact {
             display: flex;
@@ -322,10 +350,15 @@
             font-size: 14px;
         }
         .testi-card_text {
-            font-style: italic;
             line-height: 1.6;
             color: #555;
             margin: 0;
+        }
+        .testi-card_text p {
+            margin-bottom: 10px;
+        }
+        .testi-card_text p:last-child {
+            margin-bottom: 0;
         }
     </style>
 </div>
