@@ -63,6 +63,11 @@ class TestimonialResource extends Resource
                             ->visibility('public')
                             ->maxSize(2048)
                             ->helperText('Upload a profile image for the testimonial (optional)'),
+
+                        Forms\Components\TagsInput::make('tags')
+                            ->label('Tags')
+                            ->separator(',')
+                            ->helperText('Enter tags separated by commas (optional)'),
                     ])
                     ->columns(2),
 
@@ -118,6 +123,10 @@ class TestimonialResource extends Resource
                     ->trueColor('success')
                     ->falseColor('gray'),
 
+                Tables\Columns\TagsColumn::make('tags')
+                    ->label('Tags')
+                    ->limit(3),
+
                 Tables\Columns\ToggleColumn::make('is_featured')
                     ->label('Featured'),
 
@@ -134,6 +143,18 @@ class TestimonialResource extends Resource
 
                 Tables\Filters\TernaryFilter::make('is_featured')
                     ->label('Featured'),
+
+                Tables\Filters\SelectFilter::make('tags')
+                    ->label('Tags')
+                    ->multiple()
+                    ->options(function () {
+                        return \App\Models\Testimonial::whereNotNull('tags')
+                            ->pluck('tags')
+                            ->flatten()
+                            ->unique()
+                            ->pluck('name', 'name')
+                            ->toArray();
+                    }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

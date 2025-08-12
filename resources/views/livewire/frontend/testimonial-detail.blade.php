@@ -84,9 +84,7 @@
                                         <i class="fas fa-file-pdf"></i>
                                     </div>
                                     <div class="media-left">
-                                        <h6 class="about-contact-title">
-                                            PDF
-                                        </h6>
+                                        <h6 class="about-contact-title">PDF</h6>
                                         <a
                                             href="{{ $testimonial->pdf_url }}"
                                             target="_blank"
@@ -124,6 +122,28 @@
                                         </p>
                                     </div>
                                 </div>
+
+                                @if($testimonial->tags &&
+                                is_array($testimonial->tags) &&
+                                count($testimonial->tags) > 0)
+                                <div class="about-contact">
+                                    <div class="icon">
+                                        <i class="fas fa-tags"></i>
+                                    </div>
+                                    <div class="media-left">
+                                        <h6 class="about-contact-title">
+                                            Tags
+                                        </h6>
+                                        <div class="about-contact-text">
+                                            @foreach($testimonial->tags as $tag)
+                                            <span class="detail-tag">{{
+                                                $tag
+                                            }}</span>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -359,6 +379,26 @@
         }
         .testi-card_text p:last-child {
             margin-bottom: 0;
+        }
+
+        /* Detail Tags Styling */
+        .detail-tag {
+            display: inline-block;
+            background: var(--theme-color, #007bff);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: capitalize;
+            margin-right: 8px;
+            margin-bottom: 5px;
+            transition: all 0.3s ease;
+        }
+        .detail-tag:hover {
+            background: var(--theme-color2, #0056b3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
         }
     </style>
 </div>

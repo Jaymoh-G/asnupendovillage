@@ -146,7 +146,9 @@ Contact Area
                                         {{ $pageContent && $pageContent->title ? $pageContent->title : 'Get In Touch' }}
                                     </h2>
                                     <p>
-                                        {{ $pageContent && $pageContent->excerpt ? $pageContent->excerpt : "We'd love to hear from you. Send us a message and we'll respond as soon as possible." }}
+                                        We'd love to hear from you. Send us a
+                                        message and we'll respond as soon as
+                                        possible.
                                     </p>
                                 </div>
                                 <form

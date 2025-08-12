@@ -53,11 +53,6 @@ class StaticPageResource extends Resource
                             ->label('Page Title')
                             ->maxLength(255)
                             ->helperText('Custom title for the page. Leave empty to use default.'),
-                        Forms\Components\Textarea::make('excerpt')
-                            ->label('Page Excerpt')
-                            ->rows(3)
-                            ->maxLength(500)
-                            ->helperText('Short description or summary of the page content'),
                         Forms\Components\Toggle::make('is_active')
                             ->label('Active')
                             ->default(true)
@@ -113,6 +108,150 @@ class StaticPageResource extends Resource
                             ->columnSpanFull(),
                     ]),
 
+                Forms\Components\Section::make('Additional Images')
+                    ->schema([
+                        Forms\Components\FileUpload::make('images')
+                            ->label('Page Images')
+                            ->multiple()
+                            ->image()
+                            ->imageEditor()
+                            ->imageCropAspectRatio('16:9')
+                            ->imageResizeTargetWidth('800')
+                            ->imageResizeTargetHeight('450')
+                            ->directory('static-pages/gallery')
+                            ->visibility('public')
+                            ->maxSize(5120)
+                            ->helperText('Upload additional images for the page. These will be displayed in a gallery format.')
+                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                            ->columnSpanFull(),
+                    ]),
+
+                Forms\Components\Section::make('Content Section 1')
+                    ->schema([
+                        Forms\Components\TextInput::make('section1_title')
+                            ->label('Section 1 Title')
+                            ->maxLength(255)
+                            ->helperText('Title for the first content section'),
+                        Forms\Components\RichEditor::make('section1_content')
+                            ->label('Section 1 Content')
+                            ->toolbarButtons([
+                                'bold',
+                                'italic',
+                                'underline',
+                                'link',
+                                'bulletList',
+                                'orderedList',
+                                'h3',
+                                'h4',
+                                'blockquote',
+                                'undo',
+                                'redo',
+                            ])
+                            ->fileAttachmentsDisk('public')
+                            ->fileAttachmentsDirectory('static-pages/section1')
+                            ->fileAttachmentsVisibility('public')
+                            ->columnSpanFull()
+                            ->helperText('Content for the first section'),
+                        Forms\Components\FileUpload::make('section1_images')
+                            ->label('Section 1 Images')
+                            ->multiple()
+                            ->image()
+                            ->imageEditor()
+                            ->imageCropAspectRatio('16:9')
+                            ->imageResizeTargetWidth('800')
+                            ->imageResizeTargetHeight('450')
+                            ->directory('static-pages/section1')
+                            ->visibility('public')
+                            ->maxSize(5120)
+                            ->helperText('Images for section 1')
+                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                            ->columnSpanFull(),
+                    ]),
+
+                Forms\Components\Section::make('Content Section 2')
+                    ->schema([
+                        Forms\Components\TextInput::make('section2_title')
+                            ->label('Section 2 Title')
+                            ->maxLength(255)
+                            ->helperText('Title for the second content section'),
+                        Forms\Components\RichEditor::make('section2_content')
+                            ->label('Section 2 Content')
+                            ->toolbarButtons([
+                                'bold',
+                                'italic',
+                                'underline',
+                                'link',
+                                'bulletList',
+                                'orderedList',
+                                'h3',
+                                'h4',
+                                'blockquote',
+                                'undo',
+                                'redo',
+                            ])
+                            ->fileAttachmentsDisk('public')
+                            ->fileAttachmentsDirectory('static-pages/section2')
+                            ->fileAttachmentsVisibility('public')
+                            ->columnSpanFull()
+                            ->helperText('Content for the second section'),
+                        Forms\Components\FileUpload::make('section2_images')
+                            ->label('Section 2 Images')
+                            ->multiple()
+                            ->image()
+                            ->imageEditor()
+                            ->imageCropAspectRatio('16:9')
+                            ->imageResizeTargetWidth('800')
+                            ->imageResizeTargetHeight('450')
+                            ->directory('static-pages/section2')
+                            ->visibility('public')
+                            ->maxSize(5120)
+                            ->helperText('Images for section 2')
+                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                            ->columnSpanFull(),
+                    ]),
+
+                Forms\Components\Section::make('Content Section 3')
+                    ->schema([
+                        Forms\Components\TextInput::make('section3_title')
+                            ->label('Section 3 Title')
+                            ->maxLength(255)
+                            ->helperText('Title for the third content section'),
+                        Forms\Components\RichEditor::make('section3_content')
+                            ->label('Section 3 Content')
+                            ->toolbarButtons([
+                                'bold',
+                                'italic',
+                                'underline',
+                                'link',
+                                'bulletList',
+                                'orderedList',
+                                'h3',
+                                'h4',
+                                'blockquote',
+                                'undo',
+                                'redo',
+                            ])
+                            ->fileAttachmentsDisk('public')
+                            ->fileAttachmentsDirectory('static-pages/section3')
+                            ->fileAttachmentsVisibility('public')
+                            ->columnSpanFull()
+                            ->helperText('Content for the third section'),
+                        Forms\Components\FileUpload::make('section3_images')
+                            ->label('Section 3 Images')
+                            ->multiple()
+                            ->image()
+                            ->imageEditor()
+                            ->imageCropAspectRatio('16:9')
+                            ->imageResizeTargetWidth('800')
+                            ->imageResizeTargetHeight('450')
+                            ->directory('static-pages/section3')
+                            ->visibility('public')
+                            ->maxSize(5120)
+                            ->helperText('Images for section 3')
+                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                            ->columnSpanFull(),
+                    ]),
+
                 Forms\Components\Section::make('SEO Settings')
                     ->schema([
                         Forms\Components\TextInput::make('meta_title')
@@ -145,14 +284,18 @@ class StaticPageResource extends Resource
                     ->label('Title')
                     ->searchable()
                     ->limit(30),
-                Tables\Columns\TextColumn::make('excerpt')
-                    ->label('Excerpt')
-                    ->limit(50)
-                    ->searchable(),
                 Tables\Columns\ImageColumn::make('featured_image')
                     ->label('Featured Image')
                     ->size(60)
                     ->circular(),
+                Tables\Columns\TextColumn::make('images')
+                    ->label('Images')
+                    ->formatStateUsing(function ($state) {
+                        if (!$state || !is_array($state)) return '0';
+                        return count($state) . ' image(s)';
+                    })
+                    ->badge()
+                    ->color('info'),
                 Tables\Columns\IconColumn::make('is_active')
                     ->label('Status')
                     ->boolean()

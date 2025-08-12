@@ -21,16 +21,6 @@
                         data-opacity="5"
                         style="height: 800px"
                     >
-                        <div class="hero-bg-shape1-1">
-                            <img
-                                src="{{
-                                    asset(
-                                        'assets/img/hero/hero-bg-shape1-1.png'
-                                    )
-                                }}"
-                                alt="img"
-                            />
-                        </div>
                         <div class="container">
                             <div class="row justify-content-center">
                                 <div class="col-xl-12">
@@ -130,16 +120,6 @@
                         data-opacity="5"
                         style="height: 800px"
                     >
-                        <div class="hero-bg-shape1-1">
-                            <img
-                                src="{{
-                                    asset(
-                                        'assets/img/hero/hero-bg-shape1-1.png'
-                                    )
-                                }}"
-                                alt="img"
-                            />
-                        </div>
                         <div class="container">
                             <div class="row justify-content-center">
                                 <div class="col-xl-12">

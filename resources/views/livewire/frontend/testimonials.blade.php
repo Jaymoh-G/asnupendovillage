@@ -41,6 +41,7 @@
                 >
                 <h2 class="sec-title">Success Stories</h2>
             </div>
+
             <div class="row gy-30">
                 @forelse($testimonials as $testimonial)
                 <div class="col-lg-6">
@@ -108,21 +109,17 @@
                         <p class="testi-card_text">
                             "{{ Str::limit($testimonial->content ?? 'Stay informed about our upcoming events and campaigns. Whether it\'s a fundraising gala, a charity run, or a community outreach program, there are plenty of ways to get involved and support our cause. Check our event calendar for details.', 200)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
                             }}"
                         </p>
+
+                        @if($testimonial->tags && is_array($testimonial->tags)
+                        && count($testimonial->tags) > 0)
+                        <div class="testi-card_tags">
+                            @foreach($testimonial->tags as $tag)
+                            <span class="tag">{{ $tag }}</span>
+                            @endforeach
+                        </div>
+                        @endif
                     </div>
                 </div>
                 @empty
@@ -260,6 +257,29 @@
             overflow: hidden;
             text-overflow: ellipsis;
             max-height: 6.4em; /* 4 lines * 1.6 line-height */
+        }
+
+        /* Tags Styling */
+        .testi-card_tags {
+            margin-top: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .tag {
+            background: var(--theme-color, #007bff);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: capitalize;
+            transition: all 0.3s ease;
+        }
+        .tag:hover {
+            background: var(--theme-color2, #0056b3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
         }
 
         /* Pagination Styling */

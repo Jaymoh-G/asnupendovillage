@@ -44,13 +44,148 @@
                         <h1 class="sec-title">
                             {{ $pageContent->effective_title }}
                         </h1>
-                        @if($pageContent->excerpt)
-                        <p class="sec-text">{{ $pageContent->excerpt }}</p>
-                        @endif
                     </div>
                     <div class="content-area">
                         {!! $pageContent->content !!}
                     </div>
+
+                    @if($pageContent->hasMultipleImages())
+                    <div class="page-images-section mt-50">
+                        <h3 class="h4 mb-4 text-center">Page Images</h3>
+                        <div class="row g-4">
+                            @foreach($pageContent->image_urls as $imageUrl)
+                            <div class="col-md-6 col-lg-4">
+                                <div class="page-image-item">
+                                    <img
+                                        src="{{ $imageUrl }}"
+                                        alt="Page Image"
+                                        class="img-fluid rounded"
+                                        style="
+                                            width: 100%;
+                                            height: 250px;
+                                            object-fit: cover;
+                                        "
+                                    />
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                    @endif
+
+                    <!-- Content Section 1 -->
+                    @if($pageContent->section1_title ||
+                    $pageContent->section1_content)
+                    <div class="content-section mt-50">
+                        @if($pageContent->section1_title)
+                        <h3 class="section-title mb-4">
+                            {{ $pageContent->section1_title }}
+                        </h3>
+                        @endif @if($pageContent->section1_content)
+                        <div class="section-content mb-4">
+                            {!! $pageContent->section1_content !!}
+                        </div>
+                        @endif @if($pageContent->hasSection1Images())
+                        <div class="section-images">
+                            <div class="row g-4">
+                                @foreach($pageContent->section1_image_urls as
+                                $imageUrl)
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="section-image-item">
+                                        <img
+                                            src="{{ $imageUrl }}"
+                                            alt="Section 1 Image"
+                                            class="img-fluid rounded"
+                                            style="
+                                                width: 100%;
+                                                height: 250px;
+                                                object-fit: cover;
+                                            "
+                                        />
+                                    </div>
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        @endif
+                    </div>
+                    @endif
+
+                    <!-- Content Section 2 -->
+                    @if($pageContent->section2_title ||
+                    $pageContent->section2_content)
+                    <div class="content-section mt-50">
+                        @if($pageContent->section2_title)
+                        <h3 class="section-title mb-4">
+                            {{ $pageContent->section2_title }}
+                        </h3>
+                        @endif @if($pageContent->section2_content)
+                        <div class="section-content mb-4">
+                            {!! $pageContent->section2_content !!}
+                        </div>
+                        @endif @if($pageContent->hasSection2Images())
+                        <div class="section-images">
+                            <div class="row g-4">
+                                @foreach($pageContent->section2_image_urls as
+                                $imageUrl)
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="section-image-item">
+                                        <img
+                                            src="{{ $imageUrl }}"
+                                            alt="Section 2 Image"
+                                            class="img-fluid rounded"
+                                            style="
+                                                width: 100%;
+                                                height: 250px;
+                                                object-fit: cover;
+                                            "
+                                        />
+                                    </div>
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        @endif
+                    </div>
+                    @endif
+
+                    <!-- Content Section 3 -->
+                    @if($pageContent->section3_title ||
+                    $pageContent->section3_content)
+                    <div class="content-section mt-50">
+                        @if($pageContent->section3_title)
+                        <h3 class="section-title mb-4">
+                            {{ $pageContent->section3_title }}
+                        </h3>
+                        @endif @if($pageContent->section3_content)
+                        <div class="section-content mb-4">
+                            {!! $pageContent->section3_content !!}
+                        </div>
+                        @endif @if($pageContent->hasSection3Images())
+                        <div class="section-images">
+                            <div class="row g-4">
+                                @foreach($pageContent->section3_image_urls as
+                                $imageUrl)
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="section-image-item">
+                                        <img
+                                            src="{{ $imageUrl }}"
+                                            alt="Section 3 Image"
+                                            class="img-fluid rounded"
+                                            style="
+                                                width: 100%;
+                                                height: 250px;
+                                                object-fit: cover;
+                                            "
+                                        />
+                                    </div>
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        @endif
+                    </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -1515,4 +1650,87 @@
             </div>
         </div>
     </div>
+
+    <style>
+        /* Page Images Section Styling */
+        .page-images-section {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+            margin-top: 50px;
+        }
+        .page-images-section h3 {
+            color: #1a685b;
+            border-bottom: 2px solid #ffac00;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+            display: inline-block;
+        }
+        .page-image-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .page-image-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        .page-image-item img {
+            transition: transform 0.3s ease;
+        }
+        .page-image-item:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Content Sections Styling */
+        .content-section {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+            margin-top: 50px;
+        }
+        .section-title {
+            color: #1a685b;
+            border-bottom: 2px solid #ffac00;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            display: inline-block;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        .section-content {
+            line-height: 1.8;
+            color: #333;
+        }
+        .section-content p {
+            margin-bottom: 15px;
+        }
+        .section-content h3,
+        .section-content h4 {
+            color: #1a685b;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+        .section-image-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .section-image-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        .section-image-item img {
+            transition: transform 0.3s ease;
+        }
+        .section-image-item:hover img {
+            transform: scale(1.05);
+        }
+    </style>
 </div>

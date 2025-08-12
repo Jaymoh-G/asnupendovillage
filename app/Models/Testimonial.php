@@ -20,11 +20,13 @@ class Testimonial extends Model
         'pdf_file',
         'is_featured',
         'sort_order',
+        'tags',
     ];
 
     protected $casts = [
         'is_featured' => 'boolean',
         'sort_order' => 'integer',
+        'tags' => 'array',
     ];
 
     /**
