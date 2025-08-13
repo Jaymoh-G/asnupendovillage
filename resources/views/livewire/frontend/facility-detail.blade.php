@@ -52,10 +52,6 @@
                             }}"
                             alt="{{ $facility->name }}"
                         />
-                        @endif @if($facility->program)
-                        <div class="tag">
-                            {{ $facility->program->title }}
-                        </div>
                         @endif
                     </div>
 
@@ -112,36 +108,6 @@
                 </div>
                 <div class="col-xxl-4 col-lg-5">
                     <aside class="sidebar-area donation-sidebar">
-                        @if($facility->program)
-                        <div class="widget widget_categories">
-                            <h3 class="widget_title">Program Information</h3>
-                            <ul>
-                                <li>
-                                    <strong
-                                        >This facility is under the
-                                        program:</strong
-                                    >
-                                    <a
-                                        href="{{ route('programs.detail', $facility->program->slug) }}"
-                                    >
-                                        {{ $facility->program->title }}
-                                    </a>
-                                </li>
-                                @if($facility->program->excerpt)
-                                <li>
-                                    <strong>Description:</strong>
-                                    {{ \Illuminate\Support\Str::limit($facility->program->excerpt, 100) }}
-                                </li>
-                                @endif @if($facility->capacity)
-                                <li>
-                                    <strong>Capacity:</strong>
-                                    {{ $facility->capacity }} people
-                                </li>
-                                @endif
-                            </ul>
-                        </div>
-                        @endif
-
                         <div class="widget widget_categories">
                             <h3 class="widget_title">Support This Facility</h3>
                             <div class="support-facility-banner">
@@ -206,19 +172,13 @@
                                                 {{ \Illuminate\Support\Str::limit($otherFacility->name, 40) }}
                                             </a>
                                         </h4>
-                                        @if($otherFacility->program)
+                                        @if($otherFacility->capacity)
                                         <div class="facility-meta">
-                                            <span class="facility-program">
-                                                <i class="fas fa-tags"></i>
-                                                {{ $otherFacility->program->title }}
-                                            </span>
-                                            @if($otherFacility->capacity)
                                             <span class="facility-capacity">
                                                 <i class="fas fa-users"></i>
                                                 {{ $otherFacility->capacity }}
                                                 people
                                             </span>
-                                            @endif
                                         </div>
                                         @endif
                                     </div>
@@ -516,7 +476,6 @@
             text-shadow: 0 0 8px rgba(255, 172, 0, 0.3);
         }
 
-        .facility-program,
         .facility-capacity {
             white-space: nowrap;
             overflow: hidden;

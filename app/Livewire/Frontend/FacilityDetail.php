@@ -23,7 +23,6 @@ class FacilityDetail extends Component
 
         // Get other facilities for sidebar (excluding current facility)
         $this->otherFacilities = Facility::where('id', '!=', $this->facility->id)
-            ->with('program')
             ->orderBy('name')
             ->limit(5)
             ->get();

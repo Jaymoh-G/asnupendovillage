@@ -284,10 +284,12 @@ class StaticPageResource extends Resource
                     ->label('Title')
                     ->searchable()
                     ->limit(30),
-                Tables\Columns\ImageColumn::make('featured_image')
+                Tables\Columns\ImageColumn::make('featured_image_url')
                     ->label('Featured Image')
                     ->size(60)
-                    ->circular(),
+                    ->circular()
+                    ->url(fn($record) => $record->featured_image_url, true)
+                    ->openUrlInNewTab(),
                 Tables\Columns\TextColumn::make('images')
                     ->label('Images')
                     ->formatStateUsing(function ($state) {

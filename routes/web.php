@@ -19,9 +19,7 @@ use App\Models\Program;
 
 Route::get('/', Home::class)->name('home');
 // about us
-Route::get('/about-us', function () {
-    return view('about-us-page');
-})->name('about-us');
+Route::get('/about-us', \App\Livewire\Frontend\AboutUs::class)->name('about-us');
 // founder
 Route::get('/founder', function () {
     return view('founder-page');
