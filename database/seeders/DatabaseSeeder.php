@@ -33,9 +33,10 @@ class DatabaseSeeder extends Seeder
             HomeSliderImageSeeder::class,
             HomePageContentSeeder::class,
             DonationSeeder::class,
+            DonationStaticPageSeeder::class,
             CoreValueSeeder::class,
             StatisticSeeder::class,
-            AboutUsStaticPageSeeder::class,
+            YouTubeSeeder::class,
         ]);
     }
 }

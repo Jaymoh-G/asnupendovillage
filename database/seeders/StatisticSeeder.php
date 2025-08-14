@@ -68,6 +68,42 @@ class StatisticSeeder extends Seeder
                 'sort_order' => 6,
                 'is_active' => true,
             ],
+            [
+                'title' => 'Monthly Donors',
+                'value' => 400,
+                'suffix' => '+',
+                'icon' => 'fas fa-heart',
+                'description' => 'Regular monthly contributors',
+                'sort_order' => 7,
+                'is_active' => true,
+            ],
+            [
+                'title' => 'Team Support',
+                'value' => 35,
+                'suffix' => 'k+',
+                'icon' => 'fas fa-users-cog',
+                'description' => 'Team members and supporters',
+                'sort_order' => 8,
+                'is_active' => true,
+            ],
+            [
+                'title' => 'Funds Raised',
+                'value' => 2,
+                'suffix' => 'M+',
+                'icon' => 'fas fa-dollar-sign',
+                'description' => 'Total funds raised for community projects',
+                'sort_order' => 9,
+                'is_active' => true,
+            ],
+            [
+                'title' => 'Lives Impacted',
+                'value' => 25000,
+                'suffix' => '+',
+                'icon' => 'fas fa-star',
+                'description' => 'Total lives positively impacted',
+                'sort_order' => 10,
+                'is_active' => true,
+            ],
         ];
 
         foreach ($statistics as $statistic) {

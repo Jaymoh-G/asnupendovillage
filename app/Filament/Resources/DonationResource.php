@@ -19,7 +19,7 @@ class DonationResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationGroup = 'Content Management';
+    protected static ?string $navigationGroup = 'Main Content';
 
     protected static ?string $navigationLabel = 'Donations';
 
@@ -96,8 +96,12 @@ class DonationResource extends Resource
         return [
             'index' => Pages\ListDonations::route('/'),
             'create' => Pages\CreateDonation::route('/create'),
-            'view' => Pages\ViewDonation::route('/{record}'),
             'edit' => Pages\EditDonation::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
     }
 }

@@ -229,4 +229,9 @@ class EventsResource extends Resource
             'edit' => Pages\EditEvents::route('/{record}/edit'),
         ];
     }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
 }

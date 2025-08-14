@@ -218,4 +218,9 @@ class AlbumResource extends Resource
             'edit' => Pages\EditAlbum::route('/{record}/edit'),
         ];
     }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
 }

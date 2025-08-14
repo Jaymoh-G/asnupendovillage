@@ -18,7 +18,7 @@ class HomePageContentResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-home';
 
-    protected static ?string $navigationGroup = 'Content Management';
+    protected static ?string $navigationGroup = 'Main Content';
 
     protected static ?string $navigationLabel = 'Homepage Content';
 
@@ -229,5 +229,10 @@ class HomePageContentResource extends Resource
             'create' => Pages\CreateHomePageContent::route('/create'),
             'edit' => Pages\EditHomePageContent::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
     }
 }

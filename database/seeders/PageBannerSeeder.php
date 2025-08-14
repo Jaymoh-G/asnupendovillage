@@ -103,6 +103,14 @@ class PageBannerSeeder extends Seeder
                 'is_active' => true,
             ],
             [
+                'page_name' => 'donation',
+                'title' => 'Support Our Mission',
+                'description' => 'Your generous donation helps us continue our work in supporting communities and making a positive impact in people\'s lives.',
+                'banner_image_path' => null,
+                'banner_image_alt' => 'Donation Banner',
+                'is_active' => true,
+            ],
+            [
                 'page_name' => 'careers',
                 'title' => 'Careers',
                 'description' => 'Join our team and be part of something meaningful.',

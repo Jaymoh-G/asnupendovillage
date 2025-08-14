@@ -91,8 +91,12 @@ class DownloadResource extends Resource
         return [
             'index' => Pages\ListDownloads::route('/'),
             'create' => Pages\CreateDownload::route('/create'),
-            'view' => Pages\ViewDownload::route('/{record}'),
             'edit' => Pages\EditDownload::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
     }
 }

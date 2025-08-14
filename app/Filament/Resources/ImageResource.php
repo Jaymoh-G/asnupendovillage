@@ -207,4 +207,9 @@ class ImageResource extends Resource
             'edit' => Pages\EditImage::route('/{record}/edit'),
         ];
     }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
 }

@@ -15,11 +15,15 @@ use App\Livewire\Frontend\Careers;
 use App\Livewire\Frontend\Projects;
 use App\Livewire\Frontend\Events;
 use App\Livewire\Frontend\Facilities;
+use App\Livewire\Frontend\YouTubeVideos;
 use App\Models\Program;
 
 Route::get('/', Home::class)->name('home');
 // about us
-Route::get('/about-us', \App\Livewire\Frontend\AboutUs::class)->name('about-us');
+
+Route::get('/about-us', function () {
+    return view('about-us-page');
+})->name('about-us');
 // founder
 Route::get('/founder', function () {
     return view('founder-page');
@@ -44,11 +48,13 @@ Route::get('/donate-now', function () {
 Route::get('/contact-us', ContactUs::class)->name('contact-us');
 Route::post('/contact/submit', [App\Http\Controllers\ContactController::class, 'submit'])->name('contact.submit');
 // gallery
-Route::get('/gallery', Gallery::class)->name('gallery');
+Route::get('/photo-gallery', Gallery::class)->name('gallery');
 // album detail
 Route::get('/gallery/{slug}', function ($slug) {
     return view('album-detail-page', ['slug' => $slug]);
 })->name('gallery.album');
+// youtube videos
+Route::get('/youtube-gallery', YouTubeVideos::class)->name('youtube-gallery');
 // testimonials
 Route::get('/testimonials', function () {
     return view('testimonials-page');

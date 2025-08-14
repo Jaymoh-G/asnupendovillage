@@ -1990,6 +1990,11 @@ textarea.is-invalid {
     flex-wrap: nowrap;
 }
 
+/* Override Swiper wrapper height */
+.swiper-wrapper {
+    height: auto !important;
+}
+
 .th-slider.has-shadow {
     padding-left: 12px;
     padding-right: 12px;

@@ -17,7 +17,7 @@ class StaticPageResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
-    protected static ?string $navigationGroup = 'Content Management';
+    protected static ?string $navigationGroup = 'Main Content';
 
     protected static ?string $navigationLabel = 'Static Pages';
 
@@ -34,6 +34,7 @@ class StaticPageResource extends Resource
                             ->options([
                                 'about-us' => 'About Us',
                                 'founder' => 'Founder',
+                                'donation' => 'Donation',
                                 'contact-us' => 'Contact Us',
                                 'privacy-policy' => 'Privacy Policy',
                                 'terms-of-service' => 'Terms of Service',
@@ -46,7 +47,7 @@ class StaticPageResource extends Resource
                                 'transparency' => 'Transparency',
                             ])
                             ->required()
-                            ->rules(['unique:static_pages,page_name'])
+                            ->unique(ignoreRecord: true)
                             ->searchable()
                             ->helperText('Select the page you want to manage'),
                         Forms\Components\TextInput::make('title')
@@ -62,7 +63,9 @@ class StaticPageResource extends Resource
                             ->numeric()
                             ->default(0)
                             ->helperText('Order in which pages appear (lower numbers first)'),
-                    ])->columns(2),
+                    ])->columns(2)
+                    ->collapsible()
+                    ->collapsed(false),
 
                 Forms\Components\Section::make('Page Content')
                     ->schema([
@@ -89,7 +92,9 @@ class StaticPageResource extends Resource
                             ->fileAttachmentsVisibility('public')
                             ->columnSpanFull()
                             ->helperText('Main content of the page. You can use rich text formatting and upload images.'),
-                    ]),
+                    ])
+                    ->collapsible()
+                    ->collapsed(false),
 
                 Forms\Components\Section::make('Featured Image')
                     ->schema([
@@ -106,7 +111,9 @@ class StaticPageResource extends Resource
                             ->helperText('Upload a featured image for the page. Recommended: 1200x675px, 16:9 aspect ratio.')
                             ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
                             ->columnSpanFull(),
-                    ]),
+                    ])
+                    ->collapsible()
+                    ->collapsed(false),
 
                 Forms\Components\Section::make('Additional Images')
                     ->schema([
@@ -124,7 +131,9 @@ class StaticPageResource extends Resource
                             ->helperText('Upload additional images for the page. These will be displayed in a gallery format.')
                             ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
                             ->columnSpanFull(),
-                    ]),
+                    ])
+                    ->collapsible()
+                    ->collapsed(false),
 
                 Forms\Components\Section::make('Content Section 1')
                     ->schema([
@@ -166,7 +175,9 @@ class StaticPageResource extends Resource
                             ->helperText('Images for section 1')
                             ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
                             ->columnSpanFull(),
-                    ]),
+                    ])
+                    ->collapsible()
+                    ->collapsed(false),
 
                 Forms\Components\Section::make('Content Section 2')
                     ->schema([
@@ -208,7 +219,9 @@ class StaticPageResource extends Resource
                             ->helperText('Images for section 2')
                             ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
                             ->columnSpanFull(),
-                    ]),
+                    ])
+                    ->collapsible()
+                    ->collapsed(false),
 
                 Forms\Components\Section::make('Content Section 3')
                     ->schema([
@@ -250,7 +263,9 @@ class StaticPageResource extends Resource
                             ->helperText('Images for section 3')
                             ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
                             ->columnSpanFull(),
-                    ]),
+                    ])
+                    ->collapsible()
+                    ->collapsed(false),
 
                 Forms\Components\Section::make('SEO Settings')
                     ->schema([
@@ -267,7 +282,9 @@ class StaticPageResource extends Resource
                             ->label('Meta Keywords')
                             ->maxLength(255)
                             ->helperText('Comma-separated keywords for SEO'),
-                    ])->columns(2),
+                    ])->columns(2)
+                    ->collapsible()
+                    ->collapsed(false),
             ]);
     }
 
@@ -345,5 +362,10 @@ class StaticPageResource extends Resource
             'create' => Pages\CreateStaticPage::route('/create'),
             'edit' => Pages\EditStaticPage::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
     }
 }

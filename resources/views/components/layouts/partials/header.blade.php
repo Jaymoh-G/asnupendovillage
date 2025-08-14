@@ -98,7 +98,7 @@
                         @endforelse
                     </ul>
                 </li>
-                <li><a href="{{ route('gallery') }}">Gallery</a></li>
+                <li><a href="{{ route('gallery') }}">Photo Gallery</a></li>
                 <li class="menu-item-has-children">
                     <a href="#">Blog</a>
                     <ul class="sub-menu">
@@ -416,7 +416,12 @@
                                     </li>
                                     <li>
                                         <a href="{{ route('gallery') }}"
-                                            >Gallery</a
+                                            >Photo Gallery</a
+                                        >
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('youtube-gallery') }}"
+                                            >Youtube Gallery</a
                                         >
                                     </li>
                                     <li>

@@ -53,11 +53,6 @@ class EditStaticPage extends EditRecord
                             ->label('Page Title')
                             ->maxLength(255)
                             ->helperText('Custom title for the page. Leave empty to use default.'),
-                        \Filament\Forms\Components\Textarea::make('excerpt')
-                            ->label('Page Excerpt')
-                            ->rows(3)
-                            ->maxLength(500)
-                            ->helperText('Short description or summary of the page content'),
                         \Filament\Forms\Components\Toggle::make('is_active')
                             ->label('Active')
                             ->default(true)
@@ -67,34 +62,11 @@ class EditStaticPage extends EditRecord
                             ->numeric()
                             ->default(0)
                             ->helperText('Order in which pages appear (lower numbers first)'),
-                    ])->columns(2),
+                    ])->columns(2)
+                    ->collapsible()
+                    ->collapsed(false),
 
-                \Filament\Forms\Components\Section::make('Page Content')
-                    ->schema([
-                        \Filament\Forms\Components\RichEditor::make('content')
-                            ->label('Page Content')
-                            ->toolbarButtons([
-                                'bold',
-                                'italic',
-                                'underline',
-                                'strike',
-                                'link',
-                                'bulletList',
-                                'orderedList',
-                                'h2',
-                                'h3',
-                                'h4',
-                                'blockquote',
-                                'codeBlock',
-                                'undo',
-                                'redo',
-                            ])
-                            ->fileAttachmentsDisk('public')
-                            ->fileAttachmentsDirectory('static-pages')
-                            ->fileAttachmentsVisibility('public')
-                            ->columnSpanFull()
-                            ->helperText('Main content of the page. You can use rich text formatting and upload images.'),
-                    ]),
+
 
                 \Filament\Forms\Components\Section::make('Featured Image')
                     ->schema([
@@ -111,7 +83,161 @@ class EditStaticPage extends EditRecord
                             ->helperText('Upload a featured image for the page. Recommended: 1200x675px, 16:9 aspect ratio.')
                             ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
                             ->columnSpanFull(),
-                    ]),
+                    ])
+                    ->collapsible()
+                    ->collapsed(false),
+
+                \Filament\Forms\Components\Section::make('Additional Images')
+                    ->schema([
+                        \Filament\Forms\Components\FileUpload::make('images')
+                            ->label('Page Images')
+                            ->multiple()
+                            ->image()
+                            ->imageEditor()
+                            ->imageCropAspectRatio('16:9')
+                            ->imageResizeTargetWidth('800')
+                            ->imageResizeTargetHeight('450')
+                            ->directory('static-pages/gallery')
+                            ->visibility('public')
+                            ->maxSize(5120)
+                            ->helperText('Upload additional images for the page. These will be displayed in a gallery format.')
+                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                            ->columnSpanFull(),
+                    ])
+                    ->collapsible()
+                    ->collapsed(false),
+
+                \Filament\Forms\Components\Section::make('Content Section 1')
+                    ->schema([
+                        \Filament\Forms\Components\TextInput::make('section1_title')
+                            ->label('Section 1 Title')
+                            ->maxLength(255)
+                            ->helperText('Title for the first content section'),
+                        \Filament\Forms\Components\RichEditor::make('section1_content')
+                            ->label('Section 1 Content')
+                            ->toolbarButtons([
+                                'bold',
+                                'italic',
+                                'underline',
+                                'link',
+                                'bulletList',
+                                'orderedList',
+                                'h3',
+                                'h4',
+                                'blockquote',
+                                'undo',
+                                'redo',
+                            ])
+                            ->fileAttachmentsDisk('public')
+                            ->fileAttachmentsDirectory('static-pages/section1')
+                            ->fileAttachmentsVisibility('public')
+                            ->columnSpanFull()
+                            ->helperText('Content for the first section'),
+                        \Filament\Forms\Components\FileUpload::make('section1_images')
+                            ->label('Section 1 Images')
+                            ->multiple()
+                            ->image()
+                            ->imageEditor()
+                            ->imageCropAspectRatio('16:9')
+                            ->imageResizeTargetWidth('800')
+                            ->imageResizeTargetHeight('450')
+                            ->directory('static-pages/section1')
+                            ->visibility('public')
+                            ->maxSize(5120)
+                            ->helperText('Images for section 1')
+                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                            ->columnSpanFull(),
+                    ])
+                    ->collapsible()
+                    ->collapsed(false),
+
+                \Filament\Forms\Components\Section::make('Content Section 2')
+                    ->schema([
+                        \Filament\Forms\Components\TextInput::make('section2_title')
+                            ->label('Section 2 Title')
+                            ->maxLength(255)
+                            ->helperText('Title for the second content section'),
+                        \Filament\Forms\Components\RichEditor::make('section2_content')
+                            ->label('Section 2 Content')
+                            ->toolbarButtons([
+                                'bold',
+                                'italic',
+                                'underline',
+                                'link',
+                                'bulletList',
+                                'orderedList',
+                                'h3',
+                                'h4',
+                                'blockquote',
+                                'undo',
+                                'redo',
+                            ])
+                            ->fileAttachmentsDisk('public')
+                            ->fileAttachmentsDirectory('static-pages/section2')
+                            ->fileAttachmentsVisibility('public')
+                            ->columnSpanFull()
+                            ->helperText('Content for the second section'),
+                        \Filament\Forms\Components\FileUpload::make('section2_images')
+                            ->label('Section 2 Images')
+                            ->multiple()
+                            ->image()
+                            ->imageEditor()
+                            ->imageCropAspectRatio('16:9')
+                            ->imageResizeTargetWidth('800')
+                            ->imageResizeTargetHeight('450')
+                            ->directory('static-pages/section2')
+                            ->visibility('public')
+                            ->maxSize(5120)
+                            ->helperText('Images for section 2')
+                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                            ->columnSpanFull(),
+                    ])
+                    ->collapsible()
+                    ->collapsed(false),
+
+                \Filament\Forms\Components\Section::make('Content Section 3')
+                    ->schema([
+                        \Filament\Forms\Components\TextInput::make('section3_title')
+                            ->label('Section 3 Title')
+                            ->maxLength(255)
+                            ->helperText('Title for the third content section'),
+                        \Filament\Forms\Components\RichEditor::make('section3_content')
+                            ->label('Section 3 Content')
+                            ->toolbarButtons([
+                                'bold',
+                                'italic',
+                                'underline',
+                                'link',
+                                'bulletList',
+                                'orderedList',
+                                'h3',
+                                'h4',
+                                'blockquote',
+                                'undo',
+                                'redo',
+                            ])
+                            ->fileAttachmentsDisk('public')
+                            ->fileAttachmentsDirectory('static-pages/section3')
+                            ->fileAttachmentsVisibility('public')
+                            ->columnSpanFull()
+                            ->helperText('Content for the third section'),
+                        \Filament\Forms\Components\FileUpload::make('section3_images')
+                            ->label('Section 3 Images')
+                            ->multiple()
+                            ->image()
+                            ->imageEditor()
+                            ->imageCropAspectRatio('16:9')
+                            ->imageResizeTargetWidth('800')
+                            ->imageResizeTargetHeight('450')
+                            ->directory('static-pages/section3')
+                            ->visibility('public')
+                            ->maxSize(5120)
+                            ->helperText('Images for section 3')
+                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                            ->columnSpanFull(),
+                    ])
+                    ->collapsible()
+                    ->collapsed(false),
 
                 \Filament\Forms\Components\Section::make('SEO Settings')
                     ->schema([
@@ -128,7 +254,9 @@ class EditStaticPage extends EditRecord
                             ->label('Meta Keywords')
                             ->maxLength(255)
                             ->helperText('Comma-separated keywords for SEO'),
-                    ])->columns(2),
+                    ])->columns(2)
+                    ->collapsible()
+                    ->collapsed(false),
             ]);
     }
 }

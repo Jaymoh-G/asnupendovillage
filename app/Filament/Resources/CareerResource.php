@@ -201,8 +201,12 @@ class CareerResource extends Resource
         return [
             'index' => Pages\ListCareers::route('/'),
             'create' => Pages\CreateCareer::route('/create'),
-            'view' => Pages\ViewCareer::route('/{record}'),
             'edit' => Pages\EditCareer::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
     }
 }

@@ -18,7 +18,7 @@ class HomeSliderResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-presentation-chart-line';
 
-    protected static ?string $navigationGroup = 'Content Management';
+    protected static ?string $navigationGroup = 'Main Content';
 
     protected static ?int $navigationSort = 1;
 
@@ -184,5 +184,10 @@ class HomeSliderResource extends Resource
             'create' => Pages\CreateHomeSlider::route('/create'),
             'edit' => Pages\EditHomeSlider::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
     }
 }

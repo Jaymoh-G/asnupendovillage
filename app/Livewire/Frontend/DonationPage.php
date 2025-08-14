@@ -4,6 +4,8 @@ namespace App\Livewire\Frontend;
 
 use Livewire\Component;
 use App\Models\Donation;
+use App\Models\StaticPage;
+use App\Models\PageBanner;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 
@@ -20,6 +22,10 @@ class DonationPage extends Component
     public $showError = false;
     public $errorMessage = '';
 
+    // Static page content properties
+    public $pageBanner;
+    public $pageContent;
+
     protected $rules = [
         'donor_name' => 'required|min:2|max:255',
         'donor_email' => 'required|email',
@@ -33,6 +39,10 @@ class DonationPage extends Component
     {
         // Set default currency based on location or preference
         $this->currency = 'KES';
+
+        // Fetch static page content for donation page
+        $this->pageBanner = PageBanner::getBannerForPage('donation');
+        $this->pageContent = StaticPage::getByPageName('donation');
     }
 
     public function updatedPaymentMethod()

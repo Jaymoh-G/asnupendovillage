@@ -16,7 +16,7 @@ class StatisticResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-chart-bar';
 
-    protected static ?string $navigationGroup = 'Content Management';
+    protected static ?string $navigationGroup = 'Main Content';
 
     protected static ?string $navigationLabel = 'Statistics';
 
@@ -134,5 +134,10 @@ class StatisticResource extends Resource
             'create' => Pages\CreateStatistic::route('/create'),
             'edit' => Pages\EditStatistic::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
     }
 }

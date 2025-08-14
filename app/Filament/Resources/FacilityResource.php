@@ -19,7 +19,7 @@ class FacilityResource extends Resource
     protected static ?string $model = Facility::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-building-office';
-    protected static ?string $navigationGroup = 'Content Management';
+    protected static ?string $navigationGroup = 'Main Content';
     protected static ?int $navigationSort = 6;
 
     public static function form(Form $form): Form
@@ -152,5 +152,10 @@ class FacilityResource extends Resource
             'create' => Pages\CreateFacility::route('/create'),
             'edit' => Pages\EditFacility::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
     }
 }

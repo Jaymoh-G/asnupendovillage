@@ -16,7 +16,7 @@ class CoreValueResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-heart';
 
-    protected static ?string $navigationGroup = 'Content Management';
+    protected static ?string $navigationGroup = 'Main Content';
 
     protected static ?string $navigationLabel = 'Core Values';
 
@@ -122,5 +122,10 @@ class CoreValueResource extends Resource
             'create' => Pages\CreateCoreValue::route('/create'),
             'edit' => Pages\EditCoreValue::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
     }
 }

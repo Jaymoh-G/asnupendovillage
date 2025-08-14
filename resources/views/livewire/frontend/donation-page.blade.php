@@ -2,9 +2,27 @@
     <!--==============================
     Donation Banner Section
     ==============================-->
+    @if($pageBanner && $pageBanner->effective_banner_url)
     <section
         class="breadcumb-wrapper"
-        data-bg-src="assets/img/bg/breadcumb-bg.jpg"
+        data-bg-src="{{ $pageBanner->effective_banner_url }}"
+        data-overlay="theme"
+    >
+        <div class="container">
+            <div class="breadcumb-content text-center">
+                <h1 class="breadcumb-title text-white">
+                    {{ $pageBanner->title ? $pageBanner->title : 'Support Our Mission' }}
+                </h1>
+                <p class="breadcumb-text text-white-50 mb-4">
+                    {{ $pageBanner->description ?? 'Your generous donation helps us continue our work in supporting communities and making a positive impact in people\'s lives.' }}
+                </p>
+            </div>
+        </div>
+    </section>
+    @else
+    <section
+        class="breadcumb-wrapper"
+        data-bg-src="{{ asset('assets/img/bg/breadcumb-bg.jpg') }}"
         data-overlay="theme"
     >
         <div class="container">
@@ -18,10 +36,12 @@
             </div>
         </div>
     </section>
+    @endif
 
     <!--==============================
     Donation Page Header
     ==============================-->
+
 
     <!--==============================
     Donation Form Section
@@ -501,6 +521,9 @@
         </div>
     </section>
 
+
+ 
+
     <style>
         .payment-methods {
             border-radius: 0.5rem;
@@ -571,6 +594,100 @@
             opacity: 0.6;
             cursor: not-allowed;
             transform: none;
+        }
+
+        /* Donation Content Styling */
+        .donation-content {
+            line-height: 1.8;
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .donation-content p {
+            margin-bottom: 20px;
+        }
+
+        .donation-content h3,
+        .donation-content h4 {
+            color: #1a685b;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .donation-content ul,
+        .donation-content ol {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        .donation-content li {
+            margin-bottom: 10px;
+        }
+
+        /* Impact Section Styling */
+        .impact-content {
+            line-height: 1.8;
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .impact-content p {
+            margin-bottom: 20px;
+        }
+
+        .impact-content h3,
+        .impact-content h4 {
+            color: #1a685b;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        /* Additional Info Section Styling */
+        .additional-info {
+            background: #f8f9fa;
+            padding: 40px;
+            border-radius: 15px;
+            border: 2px solid #e9ecef;
+            line-height: 1.8;
+            color: #666;
+        }
+
+        .additional-info p {
+            margin-bottom: 20px;
+        }
+
+        .additional-info h3,
+        .additional-info h4 {
+            color: #1a685b;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        .additional-info ul,
+        .additional-info ol {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        .additional-info li {
+            margin-bottom: 10px;
+        }
+
+        /* Title Area Styling */
+        .title-area .sub-title {
+            color: #ffac00;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .title-area .sec-title {
+            color: #1a685b;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0;
         }
     </style>
 </div>

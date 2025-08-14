@@ -20,7 +20,7 @@ trait HasPageBanner
     public function getBannerImageUrl($pageName)
     {
         $banner = $this->getPageBanner($pageName);
-        return $banner ? $banner->effectiveBannerUrl : asset('assets/img/bg/breadcumb-bg.jpg');
+        return $banner ? $banner->effective_banner_url : asset('assets/img/bg/breadcumb-bg.jpg');
     }
 
     /**

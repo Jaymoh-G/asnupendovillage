@@ -16,7 +16,7 @@ class PageBannerResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-photo';
 
-    protected static ?string $navigationGroup = 'Content Management';
+    protected static ?string $navigationGroup = 'Main Content';
 
     protected static ?string $navigationLabel = 'Page Banners';
 
@@ -150,8 +150,12 @@ class PageBannerResource extends Resource
         return [
             'index' => Pages\ListPageBanners::route('/'),
             'create' => Pages\CreatePageBanner::route('/create'),
-            'view' => Pages\ViewPageBanner::route('/{record}'),
             'edit' => Pages\EditPageBanner::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
     }
 }
