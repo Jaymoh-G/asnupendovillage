@@ -42,7 +42,6 @@
     Donation Page Header
     ==============================-->
 
-
     <!--==============================
     Donation Form Section
     ==============================-->
@@ -520,9 +519,6 @@
             </div>
         </div>
     </section>
-
-
- 
 
     <style>
         .payment-methods {

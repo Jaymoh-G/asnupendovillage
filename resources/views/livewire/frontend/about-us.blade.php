@@ -37,7 +37,7 @@
     Dynamic Content Area
     ==============================-->
 
-    <!--==============================
+        <!--==============================
     About Area
     ==============================-->
     <div class="overflow-hidden space" id="about-sec">
@@ -55,7 +55,7 @@
             <div class="row gy-4 align-items-center">
                 <div class="col-xl-7">
                     <div class="img-box1">
-                        @if($pageContent && $pageContent->featured_image)
+                        @if($pageContent && $pageContent->section1_image_urls && count($pageContent->section1_image_urls) > 0)
                         <div
                             class="img1"
                             data-mask-src="{{
@@ -122,23 +122,23 @@
                                 {{ $pageContent->section1_title }}</span
                             >
                             <h2 class="sec-title">
-                                {{ $pageContent->effective_title }}
+                                        {{ $pageContent->effective_title }}
                             </h2>
                             <p class="">{!! $pageContent->section1_content !!}</p>
                         </div>
-                    </div>
+                        </div>
 
-                    <div class="btn-wrap mt-40">
+                        <div class="btn-wrap mt-40">
                         <a href="{{ route('programs') }}" class="th-btn"
                             >Our Programs<i
-                                class="fas fa-arrow-up-right ms-2"
-                            ></i
-                        ></a>
+                                    class="fas fa-arrow-up-right ms-2"
+                                ></i
+                            ></a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
     @endif
 
@@ -225,8 +225,8 @@
                         <h3 class="vision-title">{{ $pageContent->section2_title ?? 'Our Vision' }}</h3>
                         <div class="vision-text">
                             {!! $pageContent->section2_content ?? '<p>To create a world where every individual has access to the resources, support, and opportunities they need to thrive. We envision communities where compassion, equality, and sustainable development are the foundation of a brighter future for all.</p>' !!}
-                        </div>
                     </div>
+                </div>
                 </div>
                 @endif
                 @if($pageContent->section3_title || $pageContent->section3_content)
@@ -241,8 +241,8 @@
                         <h3 class="mission-title">{{ $pageContent->section3_title ?? 'Our Mission' }}</h3>
                         <div class="mission-text">
                             {!! $pageContent->section3_content ?? '<p>To empower communities through sustainable development initiatives, educational programs, and humanitarian aid. We are committed to addressing the root causes of poverty and inequality while fostering long-term solutions that create lasting positive change.</p>' !!}
-                        </div>
                     </div>
+                </div>
                 </div>
                 @endif
             </div>
@@ -310,7 +310,7 @@
                             <h2 class="sec-title">{{ $founderPage->section1_title ?? 'Our Founder' }}</h2>
                             <div class="founder-content">
                                 {!! $founderPage->section1_content ?? '<p>Our founder is a visionary leader dedicated to making a positive impact in the community.</p>' !!}
-                            </div>
+                        </div>
                         </div>
 
                         <div class="btn-wrap mt-40">
@@ -331,7 +331,7 @@
     ==============================-->
     @if($teamMembers && $teamMembers->count() > 0)
     <section
-        
+
         id="team-sec"
         data-bg-src="{{ asset('assets/img/bg/gray-bg2.png') }}"
     >
@@ -430,7 +430,7 @@
     ==============================-->
     @if($featuredVideo)
     <section class="space">
-        <div class="video-area-3">
+    <div class="video-area-3">
         <div
             class="shape-mockup video-bg-shape3-1"
             data-top="0"
@@ -484,12 +484,12 @@
                         <span class="published-date">
                             <i class="fas fa-calendar me-2"></i>{{ $featuredVideo->published_at->format('M d, Y') }}
                         </span>
-                        @endif
-                    </div>
                     @endif
                 </div>
+                    @endif
             </div>
         </div>
+    </div>
         </div>
     </section>
     @endif
@@ -605,9 +605,9 @@
                             <h3 class="box-title">{{ $donationPage->section1_title ?? 'Awareness & Engagement' }}</h3>
                             <div class="box-text">
                                 {!! $donationPage->section1_content ?? '<p>To inform and engage potential donors and supporters about the charity\'s mission and the cause it supports. Utilize various channels such as social media.</p>' !!}
-                            </div>
                         </div>
                     </div>
+                </div>
                 </div>
                 @endif
 
@@ -664,9 +664,9 @@
                             <h3 class="box-title">{{ $donationPage->section2_title ?? 'Donation Collection' }}</h3>
                             <div class="box-text">
                                 {!! $donationPage->section2_content ?? '<p>Set up a secure and user-friendly online donation platform that accepts multiple payment methods and allows for both one-time and recurring donations.</p>' !!}
-                            </div>
                         </div>
                     </div>
+                </div>
                 </div>
                 @endif
 
@@ -723,7 +723,7 @@
                             <h3 class="box-title">{{ $donationPage->section3_title ?? 'Impact and Accountability' }}</h3>
                             <div class="box-text">
                                 {!! $donationPage->section3_content ?? '<p>Allocate funds to specific projects and initiatives that align with the charity\'s mission, ensuring that resources are used efficiently and effectively.</p>' !!}
-                            </div>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -773,35 +773,35 @@
                 <div class="swiper th-slider testi-thumb-slider1" data-slider-options='{"effect":"fade","loop":{{ $testimonials->count() > 1 ? "true" : "false" }}}'>
                     <div class="swiper-wrapper">
                         @forelse($testimonials as $testimonial)
-                            <div class="swiper-slide">
-                                <div class="testi-box-img">
-                                    <img
-                                        class="testi-img"
-                                        src="{{ $testimonial->image_url ?? asset('assets/img/testimonial/testi_1_1.png') }}"
-                                        alt="{{ $testimonial->name }}"
-                                    />
-                                    <div class="testi-card_review">
-                                        <i class="fas fa-star"></i>
-                                        5.0
-                                    </div>
+                        <div class="swiper-slide">
+                            <div class="testi-box-img">
+                                <img
+                                    class="testi-img"
+                                    src="{{ $testimonial->image_url ?? asset('assets/img/testimonial/testi_1_1.png') }}"
+                                    alt="{{ $testimonial->name }}"
+                                />
+                                <div class="testi-card_review">
+                                    <i class="fas fa-star"></i>
+                                    5.0
+                                </div>
 
-                                    @if($testimonial->pdf_file)
+                                @if($testimonial->pdf_file)
                                         <div class="pdf-indicator" title="PDF Document Available" data-bs-toggle="tooltip" data-bs-placement="top">
-                                            <i class="fas fa-file-pdf text-danger"></i>
-                                        </div>
-                                    @endif
+                                    <i class="fas fa-file-pdf text-danger"></i>
                                 </div>
+                                @endif
                             </div>
+                        </div>
                         @empty
-                            <div class="swiper-slide">
-                                <div class="testi-box-img">
+                        <div class="swiper-slide">
+                            <div class="testi-box-img">
                                     <img class="testi-img" src="{{ asset('assets/img/testimonial/testi_1_1.png') }}" alt="Default testimonial" />
-                                    <div class="testi-card_review">
-                                        <i class="fas fa-star"></i>
-                                        5.0
-                                    </div>
+                                <div class="testi-card_review">
+                                    <i class="fas fa-star"></i>
+                                    5.0
                                 </div>
                             </div>
+                        </div>
                         @endforelse
                     </div>
                 </div>
@@ -890,11 +890,11 @@
                     <a href="{{ route('testimonials') }}" class="th-btn style2">
                         View All Testimonials<i class="fas fa-arrow-up-right ms-2"></i>
                     </a>
-                </div>
             </div>
         </div>
-    </section>
-    @endif
+    </div>
+</section>
+@endif
 
     <style>
         /* Page Images Section Styling */

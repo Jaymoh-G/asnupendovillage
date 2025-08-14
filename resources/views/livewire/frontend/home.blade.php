@@ -180,7 +180,7 @@ Service Area
                                         >
                                     </h3>
                                     <p class="box-text">
-                                        {{ Str::limit($program->content, 120) }}
+                                        {!! Str::limit($program->content, 120) !!}
                                     </p>
                                     <a
                                         href="{{ route('programs.detail', $program->slug) }}"
@@ -288,7 +288,7 @@ About Area
                                     <p class="">{{ $aboutUs->description }}</p>
                                 @endif
                             @else
-                                <span class="sub-title before-none">About Us Donat</span>
+                                <span class="sub-title before-none">About Us</span>
                                 <h2 class="sec-title">We Believe that We can Save More Life's with you</h2>
                                 <p class="">Donet is the largest global crowdfunding community connecting nonprofits, donors, and companies in nearly every country. We help nonprofits from Afghanistan to Zimbabwe (and hundreds of places in between) access the tools, training, and support they need to be more effective and make our world a better place.</p>
                             @endif
@@ -356,20 +356,7 @@ Cta Area
         >
             <img src="{{ asset('assets/img/shape/cta_shape2_2.png') }}" alt="img" />
         </div>
-        <div
-            class="cta-bg-shape2-3 shape-mockup jump-reverse d-md-block d-none"
-            data-bottom="5%"
-            data-left="0"
-        >
-            <img src="{{ asset('assets/img/shape/cta_shape2_3.png') }}" alt="img" />
-        </div>
-        <div
-            class="cta-bg-shape2-4 shape-mockup jump d-md-block d-none"
-            data-bottom="5%"
-            data-right="0"
-        >
-            <img src="{{ asset('assets/img/shape/cta_shape2_4.png') }}" alt="img" />
-        </div>
+       
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-7">

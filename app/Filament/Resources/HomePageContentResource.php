@@ -95,7 +95,9 @@ class HomePageContentResource extends Resource
                             ->imageEditor()
                             ->directory('homepage-content')
                             ->visibility('public')
-                            ->helperText('Upload an image for this section'),
+                            ->maxSize(5120)
+                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                            ->helperText('Upload an image for this section. Recommended size: 800x450px (16:9 ratio). If you see "waiting for size", try refreshing the page after upload.'),
                     ])->columns(2),
 
                 Forms\Components\Section::make('Statistics (for Statistics Section)')
