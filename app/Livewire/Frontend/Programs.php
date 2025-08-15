@@ -20,7 +20,7 @@ class Programs extends Component
 
     public function render()
     {
-        $programs = Program::orderBy('title')->paginate(9);
+        $programs = Program::ordered()->paginate(9);
 
         return view('livewire.frontend.programs', [
             'programs' => $programs,

@@ -218,19 +218,7 @@ Service Area
                     <i class="far fa-arrow-right"></i>
                 </button>
             </div>
-            @if($latestPrograms && $latestPrograms->count() > 0)
-            <div class="row justify-content-center mt-5">
-                <div class="col-lg-6">
-                    <div class="text-center">
-                        <a href="{{ route('programs') }}" class="th-btn"
-                            >View All Programs<i
-                                class="fas fa-arrow-up-right ms-2"
-                            ></i
-                        ></a>
-                    </div>
-                </div>
-            </div>
-            @endif
+
         </div>
     </section>
 
@@ -356,7 +344,7 @@ Cta Area
         >
             <img src="{{ asset('assets/img/shape/cta_shape2_2.png') }}" alt="img" />
         </div>
-       
+
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-7">
@@ -615,7 +603,7 @@ Video Area
                                 <div class="col-sm-6 counter-card-wrap">
                                     <div class="counter-card">
                                         <h2 class="box-number @if($statistic['color']) text-theme2 @else text-white @endif">
-                                            <span class="counter-number">{{ $statistic['number'] }}</span>{{ $statistic['suffix'] ?? '' }}<span class="fw-light">+</span>
+                                            <span class="counter-number">{{ $statistic['number'] }}</span>{{ $statistic['suffix'] ?? '' }}
                                         </h2>
                                         <p class="box-text text-white">{{ $statistic['label'] }}</p>
                                     </div>
@@ -651,18 +639,58 @@ Video Area
                 </div>
                 <div class="col-xl-6">
                     <div class="video-thumb1-1 video-box-center">
-                        <img
-                            src="{{ asset('assets/img/normal/video-thumb1-1.png') }}"
-                            alt="img"
-                        />
+                        @if($homePageContent->has('statistics') && $homePageContent['statistics']->image)
+                            <img
+                                src="{{ $homePageContent['statistics']->image_url ?? asset('assets/img/normal/video-thumb1-1.png') }}"
+                                alt="Statistics Section Image"
+                                class="img-fluid"
+                            />
+                        @elseif($homePageContent->has('statistics') && $homePageContent['statistics']->video_url)
+                            @php
+                                // Extract YouTube video ID from URL
+                                $videoUrl = $homePageContent['statistics']->video_url;
+                                $videoId = null;
+                                if (preg_match('/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]+)/', $videoUrl, $matches)) {
+                                    $videoId = $matches[1];
+                                }
+                            @endphp
+                            @if($videoId)
+                                <img
+                                    src="https://img.youtube.com/vi/{{ $videoId }}/maxresdefault.jpg"
+                                    alt="YouTube Video Thumbnail"
+                                    class="img-fluid"
+                                    onerror="this.src='https://img.youtube.com/vi/{{ $videoId }}/hqdefault.jpg'"
+                                />
+                            @else
+                                <img
+                                    src="{{ asset('assets/img/normal/video-thumb1-1.png') }}"
+                                    alt="Default Image"
+                                    class="img-fluid"
+                                />
+                            @endif
+                        @elseif($homePageContent->has('video-section') && $homePageContent['video-section']->video_url)
+                            <img
+                                src="{{ $homePageContent['video-section']->video_thumbnail_url ?? asset('assets/img/normal/video-thumb1-1.png') }}"
+                                alt="Video Thumbnail"
+                                class="img-fluid"
+                            />
+                        @else
+                            <img
+                                src="{{ asset('assets/img/normal/video-thumb1-1.png') }}"
+                                alt="Default Image"
+                                class="img-fluid"
+                            />
+                        @endif
+
                         @if($homePageContent->has('video-section') && $homePageContent['video-section']->video_url)
                             <a href="{{ $homePageContent['video-section']->video_url }}" class="play-btn style2 popup-video">
                                 <i class="fa-sharp fa-solid fa-play"></i>
                             </a>
-                        @else
-                            <a href="https://www.youtube.com/watch?v=_sI_Ps7JSEk" class="play-btn style2 popup-video">
+                        @elseif($homePageContent->has('statistics') && $homePageContent['statistics']->video_url)
+                            <a href="{{ $homePageContent['statistics']->video_url }}" class="play-btn style2 popup-video">
                                 <i class="fa-sharp fa-solid fa-play"></i>
                             </a>
+
                         @endif
                     </div>
                 </div>
@@ -811,125 +839,7 @@ Video Area
         </div>
     </section>
     <!--==============================
-    <!--==============================
-Testimonial Area
-==============================-->
-    <section class="testi-area-1 space overflow-hidden" id="testi-sec">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-6">
-                    <div class="title-area text-center">
-                        <span class="sub-title">Testimonials</span>
-                        <h2 class="sec-title">What People Say About Us</h2>
-                    </div>
-                </div>
-            </div>
-            @if($latestTestimonials && $latestTestimonials->count() > 0)
-            <div class="row gx-0 justify-content-end">
-                <div class="col-lg-5">
-                    <div
-                        class="swiper th-slider testi-thumb-slider1"
-                        data-slider-options='{"effect":"fade","loop":false}'
-                    >
-                        <div class="swiper-wrapper">
-                            @foreach($latestTestimonials as $testimonial)
-                            <div class="swiper-slide">
-                                <div class="testi-box-img">
-                                    <img
-                                        class="testi-img"
-                                        src="{{ $testimonial->image_url ?? asset('assets/img/testimonial/testi_1_1.png') }}"
-                                        alt="{{ $testimonial->name }}"
-                                    />
-                                    <div class="testi-card_review">
-                                        <i class="fas fa-star"></i>
-                                        5.0
-                                    </div>
-                                </div>
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-7">
-                    <div class="testi-slider1">
-                        <div
-                            class="swiper th-slider testimonial-slider1"
-                            id="testiSlide1"
-                            data-slider-options='{"loop":false,"paginationType":"progressbar","effect":"fade", "autoHeight": "true", "thumbs":{"swiper":".testi-thumb-slider1"}}'
-                        >
-                            <div class="swiper-wrapper">
-                                @foreach($latestTestimonials as $testimonial)
-                                <div class="swiper-slide">
-                                    <div class="testi-card">
-                                        <p class="box-text">
-                                            "{{ $testimonial->content }}"
-                                        </p>
-                                        <h3 class="box-title">
-                                            {{ $testimonial->name }}
-                                        </h3>
-                                        @if($testimonial->program)
-                                        <p class="box-desig">
-                                            {{ $testimonial->program->title }}
-                                        </p>
-                                        @endif
-                                        <div
-                                            class="quote-icon"
-                                            data-mask-src="{{
-                                                asset(
-                                                    'assets/img/icon/quote2.svg'
-                                                )
-                                            }}"
-                                        ></div>
-                                    </div>
-                                </div>
-                                @endforeach
-                            </div>
-                            <div class="slider-pagination"></div>
-                            <div class="slider-pagination2"></div>
-                        </div>
-                        <div class="icon-box">
-                            <button
-                                data-slider-prev="#testiSlide1"
-                                class="slider-arrow default style-border slider-prev"
-                            >
-                                <i class="far fa-arrow-left"></i>
-                            </button>
-                            <button
-                                data-slider-next="#testiSlide1"
-                                class="slider-arrow default style-border slider-next"
-                            >
-                                <i class="far fa-arrow-right"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row justify-content-center mt-5">
-                <div class="col-lg-6">
-                    <div class="text-center">
-                        <a href="{{ route('testimonials') }}" class="th-btn"
-                            >View All Testimonials<i
-                                class="fas fa-arrow-up-right ms-2"
-                            ></i
-                        ></a>
-                    </div>
-                </div>
-            </div>
-            @else
-            <div class="text-center py-5">
-                <p class="text-muted">
-                    No testimonials available at the moment.
-                </p>
-            </div>
-            @endif
-        </div>
-    </section>
-    <!--==============================
 
-Faq Area
-==============================-->
-
-    <!--==============================
 Blog Area
 ==============================-->
     <section class="space" id="blog-sec">

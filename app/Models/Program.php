@@ -63,6 +63,30 @@ class Program extends Model
             ->limit($limit);
     }
 
+    /**
+     * Scope to get programs ordered by sort order
+     */
+    public function scopeOrdered($query)
+    {
+        return $query->orderBy('sort_order')->orderBy('title');
+    }
+
+    /**
+     * Scope to get active programs
+     */
+    public function scopeActive($query)
+    {
+        return $query->where('featured', true);
+    }
+
+    /**
+     * Scope to get all programs in order
+     */
+    public function scopeAllOrdered($query)
+    {
+        return $query->ordered();
+    }
+
     public function getRouteKeyName()
     {
         return 'slug';

@@ -34,6 +34,35 @@ class YouTube extends Model
     ];
 
     /**
+     * Ensure tags are always an array
+     */
+    public function setTagsAttribute($value)
+    {
+        if (is_string($value)) {
+            if (str_contains($value, ',')) {
+                $value = array_map('trim', explode(',', $value));
+            } else {
+                $value = [$value];
+            }
+        }
+
+        $this->attributes['tags'] = is_array($value) ? json_encode($value) : json_encode([]);
+    }
+
+    /**
+     * Ensure tags are always returned as an array
+     */
+    public function getTagsAttribute($value)
+    {
+        if (is_string($value)) {
+            $decoded = json_decode($value, true);
+            return is_array($decoded) ? $decoded : [];
+        }
+
+        return is_array($value) ? $value : [];
+    }
+
+    /**
      * Boot method to automatically generate slug
      */
     protected static function boot()
@@ -77,7 +106,7 @@ class YouTube extends Model
         if ($this->thumbnail) {
             return asset('storage/' . $this->thumbnail);
         }
-        
+
         // Fallback to YouTube's default thumbnail
         return "https://img.youtube.com/vi/{$this->video_id}/maxresdefault.jpg";
     }

@@ -102,7 +102,11 @@ class HomePageContentResource extends Resource
 
                 Forms\Components\Section::make('Statistics (for Statistics Section)')
                     ->schema([
-                        Repeater::make('meta_data.statistics')
+                        Forms\Components\TextInput::make('video_url')
+                            ->label('Video URL (Optional)')
+                            ->maxLength(255)
+                            ->helperText('YouTube or other video URL to link to the statistics section image'),
+                        Forms\Components\Repeater::make('meta_data.statistics')
                             ->label('Statistics')
                             ->schema([
                                 Forms\Components\TextInput::make('number')

@@ -26,8 +26,7 @@ class ViewServiceProvider extends ServiceProvider
         View::composer('components.layouts.partials.header', function ($view) {
             $facilities = Facility::ordered()->get();
 
-            $programs = Program::orderBy('title')
-                ->get();
+            $programs = Program::ordered()->get();
 
             $view->with('facilities', $facilities);
             $view->with('programs', $programs);

@@ -256,11 +256,11 @@
             .search-filter-section {
                 padding: 20px;
             }
-            
+
             .filter-buttons {
                 justify-content: center;
             }
-            
+
             .video-thumbnail {
                 height: 180px;
             }
@@ -312,25 +312,40 @@ YouTube Videos Area
         <div class="search-filter-section">
             <div class="row align-items-center">
                 <div class="col-lg-6 mb-3 mb-lg-0">
-                    <input 
-                        type="text" 
-                        wire:model.live="search" 
-                        placeholder="Search videos..." 
+                    <input
+                        type="text"
+                        wire:model.live="search"
+                        placeholder="Search videos..."
                         class="search-input w-100"
-                    >
+                    />
                 </div>
                 <div class="col-lg-6">
                     <div class="filter-buttons">
-                        <a href="#" wire:click.prevent="$set('filter', 'all')" 
-                           class="filter-btn {{ $filter === 'all' ? 'active' : '' }}">
+                        <a
+                            href="#"
+                            wire:click.prevent="$set('filter', 'all')"
+                            class="filter-btn {{
+                                $filter === 'all' ? 'active' : ''
+                            }}"
+                        >
                             All Videos
                         </a>
-                        <a href="#" wire:click.prevent="$set('filter', 'featured')" 
-                           class="filter-btn {{ $filter === 'featured' ? 'active' : '' }}">
+                        <a
+                            href="#"
+                            wire:click.prevent="$set('filter', 'featured')"
+                            class="filter-btn {{
+                                $filter === 'featured' ? 'active' : ''
+                            }}"
+                        >
                             Featured
                         </a>
-                        <a href="#" wire:click.prevent="$set('filter', 'recent')" 
-                           class="filter-btn {{ $filter === 'recent' ? 'active' : '' }}">
+                        <a
+                            href="#"
+                            wire:click.prevent="$set('filter', 'recent')"
+                            class="filter-btn {{
+                                $filter === 'recent' ? 'active' : ''
+                            }}"
+                        >
                             Recent
                         </a>
                     </div>
@@ -348,13 +363,18 @@ YouTube Videos Area
                             src="{{ $video->thumbnail_url }}"
                             alt="{{ $video->title }}"
                         />
-                        <a href="{{ $video->video_url }}" 
-                           target="_blank" 
-                           class="play-button">
+                        <a
+                            href="{{ $video->video_url }}"
+                            target="_blank"
+                            class="play-button"
+                        >
                             <i class="fas fa-play"></i>
                         </a>
                         @if($video->duration)
-                        <span class="video-duration">{{ $video->duration }}</span>
+                        <span
+                            class="video-duration"
+                            >{{ $video->duration }}</span
+                        >
                         @endif
                     </div>
                     <div class="video-content">
@@ -373,14 +393,26 @@ YouTube Videos Area
                             <span class="video-date">
                                 {{ $video->published_at->format('M d, Y') }}
                             </span>
-                            @endif
-                            @if($video->is_featured)
-                            <span class="badge bg-warning text-dark">Featured</span>
+                            @endif @if($video->is_featured)
+                            <span class="badge bg-warning text-dark"
+                                >Featured</span
+                            >
                             @endif
                         </div>
-                        @if($video->tags && count($video->tags) > 0)
+                        @php $tags = $video->tags; // Debug information (remove
+                        this in production) if (config('app.debug')) {
+                        \Log::info("Video ID: {$video->id}, Tags type: " .
+                        gettype($video->tags) . ", Tags value: " .
+                        json_encode($video->tags)); } // Ensure tags is always
+                        an array if (!is_array($tags)) { if (is_string($tags) &&
+                        !empty($tags)) { // Try to decode if it's a JSON string
+                        try { $decoded = json_decode($tags, true); $tags =
+                        is_array($decoded) ? $decoded : []; } catch (\Exception
+                        $e) { $tags = []; } } else { $tags = []; } } //
+                        Additional safety check if (!is_array($tags)) { $tags =
+                        []; } @endphp @if(!empty($tags))
                         <div class="video-tags">
-                            @foreach(array_slice($video->tags, 0, 3) as $tag)
+                            @foreach(array_slice($tags, 0, 3) as $tag)
                             <span class="video-tag">{{ $tag }}</span>
                             @endforeach
                         </div>
@@ -408,5 +440,3 @@ YouTube Videos Area
     </div>
     @endsection
 </div>
-
-

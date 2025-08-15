@@ -89,6 +89,10 @@ class EditHomePageContent extends EditRecord
 
                 \Filament\Forms\Components\Section::make('Statistics (for Statistics Section)')
                     ->schema([
+                        \Filament\Forms\Components\TextInput::make('video_url')
+                            ->label('Video URL (Optional)')
+                            ->maxLength(255)
+                            ->helperText('YouTube or other video URL to link to the statistics section image'),
                         \Filament\Forms\Components\Repeater::make('meta_data.statistics')
                             ->label('Statistics')
                             ->schema([

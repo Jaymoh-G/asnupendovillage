@@ -79,6 +79,7 @@ class ProgramResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultSort('sort_order', 'asc')
             ->columns([
                 Tables\Columns\ImageColumn::make('image_url')
                     ->label('Image')
@@ -91,7 +92,10 @@ class ProgramResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->limit(40),
-
+                Tables\Columns\TextColumn::make('sort_order')
+                    ->label('Sort Order')
+                    ->sortable()
+                    ->numeric(),
                 Tables\Columns\TextColumn::make('content')
                     ->label('Content')
                     ->limit(80)

@@ -23,7 +23,7 @@ class ProgramDetail extends Component
 
         // Get other programs for sidebar (excluding current program)
         $this->otherPrograms = Program::where('id', '!=', $this->program->id)
-            ->orderBy('title')
+            ->ordered()
             ->limit(5)
             ->get();
     }

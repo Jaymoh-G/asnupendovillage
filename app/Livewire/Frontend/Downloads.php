@@ -21,7 +21,7 @@ class Downloads extends Component
         // Get programs that have downloads
         $this->programs = Program::whereHas('downloads', function ($query) {
             $query->where('status', 'active');
-        })->orderBy('title')->get();
+        })->ordered()->get();
 
         if ($programId) {
             $this->selectedProgram = $programId;

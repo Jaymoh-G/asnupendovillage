@@ -38,6 +38,8 @@ class HomePageContentSeeder extends Seeder
             'section_name' => 'statistics',
             'title' => 'We Always Help The Needy People',
             'description' => 'Discover the inspiring stories of individuals and communities transformed by our programs. Our success stories highlight the real-life impact of your donations.',
+            'image' => 'statistics/statistics-hero.jpg', // Sample image path
+            'video_url' => 'https://www.youtube.com/watch?v=_sI_Ps7JSEk', // Optional video URL
             'is_active' => true,
             'sort_order' => 2,
             'meta_data' => [
