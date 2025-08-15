@@ -399,12 +399,8 @@ YouTube Videos Area
                             >
                             @endif
                         </div>
-                        @php $tags = $video->tags; // Debug information (remove
-                        this in production) if (config('app.debug')) {
-                        \Log::info("Video ID: {$video->id}, Tags type: " .
-                        gettype($video->tags) . ", Tags value: " .
-                        json_encode($video->tags)); } // Ensure tags is always
-                        an array if (!is_array($tags)) { if (is_string($tags) &&
+                        @php $tags = $video->tags; // Ensure tags is always an
+                        array if (!is_array($tags)) { if (is_string($tags) &&
                         !empty($tags)) { // Try to decode if it's a JSON string
                         try { $decoded = json_decode($tags, true); $tags =
                         is_array($decoded) ? $decoded : []; } catch (\Exception
