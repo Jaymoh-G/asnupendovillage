@@ -18,3 +18,4 @@ class EditYouTubeVideo extends EditRecord
     }
 }
 
+
