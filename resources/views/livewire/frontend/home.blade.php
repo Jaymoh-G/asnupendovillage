@@ -247,9 +247,7 @@ About Area
                             }}"
                         >
                             <img
-                                src="{{
-                                    asset('assets/img/normal/about_1_1.png')
-                                }}"
+                                src="@if($homePageContent->has('about-us') && $homePageContent['about-us']->image){{ asset('storage/' . $homePageContent['about-us']->image) }}@else{{ asset('assets/img/normal/about_1_1.png') }}@endif"
                                 alt="About"
                             />
                         </div>
@@ -408,7 +406,7 @@ Story Area
                                 </h5>
                                 <p class="box-text">
                                     @if($featuredTestimonial && $featuredTestimonial->content)
-                                        {{ Str::limit($featuredTestimonial->content, 150) }}
+                                        {!! Str::limit($featuredTestimonial->content, 150) !!}
                                     @else
                                         Our success stories highlight the real life
                                         impact of your donations & the resilience of
@@ -421,7 +419,7 @@ Story Area
                                     data-mask-src="{{ asset('assets/img/icon/quote.svg') }}"
                                 ></div>
                             </div>
-                            <div class="year-counter">
+                                                        <div class="year-counter">
                                 <p class="year-counter_text">
                                     Years of <span>Experience</span>
                                 </p>
@@ -464,7 +462,7 @@ Story Area
                                 <h2 class="sec-title">We Help Fellow Nonprofits Access the Funding Tools, Training</h2>
                                 <p class="mt-30">Our secure online donation platform allows you to make contributions quickly and safely. Choose from various payment methods and set up one-time.exactly.</p>
                                 <div class="btn-wrap mt-35">
-                                    <a href="about.html" class="th-btn style-border">Our Success Story<i class="fas fa-arrow-up-right ms-2"></i></a>
+                                    <a href="about.html" class="th-btn style-border">Our Success Stories<i class="fas fa-arrow-up-right ms-2"></i></a>
                                 </div>
                             @endif
                         </div>
@@ -692,11 +690,28 @@ Video Area
                                 />
                             @endif
                         @elseif($homePageContent->has('video-section') && $homePageContent['video-section']->video_url)
-                            <img
-                                src="{{ $homePageContent['video-section']->video_thumbnail_url ?? asset('assets/img/normal/video-thumb1-1.png') }}"
-                                alt="Video Thumbnail"
-                                class="img-fluid"
-                            />
+                            @php
+                                // Extract YouTube video ID from URL for video section
+                                $videoUrl = $homePageContent['video-section']->video_url;
+                                $videoId = null;
+                                if (preg_match('/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]+)/', $videoUrl, $matches)) {
+                                    $videoId = $matches[1];
+                                }
+                            @endphp
+                            @if($videoId)
+                                <img
+                                    src="https://img.youtube.com/vi/{{ $videoId }}/maxresdefault.jpg"
+                                    alt="YouTube Video Thumbnail"
+                                    class="img-fluid"
+                                    onerror="this.src='https://img.youtube.com/vi/{{ $videoId }}/hqdefault.jpg'"
+                                />
+                            @else
+                                <img
+                                    src="{{ asset('assets/img/normal/video-thumb1-1.png') }}"
+                                    alt="Default Image"
+                                    class="img-fluid"
+                                />
+                            @endif
                         @else
                             <img
                                 src="{{ asset('assets/img/normal/video-thumb1-1.png') }}"
