@@ -131,7 +131,25 @@ class NewsResource extends Resource
                             ->imageResizeTargetHeight('1080')
                             ->directory('news')
                             ->columnSpanFull()
-                            ->helperText('Upload new images for the news article. Images will be processed and stored properly.'),
+                            ->helperText('Upload new images for the news article. Images will be processed and stored properly.')
+                            ->visible(fn($record) => $record && $record->exists)
+                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                            ->maxSize(5120), // 5MB
+
+                        // Image management actions
+                        Forms\Components\Actions::make([
+                            Forms\Components\Actions\Action::make('manage_images')
+                                ->label('Manage Images in Admin Panel')
+                                ->icon('heroicon-o-photo')
+                                ->url(fn($record) => $record ? route('filament.admin.resources.images.index', ['filter[imageable_type]' => 'App\\Models\\News', 'filter[imageable_id]' => $record->id]) : '#')
+                                ->openUrlInNewTab()
+                                ->visible(fn($record) => $record && $record->exists)
+                                ->color('info')
+                                ->extraAttributes(['class' => 'w-full'])
+                                ->helperText('Click here to manage existing images (delete, reorder, set featured, etc.)'),
+                        ])
+                            ->columnSpanFull()
+                            ->visible(fn($record) => $record && $record->exists),
                     ]),
             ])
             ->extraAttributes(['class' => 'news-resource-form']);
@@ -222,5 +240,22 @@ class NewsResource extends Resource
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
+    }
+
+    /**
+     * Handle form submission for image uploads
+     */
+    public static function handleFormSubmission($data, $record = null)
+    {
+        // If this is an update and we have temp_images, process them
+        if ($record && isset($data['temp_images']) && !empty($data['temp_images'])) {
+            // Upload the new images using the HasImages trait
+            $record->uploadImages($data['temp_images'], 'news');
+
+            // Clear the temp_images field
+            unset($data['temp_images']);
+        }
+
+        return $data;
     }
 }

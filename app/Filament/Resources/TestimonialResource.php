@@ -34,7 +34,7 @@ class TestimonialResource extends Resource
 
                         Forms\Components\Select::make('program_id')
                             ->label('Program')
-                            ->relationship('program', 'title')
+                            ->relationship('program', 'title', fn($query) => $query->whereNotNull('title')->where('title', '!=', ''))
                             ->required()
                             ->searchable(),
 
@@ -150,7 +150,7 @@ class TestimonialResource extends Resource
             ->filters([
                 Tables\Filters\SelectFilter::make('program_id')
                     ->label('Program')
-                    ->relationship('program', 'title'),
+                    ->relationship('program', 'title', fn($query) => $query->whereNotNull('title')->where('title', '!=', '')),
 
                 Tables\Filters\TernaryFilter::make('is_featured')
                     ->label('Featured'),

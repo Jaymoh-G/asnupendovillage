@@ -39,19 +39,7 @@ class ProjectResource extends Resource
                             ->helperText('Leave empty to auto-generate from project name'),
                         Forms\Components\Select::make('program_id')
                             ->label('Program')
-                            ->options(function () {
-                                try {
-                                    return \App\Models\Program::whereNotNull('title')
-                                        ->where('title', '!=', '')
-                                        ->pluck('title', 'id')
-                                        ->filter(function ($title, $id) {
-                                            return !is_null($title) && !is_null($id) && $title !== '' && $id !== '';
-                                        })
-                                        ->toArray();
-                                } catch (\Exception $e) {
-                                    return [];
-                                }
-                            })
+                            ->relationship('program', 'title', fn($query) => $query->whereNotNull('title')->where('title', '!=', ''))
                             ->required()
                             ->searchable()
                             ->preload(),
@@ -139,7 +127,7 @@ class ProjectResource extends Resource
             ->filters([
                 Tables\Filters\SelectFilter::make('program_id')
                     ->label('Program')
-                    ->relationship('program', 'title'),
+                    ->relationship('program', 'title', fn($query) => $query->whereNotNull('title')->where('title', '!=', '')),
                 Tables\Filters\SelectFilter::make('status')
                     ->label('Status')
                     ->options([

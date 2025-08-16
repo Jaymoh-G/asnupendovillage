@@ -39,7 +39,7 @@ class TeamResource extends Resource
 
                         Forms\Components\Select::make('programs')
                             ->label('Programs')
-                            ->relationship('programs', 'title')
+                            ->relationship('programs', 'title', fn($query) => $query->whereNotNull('title')->where('title', '!=', ''))
                             ->multiple()
                             ->preload()
                             ->searchable(),

@@ -31,7 +31,7 @@ class DownloadResource extends Resource
                 Forms\Components\Textarea::make('description')->label('Description')->rows(3),
                 Forms\Components\Select::make('program_id')
                     ->label('Program')
-                    ->relationship('program', 'title')
+                    ->relationship('program', 'title', fn($query) => $query->whereNotNull('title')->where('title', '!=', ''))
                     ->searchable()
                     ->preload(),
                 Forms\Components\FileUpload::make('file_path')

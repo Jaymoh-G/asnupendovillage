@@ -46,15 +46,19 @@ class UserResource extends Resource
                 Forms\Components\Select::make('roles')
                     ->label('Roles')
                     ->multiple()
-                    ->relationship('roles', 'name')
+                    ->relationship('roles', 'name', fn($query) => $query->whereNotNull('name')->where('name', '!=', ''))
                     ->preload()
-                    ->searchable(),
+                    ->searchable()
+                    ->placeholder('No roles available')
+                    ->helperText('No roles have been created yet. Please create roles first.'),
                 Forms\Components\Select::make('permissions')
                     ->label('Permissions')
                     ->multiple()
-                    ->relationship('permissions', 'name')
+                    ->relationship('permissions', 'name', fn($query) => $query->whereNotNull('name')->where('name', '!=', ''))
                     ->preload()
-                    ->searchable(),
+                    ->searchable()
+                    ->placeholder('No permissions available')
+                    ->helperText('No permissions have been created yet. Please create permissions first.'),
             ]);
     }
 
