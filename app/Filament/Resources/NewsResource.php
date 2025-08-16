@@ -91,7 +91,7 @@ class NewsResource extends Resource
 
                 Section::make('News Images')
                     ->schema([
-                        // Display existing images
+                        // Display existing images with delete functionality
                         Forms\Components\Placeholder::make('existing_images')
                             ->label('Current Images')
                             ->content(function ($record) {
@@ -108,12 +108,67 @@ class NewsResource extends Resource
                                 foreach ($images as $image) {
                                     $isFeatured = $image->featured ? ' (Featured)' : '';
                                     $featuredClass = $image->featured ? 'featured-image' : '';
+
                                     $html .= '<div class="' . $featuredClass . '" style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px; text-align: center; position: relative;">';
+
+                                    // Delete button (X icon) - using AJAX to avoid route issues
+                                    $html .= '<button type="button" onclick="deleteImage(' . $image->id . ', \'' . $image->original_name . '\', ' . $record->id . ')" style="position: absolute; top: 5px; right: 5px; background: #ef4444; color: white; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; font-size: 14px; line-height: 1; display: flex; align-items: center; justify-content: center;">×</button>';
+
                                     $html .= '<img src="' . asset('storage/' . $image->path) . '" style="width: 100%; height: 120px; object-fit: cover; border-radius: 4px; margin-bottom: 8px;" alt="' . $image->alt_text . '">';
                                     $html .= '<p style="margin: 0; font-size: 12px; color: #6b7280;">' . $image->original_name . $isFeatured . '</p>';
                                     $html .= '</div>';
                                 }
                                 $html .= '</div>';
+
+                                // Add JavaScript for delete functionality using AJAX
+                                $html .= '<script>
+                                    function deleteImage(imageId, imageName, newsId) {
+                                        if (confirm("Are you sure you want to delete the image \"" + imageName + "\"? This action cannot be undone.")) {
+                                            // Show loading state
+                                            const button = event.target;
+                                            const originalText = button.innerHTML;
+                                            button.innerHTML = "⌛";
+                                            button.disabled = true;
+
+                                            // Make AJAX request to delete image
+                                            fetch("/admin/news/" + newsId + "/delete-image/" + imageId, {
+                                                method: "POST",
+                                                headers: {
+                                                    "X-CSRF-TOKEN": document.querySelector("meta[name=\'csrf-token\']").getAttribute("content"),
+                                                    "Content-Type": "application/json",
+                                                    "Accept": "application/json"
+                                                }
+                                            })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                if (data.success) {
+                                                    // Remove the image container from DOM
+                                                    const imageContainer = button.closest("div");
+                                                    imageContainer.remove();
+
+                                                    // Show success message
+                                                    alert("Image deleted successfully!");
+
+                                                    // If no images left, refresh the page to show "No images" message
+                                                    const remainingImages = document.querySelectorAll("[onclick^=\'deleteImage\']");
+                                                    if (remainingImages.length === 0) {
+                                                        location.reload();
+                                                    }
+                                                } else {
+                                                    alert("Error deleting image: " + (data.message || "Unknown error"));
+                                                    button.innerHTML = originalText;
+                                                    button.disabled = false;
+                                                }
+                                            })
+                                            .catch(error => {
+                                                console.error("Error:", error);
+                                                alert("Error deleting image. Please try again.");
+                                                button.innerHTML = originalText;
+                                                button.disabled = false;
+                                            });
+                                        }
+                                    }
+                                </script>';
 
                                 return new \Illuminate\Support\HtmlString($html);
                             })
@@ -145,8 +200,7 @@ class NewsResource extends Resource
                                 ->openUrlInNewTab()
                                 ->visible(fn($record) => $record && $record->exists)
                                 ->color('info')
-                                ->extraAttributes(['class' => 'w-full'])
-                                ->helperText('Click here to manage existing images (delete, reorder, set featured, etc.)'),
+                                ->extraAttributes(['class' => 'w-full']),
                         ])
                             ->columnSpanFull()
                             ->visible(fn($record) => $record && $record->exists),

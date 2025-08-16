@@ -17,6 +17,7 @@ use App\Livewire\Frontend\Events;
 use App\Livewire\Frontend\Facilities;
 use App\Livewire\Frontend\YouTubeVideos;
 use App\Models\Program;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', Home::class)->name('home');
 // about us
@@ -98,6 +99,34 @@ Route::get('/projects/{slug}', function ($slug) {
 Route::get('/events', function () {
     return view('events-page');
 })->name('events');
+
+// Admin image deletion route
+Route::post('/admin/news/{news}/delete-image/{image}', function ($news, $image) {
+    // Check if user is authenticated (basic admin check)
+    if (!Auth::check()) {
+        return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+    }
+
+    try {
+        // Find the news article
+        $newsModel = \App\Models\News::findOrFail($news);
+
+        // Find the image
+        $imageModel = \App\Models\Image::findOrFail($image);
+
+        // Check if the image belongs to this news article
+        if ($imageModel->imageable_type !== 'App\Models\News' || $imageModel->imageable_id != $news) {
+            return response()->json(['success' => false, 'message' => 'Image does not belong to this news article'], 400);
+        }
+
+        // Delete the image using the HasImages trait
+        $newsModel->deleteImage($image);
+
+        return response()->json(['success' => true, 'message' => 'Image deleted successfully']);
+    } catch (\Exception $e) {
+        return response()->json(['success' => false, 'message' => 'Error deleting image: ' . $e->getMessage()], 500);
+    }
+})->name('admin.news.delete-image');
 // event detail
 Route::get('/events/{slug}', function ($slug) {
     return view('event-detail-page', ['slug' => $slug]);
