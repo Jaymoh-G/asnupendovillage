@@ -817,7 +817,7 @@
                             <div class="swiper-slide">
                                 <div class="testi-card">
                                     <p class="box-text">
-                                        "{{ Str::limit($testimonial->content, 200) }}"
+                                        {!! Str::limit($testimonial->content, 200) !!}
                                     </p>
                                     <h3 class="box-title">{{ $testimonial->name }}</h3>
                                     <p class="box-desig">{{ $testimonial->program->title ?? 'Community Member' }}</p>
