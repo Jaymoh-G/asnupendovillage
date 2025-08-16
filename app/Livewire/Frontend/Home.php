@@ -29,6 +29,9 @@ class Home extends Component
         // Get the latest 6 active team members
         $latestTeamMembers = Team::active()->latestTeamMembers(6)->get();
 
+        // Get a featured testimonial for the story section
+        $featuredTestimonial = Testimonial::featured()->orderBy('sort_order')->first();
+
         // Get homepage content sections
         $homePageContent = HomePageContent::active()->ordered()->get()->keyBy('section_name');
 
@@ -38,6 +41,7 @@ class Home extends Component
             'latestProjects' => $latestProjects,
             'latestTestimonials' => $latestTestimonials,
             'latestTeamMembers' => $latestTeamMembers,
+            'featuredTestimonial' => $featuredTestimonial,
             'homePageContent' => $homePageContent
         ]);
     }

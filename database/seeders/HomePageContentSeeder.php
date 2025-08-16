@@ -70,8 +70,15 @@ class HomePageContentSeeder extends Seeder
             'description' => 'Our secure online donation platform allows you to make contributions quickly and safely. Choose from various payment methods and set up one-time.exactly.',
             'button_text' => 'Our Success Story',
             'button_url' => 'about.html',
+            'image' => 'story-section/success-story-hero.jpg', // Main image for the story section
             'is_active' => true,
             'sort_order' => 4,
+            'meta_data' => [
+                'story_person_name' => 'Adam Cruz',
+                'story_person_quote' => 'Our success stories highlight the real life impact of your donations & the resilience of those we help. These narratives showcase the power of compassion.',
+                'story_years_experience' => 16,
+                'story_person_image' => null, // Will be uploaded through admin panel
+            ]
         ]);
 
         // Video Section

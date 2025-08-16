@@ -42,6 +42,7 @@ class HomePageContentResource extends Resource
                             ->required()
                             ->unique('home_page_contents', 'section_name')
                             ->searchable()
+                            ->default('about-us')
                             ->helperText('Select the homepage section you want to manage'),
                         Forms\Components\Toggle::make('is_active')
                             ->label('Active')
@@ -97,7 +98,7 @@ class HomePageContentResource extends Resource
                             ->visibility('public')
                             ->maxSize(5120)
                             ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
-                            ->helperText('Upload an image for this section. Recommended size: 800x450px (16:9 ratio). If you see "waiting for size", try refreshing the page after upload.'),
+                            ->helperText('Upload an image for this section. Recommended size: 800x450px (16:9 ratio). For the Story Section, this will be the main image displayed. If you see "waiting for size", try refreshing the page after upload.'),
                     ])->columns(2),
 
                 Forms\Components\Section::make('Statistics (for Statistics Section)')
@@ -128,7 +129,7 @@ class HomePageContentResource extends Resource
                             ->defaultItems(0)
                             ->reorderable(false)
                             ->collapsible()
-                            ->itemLabel(fn(array $state): ?string => $state['label'] ?? null)
+                            ->itemLabel(fn(array $state): string => $state['label'] ?? 'Statistic')
                             ->helperText('Add statistics to display in the statistics section'),
                     ])
                     ->visible(fn(Forms\Get $get): bool => $get('section_name') === 'statistics'),
@@ -150,10 +151,39 @@ class HomePageContentResource extends Resource
                             ->defaultItems(0)
                             ->reorderable(false)
                             ->collapsible()
-                            ->itemLabel(fn(array $state): ?string => $state['text'] ?? null)
+                            ->itemLabel(fn(array $state): string => $state['text'] ?? 'Checklist Item')
                             ->helperText('Add checklist items for the about us section'),
                     ])
                     ->visible(fn(Forms\Get $get): bool => $get('section_name') === 'about-us'),
+
+                Forms\Components\Section::make('Story Section Details')
+                    ->schema([
+                        Forms\Components\TextInput::make('meta_data.story_person_name')
+                            ->label('Person Name')
+                            ->maxLength(100)
+                            ->helperText('Name of the person in the story (e.g., Adam Cruz)'),
+                        Forms\Components\Textarea::make('meta_data.story_person_quote')
+                            ->label('Person Quote')
+                            ->rows(3)
+                            ->maxLength(500)
+                            ->helperText('Quote or testimonial from the person'),
+                        Forms\Components\TextInput::make('meta_data.story_years_experience')
+                            ->label('Years of Experience')
+                            ->numeric()
+                            ->default(16)
+                            ->helperText('Number of years of experience to display'),
+                        Forms\Components\FileUpload::make('meta_data.story_person_image')
+                            ->label('Person Image')
+                            ->image()
+                            ->imageEditor()
+                            ->directory('story-section')
+                            ->visibility('public')
+                            ->maxSize(5120)
+                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                            ->helperText('Image of the person for the story section'),
+                    ])
+                    ->visible(fn(Forms\Get $get): bool => $get('section_name') === 'story-section')
+                    ->columns(2),
 
                 Forms\Components\Section::make('Additional Data')
                     ->schema([

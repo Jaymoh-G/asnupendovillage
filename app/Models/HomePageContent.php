@@ -29,6 +29,18 @@ class HomePageContent extends Model
         'meta_data' => 'array',
     ];
 
+    protected $attributes = [
+        'meta_data' => '{}',
+    ];
+
+    /**
+     * Ensure meta_data is never null
+     */
+    public function setMetaDataAttribute($value)
+    {
+        $this->attributes['meta_data'] = $value ? json_encode($value) : '{}';
+    }
+
     /**
      * Get content by section name
      */
@@ -76,6 +88,42 @@ class HomePageContent extends Model
     public function getChecklistItemsAttribute(): array
     {
         return $this->meta_data['checklist_items'] ?? [];
+    }
+
+    /**
+     * Get story person name from meta_data
+     */
+    public function getStoryPersonNameAttribute(): ?string
+    {
+        return $this->meta_data['story_person_name'] ?? null;
+    }
+
+    /**
+     * Get story person quote from meta_data
+     */
+    public function getStoryPersonQuoteAttribute(): ?string
+    {
+        return $this->meta_data['story_person_quote'] ?? null;
+    }
+
+    /**
+     * Get story years of experience from meta_data
+     */
+    public function getStoryYearsExperienceAttribute(): ?int
+    {
+        return $this->meta_data['story_years_experience'] ?? 16;
+    }
+
+    /**
+     * Get story person image from meta_data
+     */
+    public function getStoryPersonImageAttribute(): ?string
+    {
+        if (!isset($this->meta_data['story_person_image'])) {
+            return null;
+        }
+
+        return asset('storage/' . $this->meta_data['story_person_image']);
     }
 
     /**

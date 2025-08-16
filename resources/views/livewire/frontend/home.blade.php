@@ -380,10 +380,17 @@ Story Area
                     <div class="story-img-box1">
                         <div class="box-wrap d-inline-block">
                             <div class="img1">
-                                <img
-                                    src="assets/img/normal/story_1_1.png"
-                                    alt="img"
-                                />
+                                @if($homePageContent->has('story-section') && $homePageContent['story-section']->image)
+                                    <img
+                                        src="{{ asset('storage/' . $homePageContent['story-section']->image) }}"
+                                        alt="{{ $featuredTestimonial->name ?? 'Story Person' }}"
+                                    />
+                                @else
+                                    <img
+                                        src="{{ asset('assets/img/normal/story_1_1.png') }}"
+                                        alt="img"
+                                    />
+                                @endif
                             </div>
                             <div class="story-shape1-1 jump-reverse">
                                 <img
@@ -392,12 +399,22 @@ Story Area
                                 />
                             </div>
                             <div class="story-card movingX">
-                                <h5 class="box-title">Adam Cruz</h5>
+                                <h5 class="box-title">
+                                    @if($featuredTestimonial && $featuredTestimonial->name)
+                                        {{ $featuredTestimonial->name }}
+                                    @else
+                                        Adam Cruz
+                                    @endif
+                                </h5>
                                 <p class="box-text">
-                                    Our success stories highlight the real life
-                                    impact of your donations & the resilience of
-                                    those we help. These narratives showcase the
-                                    power of compassion.
+                                    @if($featuredTestimonial && $featuredTestimonial->content)
+                                        {{ Str::limit($featuredTestimonial->content, 150) }}
+                                    @else
+                                        Our success stories highlight the real life
+                                        impact of your donations & the resilience of
+                                        those we help. These narratives showcase the
+                                        power of compassion.
+                                    @endif
                                 </p>
                                 <div
                                     class="quote-icon"
@@ -409,7 +426,13 @@ Story Area
                                     Years of <span>Experience</span>
                                 </p>
                                 <div class="year-counter_number">
-                                    <span class="counter-number">16</span>
+                                    <span class="counter-number">
+                                        @if($homePageContent->has('story-section') && $homePageContent['story-section']->story_years_experience)
+                                            {{ $homePageContent['story-section']->story_years_experience }}
+                                        @else
+                                            16
+                                        @endif
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -456,8 +479,8 @@ Team Area
     <section class="space-bottom team-area-1">
         <div class="container">
             <div class="title-area text-center">
-                <span class="sub-title">Our Volunteer</span>
-                <h2 class="sec-title">Meet The Optimistic Volunteer</h2>
+                <span class="sub-title">Our Team</span>
+                <h2 class="sec-title">Meet The Optimistic Team</h2>
             </div>
             @if($latestTeamMembers && $latestTeamMembers->count() > 0)
             <div class="slider-area">
