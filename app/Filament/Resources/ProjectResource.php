@@ -39,7 +39,19 @@ class ProjectResource extends Resource
                             ->helperText('Leave empty to auto-generate from project name'),
                         Forms\Components\Select::make('program_id')
                             ->label('Program')
-                            ->options(\App\Models\Program::pluck('title', 'id'))
+                            ->options(function () {
+                                try {
+                                    return \App\Models\Program::whereNotNull('title')
+                                        ->where('title', '!=', '')
+                                        ->pluck('title', 'id')
+                                        ->filter(function ($title, $id) {
+                                            return !is_null($title) && !is_null($id) && $title !== '' && $id !== '';
+                                        })
+                                        ->toArray();
+                                } catch (\Exception $e) {
+                                    return [];
+                                }
+                            })
                             ->required()
                             ->searchable()
                             ->preload(),

@@ -29,7 +29,7 @@ class ProgramResource extends Resource
                     ->label('Title')
                     ->required()
                     ->maxLength(255)
-                    ->live(onBlur: true)
+                    ->live()
                     ->afterStateUpdated(function (string $operation, $state, Forms\Set $set) {
                         if ($operation === 'create') {
                             $set('slug', \Illuminate\Support\Str::slug($state));
@@ -39,9 +39,14 @@ class ProgramResource extends Resource
                     ->label('Slug')
                     ->required()
                     ->maxLength(255)
-                    ->unique(ignoreRecord: true),
+                    ->unique(),
                 Forms\Components\RichEditor::make('content')
                     ->label('Content')
+                    ->columnSpanFull(),
+                Forms\Components\Textarea::make('excerpt')
+                    ->label('Excerpt')
+                    ->maxLength(500)
+                    ->helperText('A brief summary of the program for display on the home page and other listing pages.')
                     ->columnSpanFull(),
                 Forms\Components\View::make('filament.resources.program-resource.components.existing-images')
                     ->label('Existing Images')
@@ -92,6 +97,10 @@ class ProgramResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->limit(40),
+                Tables\Columns\TextColumn::make('excerpt')
+                    ->label('Excerpt')
+                    ->limit(60)
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('sort_order')
                     ->label('Sort Order')
                     ->sortable()

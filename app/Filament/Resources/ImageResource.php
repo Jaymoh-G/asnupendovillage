@@ -89,11 +89,41 @@ class ImageResource extends Resource
 
                                 switch ($type) {
                                     case 'App\Models\News':
-                                        return \App\Models\News::pluck('title', 'id')->toArray();
+                                        try {
+                                            return \App\Models\News::whereNotNull('title')
+                                                ->where('title', '!=', '')
+                                                ->pluck('title', 'id')
+                                                ->filter(function ($title, $id) {
+                                                    return !is_null($title) && !is_null($id) && $title !== '' && $id !== '';
+                                                })
+                                                ->toArray();
+                                        } catch (\Exception $e) {
+                                            return [];
+                                        }
                                     case 'App\Models\Event':
-                                        return \App\Models\Event::pluck('title', 'id')->toArray();
+                                        try {
+                                            return \App\Models\Event::whereNotNull('title')
+                                                ->where('title', '!=', '')
+                                                ->pluck('title', 'id')
+                                                ->filter(function ($title, $id) {
+                                                    return !is_null($title) && !is_null($id) && $title !== '' && $id !== '';
+                                                })
+                                                ->toArray();
+                                        } catch (\Exception $e) {
+                                            return [];
+                                        }
                                     case 'App\Models\Album':
-                                        return \App\Models\Album::pluck('name', 'id')->toArray();
+                                        try {
+                                            return \App\Models\Album::whereNotNull('name')
+                                                ->where('name', '!=', '')
+                                                ->pluck('name', 'id')
+                                                ->filter(function ($title, $id) {
+                                                    return !is_null($title) && !is_null($id) && $title !== '' && $id !== '';
+                                                })
+                                                ->toArray();
+                                        } catch (\Exception $e) {
+                                            return [];
+                                        }
                                     default:
                                         return [];
                                 }

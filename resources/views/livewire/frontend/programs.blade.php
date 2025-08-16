@@ -97,7 +97,11 @@
                                 >{{ \Illuminate\Support\Str::limit($program->title, 50) }}</a
                             >
                         </h3>
-                        @if($program->content)
+                        @if($program->excerpt)
+                        <p class="blog-text">
+                            {{ $program->excerpt }}
+                        </p>
+                        @elseif($program->content)
                         <p class="blog-text">
                             {{ \Illuminate\Support\Str::limit($program->content, 100) }}
                         </p>

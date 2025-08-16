@@ -44,6 +44,12 @@ class TestimonialResource extends Resource
                             ->columnSpanFull()
                             ->helperText('Rich content with formatting, images, and attachments'),
 
+                        Forms\Components\Textarea::make('excerpt')
+                            ->label('Excerpt')
+                            ->maxLength(300)
+                            ->helperText('A brief summary of the testimonial for display on listing pages (max 300 characters)')
+                            ->columnSpanFull(),
+
                         Forms\Components\FileUpload::make('pdf_file')
                             ->label('PDF Document')
                             ->acceptedFileTypes(['application/pdf'])
@@ -101,6 +107,11 @@ class TestimonialResource extends Resource
                     ->label('Name')
                     ->searchable()
                     ->sortable(),
+
+                Tables\Columns\TextColumn::make('excerpt')
+                    ->label('Excerpt')
+                    ->limit(60)
+                    ->searchable(),
 
                 Tables\Columns\TextColumn::make('program.title')
                     ->label('Program')

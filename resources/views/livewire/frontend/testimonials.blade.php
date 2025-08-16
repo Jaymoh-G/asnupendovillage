@@ -107,10 +107,9 @@
                             </div>
                         </div>
                         <p class="testi-card_text">
-                            "{{ Str::limit($testimonial->content ?? 'Stay informed about our upcoming events and campaigns. Whether it\'s a fundraising gala, a charity run, or a community outreach program, there are plenty of ways to get involved and support our cause. Check our event calendar for details.', 200)
-
-
-                            }}"
+                            @if($testimonial->excerpt) "{{ $testimonial->excerpt
+                            }}" @else "{{ Str::limit($testimonial->content ?? 'Stay informed about our upcoming events and campaigns. Whether it\'s a fundraising gala, a charity run, or a community outreach program, there are plenty of ways to get involved and support our cause. Check our event calendar for details.', 200)
+                            }}" @endif
                         </p>
 
                         @if($testimonial->tags && is_array($testimonial->tags)

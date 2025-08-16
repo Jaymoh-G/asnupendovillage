@@ -37,11 +37,8 @@ class AboutUs extends Component
         $this->statistics = Statistic::getActiveOrdered();
         $this->testimonials = Testimonial::featured()->latestTestimonials(4)->get();
 
-        // Get specific statistics for the Counter Area (different from main stats)
-        $this->counterStats = Statistic::whereIn('title', [
-            'Team Support',
-            'Lives Impacted'
-        ])->active()->ordered()->get();
+        // Get all active statistics for the Counter Area
+        $this->counterStats = Statistic::active()->ordered()->get();
 
         // Get video content with sort order 1
         $this->videoContent = \App\Models\HomePageContent::where('section_name', 'video-section')

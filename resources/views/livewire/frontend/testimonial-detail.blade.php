@@ -214,9 +214,10 @@
                             </div>
                         </div>
                         <div class="testi-card_text">
-                            {!!
+                            @if($otherTestimonial->excerpt) {!!
+                            $otherTestimonial->excerpt !!} @else {!!
                             Str::limit(strip_tags($otherTestimonial->content),
-                            150) !!}
+                            150) !!} @endif
                         </div>
                     </div>
                 </div>

@@ -178,7 +178,18 @@ class NewsResource extends Resource
                     ]),
                 SelectFilter::make('category')
                     ->options(function () {
-                        return News::distinct()->pluck('category', 'category')->toArray();
+                        try {
+                            return News::distinct()
+                                ->whereNotNull('category')
+                                ->where('category', '!=', '')
+                                ->pluck('category', 'category')
+                                ->filter(function ($category) {
+                                    return !is_null($category) && $category !== '';
+                                })
+                                ->toArray();
+                        } catch (\Exception $e) {
+                            return [];
+                        }
                     }),
             ])
             ->actions([

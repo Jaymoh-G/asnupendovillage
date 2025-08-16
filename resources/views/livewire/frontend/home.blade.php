@@ -180,7 +180,11 @@ Service Area
                                         >
                                     </h3>
                                     <p class="box-text">
-                                        {!! Str::limit($program->content, 120) !!}
+                                        @if($program->excerpt)
+                                            {!! $program->excerpt !!}
+                                        @else
+                                            {!! Str::limit($program->content, 120) !!}
+                                        @endif
                                     </p>
                                     <a
                                         href="{{ route('programs.detail', $program->slug) }}"
@@ -405,7 +409,9 @@ Story Area
                                     @endif
                                 </h5>
                                 <p class="box-text">
-                                    @if($featuredTestimonial && $featuredTestimonial->content)
+                                    @if($featuredTestimonial && $featuredTestimonial->excerpt)
+                                        {!! $featuredTestimonial->excerpt !!}
+                                    @elseif($featuredTestimonial && $featuredTestimonial->content)
                                         {!! Str::limit($featuredTestimonial->content, 150) !!}
                                     @else
                                         Our success stories highlight the real life

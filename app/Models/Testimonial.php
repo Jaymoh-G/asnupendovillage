@@ -16,6 +16,7 @@ class Testimonial extends Model
         'slug',
         'program_id',
         'content',
+        'excerpt',
         'image',
         'pdf_file',
         'is_featured',

@@ -14,6 +14,7 @@ class Program extends Model
         'title',
         'slug',
         'content',
+        'excerpt',
         'meta_title',
         'meta_description',
         'featured',
