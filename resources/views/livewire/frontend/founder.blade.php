@@ -21,8 +21,6 @@
         </div>
     </div>
 
-
-
     <!--==============================
     Founder Area
     ==============================-->
@@ -40,7 +38,7 @@
                             }}"
                         >
                             <img
-                                src="{{ $pageContent->section1_image_urls[0] }}"
+                                src="{{ isset($pageContent->section1_image_urls[0]) ? $pageContent->section1_image_urls[0] : asset('assets/img/normal/about_1_1.png') }}"
                                 alt="Founder"
                             />
                         </div>
@@ -115,7 +113,7 @@
                         >
                             <img
                                 src="{{
-                                    $pageContent->section2_image_urls[0]
+                                    isset($pageContent->section2_image_urls[0]) ? $pageContent->section2_image_urls[0] : asset('assets/img/normal/about_1_1.png')
                                 }}"
                                 alt="John's Journey"
                             />
