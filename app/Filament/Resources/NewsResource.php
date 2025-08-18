@@ -53,7 +53,10 @@ class NewsResource extends Resource
                             ]),
                         RichEditor::make('content')
                             ->required()
-                            ->columnSpanFull(),
+                            ->columnSpanFull()
+                            ->fileAttachmentsDisk('public')
+                            ->fileAttachmentsDirectory('news/content')
+                            ->fileAttachmentsVisibility('public'),
                         Textarea::make('excerpt')
                             ->maxLength(500)
                             ->columnSpanFull(),

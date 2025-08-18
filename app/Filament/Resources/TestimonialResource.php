@@ -42,6 +42,9 @@ class TestimonialResource extends Resource
                             ->label('Testimonial Content')
                             ->required()
                             ->columnSpanFull()
+                            ->fileAttachmentsDisk('public')
+                            ->fileAttachmentsDirectory('testimonials/content')
+                            ->fileAttachmentsVisibility('public')
                             ->helperText('Rich content with formatting, images, and attachments'),
 
                         Forms\Components\Textarea::make('excerpt')
