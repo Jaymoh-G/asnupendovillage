@@ -47,9 +47,6 @@ class ProjectResource extends Resource
                             ->label('Project Content')
                             ->required()
                             ->columnSpanFull()
-                            ->fileAttachmentsDisk('public')
-                            ->fileAttachmentsDirectory('projects/content')
-                            ->fileAttachmentsVisibility('public')
                             ->helperText('Rich content with formatting, images, and attachments'),
                         Forms\Components\Textarea::make('meta_description')
                             ->label('Meta Description')

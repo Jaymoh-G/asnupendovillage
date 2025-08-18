@@ -62,10 +62,7 @@ class EventsResource extends Resource
                             ]),
                         RichEditor::make('description')
                             ->required()
-                            ->columnSpanFull()
-                            ->fileAttachmentsDisk('public')
-                            ->fileAttachmentsDirectory('events/content')
-                            ->fileAttachmentsVisibility('public'),
+                            ->columnSpanFull(),
                         Textarea::make('excerpt')
                             ->maxLength(500)
                             ->columnSpanFull(),

@@ -42,10 +42,7 @@ class ProgramResource extends Resource
                     ->unique(),
                 Forms\Components\RichEditor::make('content')
                     ->label('Content')
-                    ->columnSpanFull()
-                    ->fileAttachmentsDisk('public')
-                    ->fileAttachmentsDirectory('programs/content')
-                    ->fileAttachmentsVisibility('public'),
+                    ->columnSpanFull(),
                 Forms\Components\Textarea::make('excerpt')
                     ->label('Excerpt')
                     ->maxLength(500)

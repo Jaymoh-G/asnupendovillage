@@ -53,9 +53,6 @@ class FacilityResource extends Resource
                             ->label('Facility Content')
                             ->required()
                             ->columnSpanFull()
-                            ->fileAttachmentsDisk('public')
-                            ->fileAttachmentsDirectory('facilities/content')
-                            ->fileAttachmentsVisibility('public')
                             ->helperText('Rich content with formatting, images, and attachments'),
                     ])
                     ->columns(1),

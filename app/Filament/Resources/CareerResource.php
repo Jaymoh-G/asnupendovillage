@@ -57,9 +57,6 @@ class CareerResource extends Resource
                         'codeBlock',
                     ])
                     ->columnSpanFull()
-                    ->fileAttachmentsDisk('public')
-                    ->fileAttachmentsDirectory('careers/content')
-                    ->fileAttachmentsVisibility('public')
                     ->helperText('Detailed job description with formatting options'),
 
                 Forms\Components\FileUpload::make('pdf_file')
