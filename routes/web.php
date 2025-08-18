@@ -126,6 +126,11 @@ Route::delete('/admin/images/{imageId}/remove', [App\Http\Controllers\ImageContr
     ->name('admin.remove-image')
     ->middleware(['auth', 'web']);
 
+// Custom route for deleting images from news articles
+Route::post('/admin/news/{newsId}/delete-image/{imageId}', [App\Filament\Resources\NewsResource\Pages\EditNews::class, 'deleteImage'])
+    ->name('admin.news.delete-image')
+    ->middleware(['auth', 'web']);
+
 Route::get('/downloads/program/{program:slug}', function (Program $program) {
     return view('downloads-page', ['programId' => $program->id]);
 })->name('downloads.by-program');

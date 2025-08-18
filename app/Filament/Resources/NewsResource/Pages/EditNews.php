@@ -4,9 +4,12 @@ namespace App\Filament\Resources\NewsResource\Pages;
 
 use App\Filament\Resources\NewsResource;
 use App\Models\Image;
+use App\Models\News;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
 class EditNews extends EditRecord
 {
@@ -60,6 +63,39 @@ class EditNews extends EditRecord
         if ($record->images()->count() > 0 && !$record->featuredImage()->exists()) {
             $firstImage = $record->images()->first();
             $record->setFeaturedImage($firstImage->id);
+        }
+    }
+
+    // Custom method to handle image deletion via AJAX
+    public function deleteImage(Request $request, $newsId, $imageId): JsonResponse
+    {
+        try {
+            // Verify the news record exists and belongs to the current user/context
+            $news = News::findOrFail($newsId);
+
+            // Find the image
+            $image = Image::findOrFail($imageId);
+
+            // Verify the image belongs to this news article
+            if ($image->imageable_type !== News::class || $image->imageable_id !== $news->id) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Image does not belong to this news article'
+                ], 403);
+            }
+
+            // Delete the image using the HasImages trait
+            $news->deleteImage($imageId);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Image deleted successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error deleting image: ' . $e->getMessage()
+            ], 500);
         }
     }
 }
