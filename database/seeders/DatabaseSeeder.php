@@ -15,14 +15,11 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Admin',
-            'email' => 'admin@gmail.com',
-            'password' => bcrypt('password'),
-        ]);
+        // Admin user and roles will be created by AdminUserSeeder
 
         // Seed page banners, news, projects, testimonials, team members, programs, home sliders, and home slider images
         $this->call([
+            AdminUserSeeder::class,
             PageBannerSeeder::class,
             NewsSeeder::class,
             ProjectSeeder::class,
