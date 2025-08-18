@@ -45,12 +45,7 @@
                             alt="{{ $facility->name }}"
                             style="filter: none !important"
                         />
-                        @php $featuredImage = $facility->featuredImage; @endphp
-                        @if($featuredImage && $featuredImage->caption)
-                        <div class="featured-image-caption">
-                            <p>{{ $featuredImage->caption }}</p>
-                        </div>
-                        @endif @else
+                        @else
                         <img
                             src="{{
                                 asset('assets/img/service/service_card_1_1.png')
@@ -76,33 +71,7 @@
                             <h3 class="h4 mb-4">
                                 {{ $facility->name }} Facility Images
                             </h3>
-
-                            <!-- Debug Information (remove this after testing) -->
-                            @if(config('app.debug'))
-                            <div
-                                class="debug-info mb-3 p-3 bg-light border rounded"
-                            >
-                                <small class="text-muted">
-                                    <strong>Debug Info:</strong><br />
-                                    Total Images:
-                                    {{ $facility->images()->count() }}<br />
-                                    Featured Image:
-                                    {{ $facility->featuredImage ? 'Yes' : 'No'
-                                    }}<br />
-                                    @if($facility->featuredImage) Featured Image
-                                    Caption:
-                                    {{ $facility->featuredImage->caption ?: 'No caption'
-                                    }}<br />
-                                    @endif
-                                    @foreach($facility->images()->take(3)->get()
-                                    as $debugImage) Image
-                                    {{ $loop->iteration }}:
-                                    {{ $debugImage->caption ?: 'No caption'
-                                    }}<br />
-                                    @endforeach
-                                </small>
-                            </div>
-                            @endif @if($facility->images()->count() > 0)
+                            @if($facility->images()->count() > 0)
                             <div class="row g-3">
                                 @foreach($facility->images()->ordered()->get()
                                 as $image)
@@ -122,10 +91,6 @@
                                         @if($image->featured)
                                         <div class="featured-badge">
                                             <i class="fas fa-star"></i> Featured
-                                        </div>
-                                        @endif @if($image->caption)
-                                        <div class="image-caption">
-                                            <p>{{ $image->caption }}</p>
                                         </div>
                                         @endif
                                     </div>
@@ -569,55 +534,6 @@
             border-bottom: 2px solid #ffac00;
             padding-bottom: 10px;
             margin-bottom: 20px;
-        }
-
-        /* Image Caption Styling */
-        .image-caption {
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 8px 12px;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            border-bottom-left-radius: 8px;
-            border-bottom-right-radius: 8px;
-        }
-
-        .image-caption p {
-            margin: 0;
-            font-size: 14px;
-            line-height: 1.4;
-            text-align: center;
-        }
-
-        /* Featured Image Caption Styling */
-        .page-img {
-            position: relative;
-        }
-
-        .featured-image-caption {
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 12px 16px;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            text-align: center;
-        }
-
-        .featured-image-caption p {
-            margin: 0;
-            font-size: 16px;
-            line-height: 1.4;
-            font-weight: 500;
-        }
-
-        /* Debug Info Styling */
-        .debug-info {
-            font-family: monospace;
-            font-size: 12px;
         }
     </style>
 

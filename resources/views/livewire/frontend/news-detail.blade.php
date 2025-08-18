@@ -33,12 +33,6 @@
                                 src="{{ $news->featured_image_url }}"
                                 alt="{{ $news->title }}"
                             />
-                            @if($news->featuredImage &&
-                            $news->featuredImage->caption)
-                            <div class="featured-image-caption">
-                                <p>{{ $news->featuredImage->caption }}</p>
-                            </div>
-                            @endif
                         </div>
                         @endif
                         <div class="blog-content">
@@ -91,11 +85,6 @@
                                                     object-fit: cover;
                                                 "
                                             />
-                                            @if($image->caption)
-                                            <div class="image-caption">
-                                                <p>{{ $image->caption }}</p>
-                                            </div>
-                                            @endif
                                         </div>
                                     </div>
                                     @endforeach
@@ -286,53 +275,6 @@
             border-bottom: 2px solid #ffac00;
             padding-bottom: 10px;
             margin-bottom: 20px;
-        }
-
-        /* Image Caption Styling */
-        .image-caption {
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 8px 12px;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            border-bottom-left-radius: 8px;
-            border-bottom-right-radius: 8px;
-        }
-
-        .image-caption p {
-            margin: 0;
-            font-size: 14px;
-            line-height: 1.4;
-            text-align: center;
-        }
-
-        .news-image-item {
-            position: relative;
-        }
-
-        /* Featured Image Caption Styling */
-        .blog-img {
-            position: relative;
-        }
-
-        .featured-image-caption {
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 12px 16px;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            text-align: center;
-        }
-
-        .featured-image-caption p {
-            margin: 0;
-            font-size: 16px;
-            line-height: 1.4;
-            font-weight: 500;
         }
     </style>
 </div>

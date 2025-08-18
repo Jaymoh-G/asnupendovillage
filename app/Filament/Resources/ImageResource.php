@@ -76,9 +76,6 @@ class ImageResource extends Resource
                                 'App\Models\News' => 'News Article',
                                 'App\Models\Event' => 'Event',
                                 'App\Models\Album' => 'Album',
-                                'App\Models\Facility' => 'Facility',
-                                'App\Models\Program' => 'Program',
-                                'App\Models\Project' => 'Project',
                             ])
                             ->required()
                             ->searchable()
@@ -103,21 +100,6 @@ class ImageResource extends Resource
                                             ->toArray();
                                     case 'App\Models\Album':
                                         return \App\Models\Album::whereNotNull('name')
-                                            ->where('name', '!=', '')
-                                            ->pluck('name', 'id')
-                                            ->toArray();
-                                    case 'App\Models\Facility':
-                                        return \App\Models\Facility::whereNotNull('name')
-                                            ->where('name', '!=', '')
-                                            ->pluck('name', 'id')
-                                            ->toArray();
-                                    case 'App\Models\Program':
-                                        return \App\Models\Program::whereNotNull('title')
-                                            ->where('title', '!=', '')
-                                            ->pluck('title', 'id')
-                                            ->toArray();
-                                    case 'App\Models\Project':
-                                        return \App\Models\Project::whereNotNull('name')
                                             ->where('name', '!=', '')
                                             ->pluck('name', 'id')
                                             ->toArray();
@@ -158,12 +140,6 @@ class ImageResource extends Resource
                                 return 'Event';
                             case 'App\Models\Album':
                                 return 'Album';
-                            case 'App\Models\Facility':
-                                return 'Facility';
-                            case 'App\Models\Program':
-                                return 'Program';
-                            case 'App\Models\Project':
-                                return 'Project';
                             default:
                                 return class_basename($state);
                         }
@@ -188,12 +164,6 @@ class ImageResource extends Resource
                                     return $model->title;
                                 case 'App\Models\Album':
                                     return $model->name;
-                                case 'App\Models\Facility':
-                                    return $model->name;
-                                case 'App\Models\Program':
-                                    return $model->title;
-                                case 'App\Models\Project':
-                                    return $model->name;
                                 default:
                                     return 'ID: ' . $record->imageable_id;
                             }
@@ -206,11 +176,6 @@ class ImageResource extends Resource
                 TextColumn::make('formatted_size')
                     ->label('Size')
                     ->sortable(),
-                TextColumn::make('caption')
-                    ->label('Caption')
-                    ->limit(50)
-                    ->searchable()
-                    ->toggleable(true),
                 ToggleColumn::make('featured')
                     ->label('Featured'),
             ])
@@ -221,9 +186,6 @@ class ImageResource extends Resource
                         'App\Models\News' => 'News',
                         'App\Models\Event' => 'Event',
                         'App\Models\Album' => 'Album',
-                        'App\Models\Facility' => 'Facility',
-                        'App\Models\Program' => 'Program',
-                        'App\Models\Project' => 'Project',
                     ]),
                 TernaryFilter::make('featured')
                     ->label('Featured Images'),
