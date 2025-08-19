@@ -177,7 +177,7 @@
                                                         id="donor_phone"
                                                         wire:model="donor_phone"
                                                         placeholder="e.g., 0712345678"
-                                                        wire:blur="validateMpesaPhone"
+                                                        wire:blur="validatePhoneNumber"
                                                     />
                                                     <div class="form-text small">
                                                         <i class="fas fa-info-circle me-1"></i>
