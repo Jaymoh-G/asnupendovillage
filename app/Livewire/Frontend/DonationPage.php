@@ -60,7 +60,7 @@ class DonationPage extends Component
     /**
      * Manually validate phone number (can be called from frontend)
      */
-    public function validatePhoneNumber()
+    public function checkPhoneNumber()
     {
         // Only validate if M-Pesa is selected
         if ($this->payment_method !== 'mpesa') {
@@ -126,7 +126,7 @@ class DonationPage extends Component
         $this->validate();
 
         // Additional validation for M-Pesa phone numbers
-        if ($this->payment_method === 'mpesa' && !$this->validatePhoneNumber()) {
+        if ($this->payment_method === 'mpesa' && !$this->checkPhoneNumber()) {
             return;
         }
 
