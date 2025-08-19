@@ -57,18 +57,26 @@ class DonationPage extends Component
         $this->resetValidation();
     }
 
-    public function updatedDonorPhone()
+    /**
+     * Manually validate phone number (can be called from frontend)
+     */
+    public function validatePhoneNumber()
     {
-        // Validate phone number format for M-Pesa
-        if ($this->payment_method === 'mpesa') {
-            $this->validatePhoneNumber();
+        // Only validate if M-Pesa is selected
+        if ($this->payment_method !== 'mpesa') {
+            return true;
         }
+
+        // Clear any existing errors first
+        $this->clearError('donor_phone');
+
+        return $this->validatePhoneNumberInternal();
     }
 
     /**
-     * Custom phone number validation for Kenyan numbers
+     * Internal phone number validation logic
      */
-    private function validatePhoneNumber()
+    private function validatePhoneNumberInternal()
     {
         $phone = $this->donor_phone;
 
@@ -99,6 +107,8 @@ class DonationPage extends Component
 
         return true;
     }
+
+
 
 
 
