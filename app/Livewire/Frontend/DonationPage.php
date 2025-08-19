@@ -68,7 +68,7 @@ class DonationPage extends Component
         }
 
         // Clear any existing errors first
-        $this->clearError('donor_phone');
+        $this->resetErrorBag();
 
         return $this->validatePhoneNumberInternal();
     }
