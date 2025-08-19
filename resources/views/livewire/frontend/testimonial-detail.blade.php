@@ -77,6 +77,48 @@
                                     {!! $testimonial->content !!}
                                 </div>
                             </div>
+
+                            <!-- Testimonial Image Gallery Section -->
+                            @if($testimonial->images()->count() > 0)
+                            <div class="testimonial-images-section mb-4">
+                                <h4 class="h5 mb-3">Additional Images</h4>
+                                <div class="row g-3">
+                                    @foreach($testimonial->images()->ordered()->get()
+                                    as $image)
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="testimonial-image-item">
+                                            <img
+                                                src="{{ asset('storage/' . $image->path) }}"
+                                                alt="{{ $image->alt_text ?? $testimonial->name }}"
+                                                class="img-fluid rounded"
+                                                style="
+                                                    filter: none !important;
+                                                    width: 100%;
+                                                    height: 200px;
+                                                    object-fit: cover;
+                                                "
+                                            />
+                                            @if($image->featured)
+                                            <div class="featured-badge">
+                                                <i class="fas fa-star"></i>
+                                                Featured
+                                            </div>
+                                            @endif @if($image->caption)
+                                            <div class="image-caption mt-2">
+                                                <p
+                                                    class="text-muted small text-center mb-0"
+                                                >
+                                                    {{ $image->caption }}
+                                                </p>
+                                            </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                            @endif
+
                             <div class="testimonial-details-info">
                                 @if($testimonial->pdf_file)
                                 <div class="about-contact">
@@ -400,6 +442,62 @@
             background: var(--theme-color2, #0056b3);
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+        }
+
+        /* Testimonial Image Gallery Styles */
+        .testimonial-images-section {
+            margin-top: 40px;
+        }
+        .testimonial-images-section h4 {
+            color: #333;
+            font-weight: 600;
+        }
+        .testimonial-image-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .testimonial-image-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        .testimonial-image-item img {
+            display: block;
+        }
+        .featured-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ffac00;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        .featured-badge i {
+            font-size: 10px;
+        }
+        .image-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 8px 10px;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 500;
+            z-index: 1;
         }
     </style>
 </div>

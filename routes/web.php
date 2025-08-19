@@ -151,6 +151,20 @@ Route::post('/admin/projects/{projectId}/delete-image/{imageId}', [App\Filament\
     ->name('admin.projects.delete-image')
     ->middleware(['auth', 'web']);
 
+// Custom route for deleting images from programs
+Route::post('/admin/programs/{programId}/delete-image/{imageId}', [App\Filament\Resources\ProgramResource\Pages\EditProgram::class, 'deleteImage'])
+    ->name('admin.programs.delete-image')
+    ->middleware(['auth', 'web']);
+
+// Custom route for deleting images from testimonials
+Route::post('/admin/testimonials/{testimonialId}/delete-image/{imageId}', [App\Filament\Resources\TestimonialResource\Pages\EditTestimonial::class, 'deleteImage'])
+    ->name('admin.testimonials.delete-image')
+    ->middleware(['auth', 'web']);
+
 Route::get('/downloads/program/{program:slug}', function (Program $program) {
     return view('downloads-page', ['programId' => $program->id]);
 })->name('downloads.by-program');
+
+// M-Pesa routes
+Route::post('/mpesa/callback', [App\Http\Controllers\MpesaController::class, 'callback'])->name('mpesa.callback');
+Route::post('/mpesa/check-status', [App\Http\Controllers\MpesaController::class, 'checkStatus'])->name('mpesa.check-status');

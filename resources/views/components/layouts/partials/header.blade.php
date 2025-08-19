@@ -342,7 +342,7 @@
                                 </ul>
                             </li>
                             <li class="menu-item-has-children">
-                                <a href="#">Our Programs</a>
+                                <a href="{{ route('programs') }}">Our Programs</a>
                                 <ul class="sub-menu">
                                     @forelse($programs as $program)
                                     <li>

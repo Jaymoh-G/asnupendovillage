@@ -100,6 +100,17 @@
             color: var(--theme-color);
         }
 
+        .album-description {
+            color: var(--body-color);
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
         .album-meta {
             display: flex;
             align-items: center;
@@ -286,6 +297,11 @@ Gallery Area
                                 {{ \Illuminate\Support\Str::limit($album->name, 30) }}
                             </a>
                         </h3>
+                        @if($album->description)
+                        <p class="album-description">
+                            {{ \Illuminate\Support\Str::limit($album->description, 120) }}
+                        </p>
+                        @endif
                         <div class="album-meta">
                             <span class="album-count">
                                 <i class="fas fa-images"></i>

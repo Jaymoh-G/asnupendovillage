@@ -66,7 +66,9 @@
                                 aria-label="Close"
                             ></button>
                         </div>
-                        @endif @if($showError)
+                        @endif
+
+                        @if($showError)
                         <div
                             class="alert alert-danger alert-dismissible fade show"
                             role="alert"
@@ -79,6 +81,29 @@
                                 data-bs-dismiss="alert"
                                 aria-label="Close"
                             ></button>
+                        </div>
+                        @endif
+
+                        <!-- M-Pesa Status Display -->
+                        @if($mpesaStatus && $mpesaStatus !== 'completed' && $mpesaStatus !== 'failed')
+                        <div class="alert alert-info alert-dismissible fade show" role="alert">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>M-Pesa Payment Status:</strong>
+                            @if($mpesaStatus === 'initiating')
+                                <span class="text-warning">Initializing payment...</span>
+                            @elseif($mpesaStatus === 'pending')
+                                <span class="text-primary">STK push sent! Please check your phone and enter your M-Pesa PIN.</span>
+                                <div class="mt-2">
+                                    <small class="text-muted">
+                                        <i class="fas fa-clock me-1"></i>
+                                        Waiting for payment confirmation...
+                                    </small>
+                                </div>
+                            @elseif($mpesaStatus === 'cancelled')
+                                <span class="text-warning">Payment was cancelled.</span>
+                            @elseif($mpesaStatus === 'timeout')
+                                <span class="text-warning">Payment request timed out.</span>
+                            @endif
                         </div>
                         @endif
 
@@ -151,8 +176,13 @@
                                                         class="form-control @error('donor_phone') is-invalid @enderror"
                                                         id="donor_phone"
                                                         wire:model="donor_phone"
-                                                        placeholder="Your phone number"
+                                                        placeholder="e.g., 0712345678"
+                                                        wire:change="updatedDonorPhone"
                                                     />
+                                                    <div class="form-text small">
+                                                        <i class="fas fa-info-circle me-1"></i>
+                                                        Enter your M-Pesa registered phone number
+                                                    </div>
                                                     @error('donor_phone')
                                                     <div
                                                         class="invalid-feedback"
@@ -498,18 +528,38 @@
                                             class="th-btn"
                                             wire:loading.attr="disabled"
                                             wire:loading.class="disabled"
+                                            @if($mpesaProcessing || $mpesaStatus === 'pending') disabled @endif
                                         >
-                                            <span wire:loading.remove>
-                                                <i class="fas fa-heart me-2"></i
-                                                >Make Donation
-                                            </span>
-                                            <span wire:loading>
-                                                <i
-                                                    class="fas fa-spinner fa-spin me-2"
-                                                ></i
-                                                >Processing...
-                                            </span>
+                                            @if($mpesaProcessing)
+                                                <i class="fas fa-spinner fa-spin me-2"></i>
+                                                Initiating M-Pesa Payment...
+                                            @elseif($mpesaStatus === 'pending')
+                                                <i class="fas fa-mobile-alt me-2"></i>
+                                                STK Push Sent - Check Your Phone
+                                            @else
+                                                <span wire:loading.remove>
+                                                    <i class="fas fa-heart me-2"></i>
+                                                    Make Donation
+                                                </span>
+                                                <span wire:loading>
+                                                    <i class="fas fa-spinner fa-spin me-2"></i>
+                                                    Processing...
+                                                </span>
+                                            @endif
                                         </button>
+
+                                        @if($mpesaStatus === 'pending')
+                                        <div class="mt-3">
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-secondary btn-sm"
+                                                wire:click="checkMpesaStatus"
+                                            >
+                                                <i class="fas fa-sync-alt me-1"></i>
+                                                Check Payment Status
+                                            </button>
+                                        </div>
+                                        @endif
                                     </div>
                                 </form>
                             </div>
@@ -686,4 +736,45 @@
             margin-bottom: 0;
         }
     </style>
+
+    <!-- M-Pesa Status Polling Script -->
+    <script>
+        document.addEventListener('livewire:init', () => {
+            let pollingInterval = null;
+            let attemptCount = 0;
+
+            Livewire.on('start-mpesa-polling', (data) => {
+                const { checkoutId, maxAttempts } = data;
+                attemptCount = 0;
+
+                // Clear any existing interval
+                if (pollingInterval) {
+                    clearInterval(pollingInterval);
+                }
+
+                // Start polling every 5 seconds
+                pollingInterval = setInterval(() => {
+                    attemptCount++;
+
+                    // Check if we've exceeded max attempts
+                    if (attemptCount >= maxAttempts) {
+                        clearInterval(pollingInterval);
+                        console.log('M-Pesa polling timeout reached');
+                        return;
+                    }
+
+                    // Call the Livewire method to check status
+                    Livewire.find(document.querySelector('[wire\\:id]').getAttribute('wire:id')).call('checkMpesaStatus');
+
+                }, 5000);
+            });
+
+            // Clean up interval when component is destroyed
+            document.addEventListener('livewire:destroy', () => {
+                if (pollingInterval) {
+                    clearInterval(pollingInterval);
+                }
+            });
+        });
+    </script>
 </div>

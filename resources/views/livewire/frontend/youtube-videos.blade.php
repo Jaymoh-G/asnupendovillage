@@ -401,8 +401,7 @@ YouTube Videos Area
                         </div>
                         @if(!empty($video->tags_array))
                         <div class="video-tags">
-                            @foreach(array_slice($video->tags_array, 0, 3) as
-                            $tag)
+                            @foreach(array_slice($video->tags_array, 0, 3) as $tag)
                             <span class="video-tag">{{ $tag }}</span>
                             @endforeach
                         </div>

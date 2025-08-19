@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\Donation;
 use App\Models\StaticPage;
 use App\Models\PageBanner;
+use App\Services\MpesaService;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 
@@ -22,6 +23,11 @@ class DonationPage extends Component
     public $showError = false;
     public $errorMessage = '';
 
+    // M-Pesa specific properties
+    public $mpesaProcessing = false;
+    public $mpesaCheckoutId = null;
+    public $mpesaStatus = null;
+
     // Static page content properties
     public $pageBanner;
     public $pageContent;
@@ -29,10 +35,14 @@ class DonationPage extends Component
     protected $rules = [
         'donor_name' => 'required|min:2|max:255',
         'donor_email' => 'required|email',
-        'donor_phone' => 'required|min:10|max:15',
+        'donor_phone' => 'required|min:10|max:15|regex:/^(\+254|254|0)?[17]\d{8}$/',
         'amount' => 'required|numeric|min:1',
         'payment_method' => 'required|in:mpesa,paypal,bank',
         'message' => 'nullable|max:500',
+    ];
+
+    protected $messages = [
+        'donor_phone.regex' => 'Please enter a valid Kenyan phone number (e.g., 0712345678, +254712345678, or 254712345678).',
     ];
 
     public function mount()
@@ -49,6 +59,14 @@ class DonationPage extends Component
     {
         // Reset any payment-specific validation
         $this->resetValidation();
+    }
+
+    public function updatedDonorPhone()
+    {
+        // Validate phone number format for M-Pesa
+        if ($this->payment_method === 'mpesa') {
+            $this->validateOnly('donor_phone');
+        }
     }
 
 
@@ -99,15 +117,56 @@ class DonationPage extends Component
 
     private function processMpesaPayment($donation)
     {
-        // For now, we'll simulate M-Pesa payment
-        // In a real implementation, you would integrate with M-Pesa API
-        $donation->update([
-            'status' => 'completed',
-            'transaction_reference' => 'MPESA-' . Str::random(8),
-        ]);
+        try {
+            $this->mpesaProcessing = true;
+            $this->mpesaStatus = 'initiating';
 
-        $this->showSuccess = true;
-        $this->resetForm();
+            // Create M-Pesa service instance
+            $mpesaService = new MpesaService();
+
+            // Initiate STK push
+            $result = $mpesaService->initiateSTKPush(
+                $this->donor_phone,
+                $this->amount,
+                $donation->transaction_reference,
+                'Donation to ASN Upendo Village'
+            );
+
+            if ($result['success']) {
+                $this->mpesaCheckoutId = $result['checkout_request_id'];
+                $this->mpesaStatus = 'pending';
+
+                // Update donation with checkout ID
+                $donation->update([
+                    'meta' => array_merge($donation->meta ?? [], [
+                        'mpesa_checkout_id' => $result['checkout_request_id'],
+                        'mpesa_merchant_id' => $result['merchant_request_id'],
+                        'stk_push_sent_at' => now(),
+                    ]),
+                ]);
+
+                // Start polling for status
+                $this->startMpesaStatusPolling();
+            } else {
+                $this->mpesaStatus = 'failed';
+                $this->showError = true;
+                $this->errorMessage = $result['message'];
+
+                // Update donation status to failed
+                $donation->update(['status' => 'failed']);
+            }
+        } catch (\Exception $e) {
+            $this->mpesaStatus = 'failed';
+            $this->showError = true;
+            $this->errorMessage = 'Failed to initiate M-Pesa payment: ' . $e->getMessage();
+
+            // Update donation status to failed
+            $donation->update(['status' => 'failed']);
+
+            Log::error('M-Pesa payment initiation failed: ' . $e->getMessage());
+        } finally {
+            $this->mpesaProcessing = false;
+        }
     }
 
     private function processPayPalPayment($donation)
@@ -139,6 +198,69 @@ class DonationPage extends Component
     private function resetForm()
     {
         $this->reset(['donor_name', 'donor_email', 'donor_phone', 'amount', 'payment_method', 'message']);
+    }
+
+    /**
+     * Start polling for M-Pesa payment status
+     */
+    private function startMpesaStatusPolling()
+    {
+        if (!$this->mpesaCheckoutId) {
+            return;
+        }
+
+        // Poll for status every 5 seconds for up to 2 minutes
+        $this->dispatch('start-mpesa-polling', [
+            'checkoutId' => $this->mpesaCheckoutId,
+            'maxAttempts' => 24, // 2 minutes with 5-second intervals
+        ]);
+    }
+
+    /**
+     * Check M-Pesa payment status
+     */
+    public function checkMpesaStatus()
+    {
+        if (!$this->mpesaCheckoutId) {
+            return;
+        }
+
+        try {
+            $mpesaService = new MpesaService();
+            $status = $mpesaService->checkTransactionStatus($this->mpesaCheckoutId);
+
+            if ($status && isset($status['ResultCode'])) {
+                if ($status['ResultCode'] === 0) {
+                    // Payment successful
+                    $this->mpesaStatus = 'completed';
+                    $this->showSuccess = true;
+                    $this->resetForm();
+
+                    // Find and update the donation
+                    $donation = Donation::where('meta->mpesa_checkout_id', $this->mpesaCheckoutId)->first();
+                    if ($donation) {
+                        $donation->update(['status' => 'completed']);
+                    }
+                } elseif ($status['ResultCode'] === 1032) {
+                    // User cancelled
+                    $this->mpesaStatus = 'cancelled';
+                    $this->showError = true;
+                    $this->errorMessage = 'Payment was cancelled by user.';
+                } elseif ($status['ResultCode'] === 1037) {
+                    // Timeout
+                    $this->mpesaStatus = 'timeout';
+                    $this->showError = true;
+                    $this->errorMessage = 'Payment request timed out. Please try again.';
+                } else {
+                    // Other failure
+                    $this->mpesaStatus = 'failed';
+                    $this->showError = true;
+                    $this->errorMessage = 'Payment failed: ' . ($status['ResultDesc'] ?? 'Unknown error');
+                }
+            }
+        } catch (\Exception $e) {
+            Log::error('M-Pesa status check failed: ' . $e->getMessage());
+        }
     }
 
     public function render()
