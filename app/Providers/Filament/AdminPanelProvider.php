@@ -28,7 +28,6 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login() // enables Filament login page
             ->authGuard('web') // use the default Laravel "web" guard
-            ->authPages([])    // explicitly register Filament's built-in auth pages
             ->colors([
                 'primary' => '#43b738',
                 'gray'    => '#202020',
