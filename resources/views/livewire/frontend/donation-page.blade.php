@@ -177,14 +177,14 @@
                                                         id="donor_phone"
                                                         wire:model="donor_phone"
                                                         placeholder="e.g., 0712345678"
-                                                        wire:blur="checkPhoneNumber"
+                                                        wire:blur="validateMpesaPhone"
                                                     />
                                                     <div class="form-text small">
                                                         <i class="fas fa-info-circle me-1"></i>
                                                         Enter your M-Pesa registered phone number
                                                         @if($payment_method === 'mpesa')
                                                         <br><small class="text-info">Format: 0712345678, +254712345678, or 254712345678</small>
-                                                        <br><button type="button" class="btn btn-sm btn-outline-info mt-1" wire:click="checkPhoneNumber">
+                                                        <br><button type="button" class="btn btn-sm btn-outline-info mt-1" wire:click="validateMpesaPhone">
                                                             <i class="fas fa-check me-1"></i>Validate Phone Number
                                                         </button>
                                                         @endif

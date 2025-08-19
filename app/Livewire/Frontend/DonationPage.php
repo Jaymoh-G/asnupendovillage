@@ -58,9 +58,12 @@ class DonationPage extends Component
     }
 
     /**
-     * Manually validate phone number (can be called from frontend)
+     * Validate M-Pesa phone number format
      */
-    public function checkPhoneNumber()
+    /**
+     * Validate M-Pesa phone number format
+     */
+    public function validatePhoneNumber()
     {
         // Only validate if M-Pesa is selected
         if ($this->payment_method !== 'mpesa') {
@@ -70,14 +73,6 @@ class DonationPage extends Component
         // Clear any existing errors first
         $this->resetErrorBag();
 
-        return $this->validatePhoneNumberInternal();
-    }
-
-    /**
-     * Internal phone number validation logic
-     */
-    private function validatePhoneNumberInternal()
-    {
         $phone = $this->donor_phone;
 
         // Remove any non-digit characters
@@ -126,7 +121,7 @@ class DonationPage extends Component
         $this->validate();
 
         // Additional validation for M-Pesa phone numbers
-        if ($this->payment_method === 'mpesa' && !$this->checkPhoneNumber()) {
+        if ($this->payment_method === 'mpesa' && !$this->validatePhoneNumber()) {
             return;
         }
 
