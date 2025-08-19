@@ -107,6 +107,39 @@
                         </div>
                         @endif
 
+                        <!-- M-Pesa Success Messages -->
+                        @if($mpesaSuccessMessage && $mpesaStatus === 'pending')
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fas fa-mobile-alt me-2"></i>
+                            <strong>M-Pesa Payment Initiated!</strong>
+                            <div class="mt-2">
+                                {{ $mpesaSuccessMessage }}
+                            </div>
+                            <button
+                                type="button"
+                                class="btn-close"
+                                data-bs-dismiss="alert"
+                                aria-label="Close"
+                            ></button>
+                        </div>
+                        @endif
+
+                        @if($mpesaSuccessMessage && $mpesaStatus === 'completed')
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fas fa-check-circle me-2"></i>
+                            <strong>Payment Successful!</strong>
+                            <div class="mt-2">
+                                {{ $mpesaSuccessMessage }}
+                            </div>
+                            <button
+                                type="button"
+                                class="btn-close"
+                                data-bs-dismiss="alert"
+                                aria-label="Close"
+                            ></button>
+                        </div>
+                        @endif
+
                         <div class="card shadow-lg">
                             <div class="card-body p-5">
                                 <form

@@ -27,6 +27,7 @@ class DonationPage extends Component
     public $mpesaProcessing = false;
     public $mpesaCheckoutId = null;
     public $mpesaStatus = null;
+    public $mpesaSuccessMessage = '';
 
     // Static page content properties
     public $pageBanner;
@@ -177,6 +178,7 @@ class DonationPage extends Component
             if ($result['success']) {
                 $this->mpesaCheckoutId = $result['checkout_request_id'];
                 $this->mpesaStatus = 'pending';
+                $this->mpesaSuccessMessage = 'STK push sent successfully! Please check your phone and enter your M-Pesa PIN to complete the payment.';
 
                 // Update donation with checkout ID
                 $donation->update([
@@ -275,6 +277,7 @@ class DonationPage extends Component
                 if ($status['ResultCode'] === 0) {
                     // Payment successful
                     $this->mpesaStatus = 'completed';
+                    $this->mpesaSuccessMessage = 'M-Pesa payment completed successfully! You will receive a confirmation SMS shortly.';
                     $this->showSuccess = true;
                     $this->resetForm();
 
