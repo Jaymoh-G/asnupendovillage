@@ -66,9 +66,10 @@ class AdminPanelProvider extends PanelProvider
             ]);
     }
 
-    public function canAccessPanel(User $user): bool
-    {
-        // Adjust the role name to match what you created with Spatie
-        return $user->hasRole('Admin') || $user->hasRole('Super Admin');
-    }
+public function canAccessPanel(User $user): bool
+{
+    \Log::info('Filament access check for: ' . $user->email);
+
+    return true; // allow everyone for now
+}
 }
