@@ -296,7 +296,7 @@ class DonationPage extends Component
                     $this->mpesaSuccessMessage = 'M-Pesa payment completed successfully! You will receive a confirmation SMS shortly.';
 
                     // Find and update the donation
-                    $donation = Donation::whereRaw("JSON_UNQUOTE(JSON_EXTRACT(meta, '$.mpesa_checkout_id')) COLLATE utf8_unicode_ci = ? COLLATE utf8_unicode_ci", [$this->mpesaCheckoutId])->first();
+                    $donation = Donation::whereRaw("CAST(JSON_UNQUOTE(JSON_EXTRACT(meta, '$.mpesa_checkout_id')) AS CHAR CHARACTER SET utf8 COLLATE utf8_unicode_ci) = ?", [$this->mpesaCheckoutId])->first();
                     if ($donation) {
                         $donation->update(['status' => 'completed']);
 
@@ -329,7 +329,7 @@ class DonationPage extends Component
                 }
             } else {
                 // Status not available yet, check if donation was completed via callback
-                $donation = Donation::whereRaw("JSON_UNQUOTE(JSON_EXTRACT(meta, '$.mpesa_checkout_id')) COLLATE utf8_unicode_ci = ? COLLATE utf8_unicode_ci", [$this->mpesaCheckoutId])->first();
+                $donation = Donation::whereRaw("CAST(JSON_UNQUOTE(JSON_EXTRACT(meta, '$.mpesa_checkout_id')) AS CHAR CHARACTER SET utf8 COLLATE utf8_unicode_ci) = ?", [$this->mpesaCheckoutId])->first();
                 if ($donation && $donation->status === 'completed') {
                     // Payment was completed via callback
                     $this->mpesaStatus = 'completed';
@@ -351,7 +351,7 @@ class DonationPage extends Component
             Log::error('M-Pesa status check failed: ' . $e->getMessage());
 
             // Even if status check fails, check if donation was completed via callback
-            $donation = Donation::whereRaw("JSON_UNQUOTE(JSON_EXTRACT(meta, '$.mpesa_checkout_id')) COLLATE utf8_unicode_ci = ? COLLATE utf8_unicode_ci", [$this->mpesaCheckoutId])->first();
+            $donation = Donation::whereRaw("CAST(JSON_UNQUOTE(JSON_EXTRACT(meta, '$.mpesa_checkout_id')) AS CHAR CHARACTER SET utf8 COLLATE utf8_unicode_ci) = ?", [$this->mpesaCheckoutId])->first();
             if ($donation && $donation->status === 'completed') {
                 // Payment was completed via callback
                 $this->mpesaStatus = 'completed';
