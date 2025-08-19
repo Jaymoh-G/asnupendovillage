@@ -132,16 +132,202 @@ class EventsResource extends Resource
 
                 Section::make('Event Images')
                     ->schema([
-                        FileUpload::make('images')
-                            ->label('Upload Images')
-                            ->multiple()
-                            ->image()
-                            ->imageEditor()
-                            ->imageCropAspectRatio('16:9')
-                            ->imageResizeTargetWidth('1920')
-                            ->imageResizeTargetHeight('1080')
-                            ->directory('events')
-                            ->columnSpanFull(),
+                        // Display existing images with delete functionality
+                        Forms\Components\Placeholder::make('existing_images')
+                            ->label('Current Images')
+                            ->content(function ($record) {
+                                if (!$record || !$record->exists) {
+                                    return 'No images uploaded yet.';
+                                }
+
+                                $images = $record->images()->ordered()->get();
+                                if ($images->isEmpty()) {
+                                    return 'No images uploaded yet.';
+                                }
+
+                                $html = '<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px;">';
+                                foreach ($images as $image) {
+                                    $isFeatured = $image->featured ? ' (Featured)' : '';
+                                    $featuredClass = $image->featured ? 'featured-image' : '';
+
+                                    $html .= '<div class="' . $featuredClass . '" style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px; text-align: center; position: relative;">';
+
+                                    // Edit button (pencil icon) - opens modal to edit caption
+                                    $html .= '<button type="button" onclick="editImageCaption(' . $image->id . ', \'' . addslashes($image->caption ?? '') . '\', \'' . $image->original_name . '\')" style="position: absolute; top: 5px; left: 5px; background: #3b82f6; color: white; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; font-size: 12px; line-height: 1; display: flex; align-items: center; justify-content: center; z-index: 10;">✎</button>';
+
+                                    // Delete button (X icon) - using AJAX to avoid route issues
+                                    $html .= '<button type="button" onclick="deleteEventImage(' . $image->id . ', \'' . $image->original_name . '\', ' . $record->id . ')" style="position: absolute; top: 5px; right: 5px; background: #ef4444; color: white; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; font-size: 14px; line-height: 1; display: flex; align-items: center; justify-content: center;">×</button>';
+
+                                    $html .= '<img src="' . asset('storage/' . $image->path) . '" style="width: 100%; height: 120px; object-fit: cover; border-radius: 4px; margin-bottom: 8px;" alt="' . $image->alt_text . '">';
+                                    $html .= '<p style="margin: 0; font-size: 12px; color: #6b7280;">' . $image->original_name . $isFeatured . '</p>';
+                                    if ($image->caption) {
+                                        $html .= '<p style="margin: 4px 0 0 0; font-size: 11px; color: #9ca3af; font-style: italic;">' . $image->caption . '</p>';
+                                    }
+                                    $html .= '</div>';
+                                }
+                                $html .= '</div>';
+
+                                // Add JavaScript for delete and edit functionality using AJAX
+                                $html .= '<script>
+                                    function deleteEventImage(imageId, imageName, eventId) {
+                                        if (confirm("Are you sure you want to delete the image \"" + imageName + "\"? This action cannot be undone.")) {
+                                            // Show loading state
+                                            const button = event.target;
+                                            const originalText = button.innerHTML;
+                                            button.innerHTML = "⌛";
+                                            button.disabled = true;
+
+                                            // Make AJAX request to delete image
+                                            fetch("/admin/events/" + eventId + "/delete-image/" + imageId, {
+                                                method: "POST",
+                                                headers: {
+                                                    "X-CSRF-TOKEN": document.querySelector("meta[name=\'csrf-token\']").getAttribute("content"),
+                                                    "Content-Type": "application/json",
+                                                    "Accept": "application/json"
+                                                }
+                                            })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                if (data.success) {
+                                                    // Remove the image container from DOM
+                                                    const imageContainer = button.closest("div");
+                                                    imageContainer.remove();
+
+                                                    // Show success message
+                                                    alert("Image deleted successfully!");
+
+                                                    // If no images left, refresh the page to show "No images" message
+                                                    const remainingImages = document.querySelectorAll("[onclick^=\'deleteEventImage\']");
+                                                    if (remainingImages.length === 0) {
+                                                        location.reload();
+                                                    }
+                                                } else {
+                                                    alert("Error deleting image: " + (data.message || "Unknown error"));
+                                                    button.innerHTML = originalText;
+                                                    button.disabled = false;
+                                                }
+                                            })
+                                            .catch(error => {
+                                                console.error("Error:", error);
+                                                alert("Error deleting image. Please try again.");
+                                                button.innerHTML = originalText;
+                                                button.disabled = false;
+                                            });
+                                        }
+                                    }
+
+                                    function editImageCaption(imageId, currentCaption, imageName) {
+                                        const newCaption = prompt("Edit caption for \"" + imageName + "\":", currentCaption);
+                                        if (newCaption !== null) {
+                                            // Show loading state
+                                            const button = event.target;
+                                            const originalText = button.innerHTML;
+                                            button.innerHTML = "⌛";
+                                            button.disabled = true;
+
+                                            // Make AJAX request to update caption
+                                            fetch("/admin/images/" + imageId + "/update-caption", {
+                                                method: "POST",
+                                                headers: {
+                                                    "X-CSRF-TOKEN": document.querySelector("meta[name=\'csrf-token\']").getAttribute("content"),
+                                                    "Content-Type": "application/json",
+                                                    "Accept": "application/json"
+                                                },
+                                                body: JSON.stringify({
+                                                    caption: newCaption
+                                                })
+                                            })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                if (data.success) {
+                                                    // Update the caption display
+                                                    const imageContainer = button.closest("div");
+                                                    const captionElement = imageContainer.querySelector("p:last-child");
+                                                    if (captionElement && newCaption) {
+                                                        captionElement.textContent = newCaption;
+                                                    } else if (newCaption) {
+                                                        // Create new caption element if it doesn\'t exist
+                                                        const newCaptionElement = document.createElement("p");
+                                                        newCaptionElement.style.cssText = "margin: 4px 0 0 0; font-size: 11px; color: #9ca3af; font-style: italic;";
+                                                        newCaptionElement.textContent = newCaption;
+                                                        imageContainer.appendChild(newCaptionElement);
+                                                    } else if (captionElement) {
+                                                        // Remove caption element if caption is empty
+                                                        captionElement.remove();
+                                                    }
+
+                                                    // Show success message
+                                                    alert("Caption updated successfully!");
+                                                } else {
+                                                    alert("Error updating caption: " + (data.message || "Unknown error"));
+                                                }
+                                                button.innerHTML = originalText;
+                                                button.disabled = false;
+                                            })
+                                            .catch(error => {
+                                                console.error("Error:", error);
+                                                alert("Error updating caption. Please try again.");
+                                                button.innerHTML = originalText;
+                                                button.disabled = false;
+                                            });
+                                        }
+                                    }
+                                </script>';
+
+                                return new \Illuminate\Support\HtmlString($html);
+                            })
+                            ->columnSpanFull()
+                            ->visible(fn($record) => $record && $record->exists),
+
+                        // Upload new images with captions
+                        Forms\Components\Repeater::make('new_images')
+                            ->label('Upload New Images with Captions')
+                            ->schema([
+                                FileUpload::make('file')
+                                    ->label('Image')
+                                    ->image()
+                                    ->imageEditor()
+                                    ->imageCropAspectRatio('16:9')
+                                    ->imageResizeTargetWidth('1920')
+                                    ->imageResizeTargetHeight('1080')
+                                    ->directory('events')
+                                    ->required()
+                                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                                    ->maxSize(5120)
+                                    ->columnSpan(1),
+                                TextInput::make('caption')
+                                    ->label('Caption')
+                                    ->maxLength(1000)
+                                    ->placeholder('Enter a descriptive caption for this image...')
+                                    ->helperText('Optional: Add a caption that will be displayed below the image')
+                                    ->columnSpan(2),
+                                Toggle::make('featured')
+                                    ->label('Featured Image')
+                                    ->helperText('Mark this as the main featured image for the event')
+                                    ->columnSpan(1),
+                            ])
+                            ->columns(4)
+                            ->columnSpanFull()
+                            ->helperText('Upload new images with captions. You can mark one image as featured.')
+                            ->visible(fn($record) => $record && $record->exists)
+                            ->addActionLabel('Add Another Image')
+                            ->reorderable(false)
+                            ->collapsible()
+                            ->collapsed(),
+
+                        // Image management actions
+                        Forms\Components\Actions::make([
+                            Forms\Components\Actions\Action::make('manage_images')
+                                ->label('Manage Images in Admin Panel')
+                                ->icon('heroicon-o-photo')
+                                ->url(fn($record) => $record ? route('filament.admin.resources.images.index', ['filter[imageable_type]' => 'App\\Models\\Event', 'filter[imageable_id]' => $record->id]) : '#')
+                                ->openUrlInNewTab()
+                                ->visible(fn($record) => $record && $record->exists)
+                                ->color('info')
+                                ->extraAttributes(['class' => 'w-full']),
+                        ])
+                            ->columnSpanFull()
+                            ->visible(fn($record) => $record && $record->exists),
                     ]),
             ]);
     }

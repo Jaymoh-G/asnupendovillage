@@ -35,4 +35,32 @@ class ImageController extends Controller
             ], 500);
         }
     }
+
+    /**
+     * Update the caption of an image
+     */
+    public function updateCaption(Request $request, $imageId): JsonResponse
+    {
+        try {
+            $image = Image::findOrFail($imageId);
+
+            $request->validate([
+                'caption' => 'nullable|string|max:1000',
+            ]);
+
+            $image->update([
+                'caption' => $request->input('caption'),
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Caption updated successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error updating caption: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }

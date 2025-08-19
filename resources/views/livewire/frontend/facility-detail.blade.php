@@ -92,6 +92,14 @@
                                         <div class="featured-badge">
                                             <i class="fas fa-star"></i> Featured
                                         </div>
+                                        @endif @if($image->caption)
+                                        <div class="image-caption mt-2">
+                                            <p
+                                                class="text-muted small text-center mb-0"
+                                            >
+                                                {{ $image->caption }}
+                                            </p>
+                                        </div>
                                         @endif
                                     </div>
                                 </div>
@@ -534,6 +542,21 @@
             border-bottom: 2px solid #ffac00;
             padding-bottom: 10px;
             margin-bottom: 20px;
+        }
+
+        /* Image Caption Styling */
+        .image-caption {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 8px;
+        }
+
+        .image-caption p {
+            font-size: 13px;
+            line-height: 1.4;
+            color: #6c757d;
+            margin: 0;
         }
     </style>
 

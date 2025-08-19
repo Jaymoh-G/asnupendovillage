@@ -63,6 +63,14 @@ class YouTube extends Model
     }
 
     /**
+     * Get tags as a clean array for Blade templates
+     */
+    public function getTagsArrayAttribute(): array
+    {
+        return $this->tags;
+    }
+
+    /**
      * Boot method to automatically generate slug
      */
     protected static function boot()

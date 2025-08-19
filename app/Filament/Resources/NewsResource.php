@@ -111,16 +111,22 @@ class NewsResource extends Resource
 
                                     $html .= '<div class="' . $featuredClass . '" style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px; text-align: center; position: relative;">';
 
+                                    // Edit button (pencil icon) - opens modal to edit caption
+                                    $html .= '<button type="button" onclick="editImageCaption(' . $image->id . ', \'' . addslashes($image->caption ?? '') . '\', \'' . $image->original_name . '\')" style="position: absolute; top: 5px; left: 5px; background: #3b82f6; color: white; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; font-size: 12px; line-height: 1; display: flex; align-items: center; justify-content: center; z-index: 10;">✎</button>';
+
                                     // Delete button (X icon) - using AJAX to avoid route issues
                                     $html .= '<button type="button" onclick="deleteImage(' . $image->id . ', \'' . $image->original_name . '\', ' . $record->id . ')" style="position: absolute; top: 5px; right: 5px; background: #ef4444; color: white; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; font-size: 14px; line-height: 1; display: flex; align-items: center; justify-content: center;">×</button>';
 
                                     $html .= '<img src="' . asset('storage/' . $image->path) . '" style="width: 100%; height: 120px; object-fit: cover; border-radius: 4px; margin-bottom: 8px;" alt="' . $image->alt_text . '">';
                                     $html .= '<p style="margin: 0; font-size: 12px; color: #6b7280;">' . $image->original_name . $isFeatured . '</p>';
+                                    if ($image->caption) {
+                                        $html .= '<p style="margin: 4px 0 0 0; font-size: 11px; color: #9ca3af; font-style: italic;">' . $image->caption . '</p>';
+                                    }
                                     $html .= '</div>';
                                 }
                                 $html .= '</div>';
 
-                                // Add JavaScript for delete functionality using AJAX
+                                // Add JavaScript for delete and edit functionality using AJAX
                                 $html .= '<script>
                                     function deleteImage(imageId, imageName, newsId) {
                                         if (confirm("Are you sure you want to delete the image \"" + imageName + "\"? This action cannot be undone.")) {
@@ -168,6 +174,63 @@ class NewsResource extends Resource
                                             });
                                         }
                                     }
+
+                                    function editImageCaption(imageId, currentCaption, imageName) {
+                                        const newCaption = prompt("Edit caption for \"" + imageName + "\":", currentCaption);
+                                        if (newCaption !== null) {
+                                            // Show loading state
+                                            const button = event.target;
+                                            const originalText = button.innerHTML;
+                                            button.innerHTML = "⌛";
+                                            button.disabled = true;
+
+                                            // Make AJAX request to update caption
+                                            fetch("/admin/images/" + imageId + "/update-caption", {
+                                                method: "POST",
+                                                headers: {
+                                                    "X-CSRF-TOKEN": document.querySelector("meta[name=\'csrf-token\']").getAttribute("content"),
+                                                    "Content-Type": "application/json",
+                                                    "Accept": "application/json"
+                                                },
+                                                body: JSON.stringify({
+                                                    caption: newCaption
+                                                })
+                                            })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                if (data.success) {
+                                                    // Update the caption display
+                                                    const imageContainer = button.closest("div");
+                                                    const captionElement = imageContainer.querySelector("p:last-child");
+                                                    if (captionElement && newCaption) {
+                                                        captionElement.textContent = newCaption;
+                                                    } else if (newCaption) {
+                                                        // Create new caption element if it doesn\'t exist
+                                                        const newCaptionElement = document.createElement("p");
+                                                        newCaptionElement.style.cssText = "margin: 4px 0 0 0; font-size: 11px; color: #9ca3af; font-style: italic;";
+                                                        newCaptionElement.textContent = newCaption;
+                                                        imageContainer.appendChild(newCaptionElement);
+                                                    } else if (captionElement) {
+                                                        // Remove caption element if caption is empty
+                                                        captionElement.remove();
+                                                    }
+
+                                                    // Show success message
+                                                    alert("Caption updated successfully!");
+                                                } else {
+                                                    alert("Error updating caption: " + (data.message || "Unknown error"));
+                                                }
+                                                button.innerHTML = originalText;
+                                                button.disabled = false;
+                                            })
+                                            .catch(error => {
+                                                console.error("Error:", error);
+                                                alert("Error updating caption. Please try again.");
+                                                button.innerHTML = originalText;
+                                                button.disabled = false;
+                                            });
+                                        }
+                                    }
                                 </script>';
 
                                 return new \Illuminate\Support\HtmlString($html);
@@ -175,21 +238,41 @@ class NewsResource extends Resource
                             ->columnSpanFull()
                             ->visible(fn($record) => $record && $record->exists),
 
-                        // Upload new images
-                        FileUpload::make('temp_images')
-                            ->label('Upload New Images')
-                            ->multiple()
-                            ->image()
-                            ->imageEditor()
-                            ->imageCropAspectRatio('16:9')
-                            ->imageResizeTargetWidth('1920')
-                            ->imageResizeTargetHeight('1080')
-                            ->directory('news')
+                        // Upload new images with captions
+                        Forms\Components\Repeater::make('new_images')
+                            ->label('Upload New Images with Captions')
+                            ->schema([
+                                FileUpload::make('file')
+                                    ->label('Image')
+                                    ->image()
+                                    ->imageEditor()
+                                    ->imageCropAspectRatio('16:9')
+                                    ->imageResizeTargetWidth('1920')
+                                    ->imageResizeTargetHeight('1080')
+                                    ->directory('news')
+                                    ->required()
+                                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                                    ->maxSize(5120)
+                                    ->columnSpan(1),
+                                TextInput::make('caption')
+                                    ->label('Caption')
+                                    ->maxLength(1000)
+                                    ->placeholder('Enter a descriptive caption for this image...')
+                                    ->helperText('Optional: Add a caption that will be displayed below the image')
+                                    ->columnSpan(2),
+                                Toggle::make('featured')
+                                    ->label('Featured Image')
+                                    ->helperText('Mark this as the main featured image for the news article')
+                                    ->columnSpan(1),
+                            ])
+                            ->columns(4)
                             ->columnSpanFull()
-                            ->helperText('Upload new images for the news article. Images will be processed and stored properly.')
+                            ->helperText('Upload new images with captions. You can mark one image as featured.')
                             ->visible(fn($record) => $record && $record->exists)
-                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
-                            ->maxSize(5120), // 5MB
+                            ->addActionLabel('Add Another Image')
+                            ->reorderable(false)
+                            ->collapsible()
+                            ->collapsed(),
 
                         // Image management actions
                         Forms\Components\Actions::make([
@@ -297,17 +380,36 @@ class NewsResource extends Resource
     }
 
     /**
-     * Handle form submission for image uploads
+     * Handle form submission for image uploads with captions
      */
     public static function handleFormSubmission($data, $record = null)
     {
-        // If this is an update and we have temp_images, process them
-        if ($record && isset($data['temp_images']) && !empty($data['temp_images'])) {
-            // Upload the new images using the HasImages trait
-            $record->uploadImages($data['temp_images'], 'news');
+        // If this is an update and we have new_images, process them
+        if ($record && isset($data['new_images']) && !empty($data['new_images'])) {
+            foreach ($data['new_images'] as $imageData) {
+                if (isset($imageData['file']) && $imageData['file']) {
+                    // Create the image record with caption and featured status
+                    $image = $record->images()->create([
+                        'filename' => basename($imageData['file']),
+                        'original_name' => basename($imageData['file']),
+                        'path' => $imageData['file'],
+                        'mime_type' => 'image/jpeg', // Default, will be updated
+                        'size' => 0, // Will be updated
+                        'alt_text' => pathinfo($imageData['file'], PATHINFO_FILENAME),
+                        'caption' => $imageData['caption'] ?? null,
+                        'featured' => $imageData['featured'] ?? false,
+                        'sort_order' => $record->images()->count(),
+                    ]);
 
-            // Clear the temp_images field
-            unset($data['temp_images']);
+                    // If this is marked as featured, unmark others
+                    if ($imageData['featured'] ?? false) {
+                        $record->images()->where('id', '!=', $image->id)->update(['featured' => false]);
+                    }
+                }
+            }
+
+            // Clear the new_images field
+            unset($data['new_images']);
         }
 
         return $data;

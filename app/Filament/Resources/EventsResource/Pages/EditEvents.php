@@ -5,9 +5,12 @@ namespace App\Filament\Resources\EventsResource\Pages;
 use App\Filament\Resources\EventsResource;
 use App\Services\ImageService;
 use App\Models\Image;
+use App\Models\Event;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
 class EditEvents extends EditRecord
 {
@@ -27,12 +30,12 @@ class EditEvents extends EditRecord
 
     protected function mutateFormDataBeforeSave(array $data): array
     {
-        // Remove images from data as we'll handle them separately
-        $images = $data['images'] ?? null;
-        unset($data['images']);
+        // Remove new_images from data as we'll handle them separately
+        $newImages = $data['new_images'] ?? null;
+        unset($data['new_images']);
 
         // Store for afterSave
-        $this->data['images'] = $images;
+        $this->data['new_images'] = $newImages;
 
         return $data;
     }
@@ -40,21 +43,64 @@ class EditEvents extends EditRecord
     protected function afterSave(): void
     {
         $record = $this->record;
-        $images = $this->data['images'] ?? null;
+        $newImages = $this->data['new_images'] ?? null;
 
-        // Handle new uploaded images
-        if ($images && $record) {
-            foreach ($images as $imagePath) {
-                // Create image record for the uploaded file
-                $record->images()->create([
-                    'filename' => basename($imagePath),
-                    'original_name' => basename($imagePath),
-                    'path' => $imagePath,
-                    'mime_type' => mime_content_type(Storage::disk('public')->path($imagePath)),
-                    'size' => Storage::disk('public')->size($imagePath),
-                    'alt_text' => pathinfo(basename($imagePath), PATHINFO_FILENAME),
-                ]);
+        // Handle new uploaded images with captions
+        if ($newImages && $record) {
+            foreach ($newImages as $imageData) {
+                if (isset($imageData['file']) && $imageData['file']) {
+                    // Create the image record with caption and featured status
+                    $image = $record->images()->create([
+                        'filename' => basename($imageData['file']),
+                        'original_name' => basename($imageData['file']),
+                        'path' => $imageData['file'],
+                        'mime_type' => 'image/jpeg', // Default, will be updated
+                        'size' => 0, // Will be updated
+                        'alt_text' => pathinfo($imageData['file'], PATHINFO_FILENAME),
+                        'caption' => $imageData['caption'] ?? null,
+                        'featured' => $imageData['featured'] ?? false,
+                        'sort_order' => $record->images()->count(),
+                    ]);
+
+                    // If this is marked as featured, unmark others
+                    if ($imageData['featured'] ?? false) {
+                        $record->images()->where('id', '!=', $image->id)->update(['featured' => false]);
+                    }
+                }
             }
+        }
+    }
+
+    // Custom method to handle image deletion via AJAX
+    public function deleteImage(Request $request, $eventId, $imageId): JsonResponse
+    {
+        try {
+            // Verify the event record exists and belongs to the current user/context
+            $event = Event::findOrFail($eventId);
+
+            // Find the image
+            $image = Image::findOrFail($imageId);
+
+            // Verify the image belongs to this event
+            if ($image->imageable_type !== Event::class || $image->imageable_id !== $event->id) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Image does not belong to this event'
+                ], 403);
+            }
+
+            // Delete the image using the HasImages trait
+            $event->deleteImage($imageId);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Image deleted successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error deleting image: ' . $e->getMessage()
+            ], 500);
         }
     }
 }

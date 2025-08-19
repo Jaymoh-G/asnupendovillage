@@ -33,6 +33,14 @@
                                 src="{{ $news->featured_image_url }}"
                                 alt="{{ $news->title }}"
                             />
+                            @if($news->featuredImage &&
+                            $news->featuredImage->caption)
+                            <div class="featured-image-caption mt-3">
+                                <p class="text-muted text-center mb-0">
+                                    {{ $news->featuredImage->caption }}
+                                </p>
+                            </div>
+                            @endif
                         </div>
                         @endif
                         <div class="blog-content">
@@ -85,6 +93,15 @@
                                                     object-fit: cover;
                                                 "
                                             />
+                                            @if($image->caption)
+                                            <div class="image-caption mt-2">
+                                                <p
+                                                    class="text-muted small text-center mb-0"
+                                                >
+                                                    {{ $image->caption }}
+                                                </p>
+                                            </div>
+                                            @endif
                                         </div>
                                     </div>
                                     @endforeach
@@ -275,6 +292,36 @@
             border-bottom: 2px solid #ffac00;
             padding-bottom: 10px;
             margin-bottom: 20px;
+        }
+
+        /* Image Caption Styling */
+        .image-caption {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 8px;
+        }
+
+        .image-caption p {
+            font-size: 13px;
+            line-height: 1.4;
+            color: #6c757d;
+            margin: 0;
+        }
+
+        .featured-image-caption {
+            background: rgba(26, 104, 91, 0.1);
+            border-radius: 8px;
+            padding: 12px 16px;
+            border-left: 4px solid #1a685b;
+        }
+
+        .featured-image-caption p {
+            font-size: 14px;
+            line-height: 1.5;
+            color: #1a685b;
+            margin: 0;
+            font-style: italic;
         }
     </style>
 </div>

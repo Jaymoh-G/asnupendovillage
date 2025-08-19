@@ -130,6 +130,12 @@ class ImageResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->limit(30),
+                TextColumn::make('caption')
+                    ->label('Caption')
+                    ->searchable()
+                    ->sortable()
+                    ->limit(50)
+                    ->wrap(),
                 TextColumn::make('imageable_type')
                     ->label('Content Type')
                     ->formatStateUsing(function ($state) {

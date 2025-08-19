@@ -131,6 +131,26 @@ Route::post('/admin/news/{newsId}/delete-image/{imageId}', [App\Filament\Resourc
     ->name('admin.news.delete-image')
     ->middleware(['auth', 'web']);
 
+// Custom route for updating image captions
+Route::post('/admin/images/{imageId}/update-caption', [App\Http\Controllers\ImageController::class, 'updateCaption'])
+    ->name('admin.images.update-caption')
+    ->middleware(['auth', 'web']);
+
+// Custom route for deleting images from events
+Route::post('/admin/events/{eventId}/delete-image/{imageId}', [App\Filament\Resources\EventsResource\Pages\EditEvents::class, 'deleteImage'])
+    ->name('admin.events.delete-image')
+    ->middleware(['auth', 'web']);
+
+// Custom route for deleting images from facilities
+Route::post('/admin/facilities/{facilityId}/delete-image/{imageId}', [App\Filament\Resources\FacilityResource\Pages\EditFacility::class, 'deleteImage'])
+    ->name('admin.facilities.delete-image')
+    ->middleware(['auth', 'web']);
+
+// Custom route for deleting images from projects
+Route::post('/admin/projects/{projectId}/delete-image/{imageId}', [App\Filament\Resources\ProjectResource\Pages\EditProject::class, 'deleteImage'])
+    ->name('admin.projects.delete-image')
+    ->middleware(['auth', 'web']);
+
 Route::get('/downloads/program/{program:slug}', function (Program $program) {
     return view('downloads-page', ['programId' => $program->id]);
 })->name('downloads.by-program');

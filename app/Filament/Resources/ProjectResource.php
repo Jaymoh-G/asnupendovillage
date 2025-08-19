@@ -53,21 +53,58 @@ class ProjectResource extends Resource
                             ->rows(3)
                             ->maxLength(160)
                             ->helperText('SEO meta description (max 160 characters). This will be used for search engine results and social media sharing.'),
-                        Forms\Components\FileUpload::make('images')
-                            ->label('Project Images')
-                            ->multiple()
-                            ->image()
-                            ->imageEditor()
-                            ->imageCropAspectRatio('16:9')
-                            ->imageResizeTargetWidth('800')
-                            ->imageResizeTargetHeight('450')
-                            ->directory('projects')
-                            ->visibility('public')
-                            ->maxSize(4096)
-                            ->dehydrated(false)
-                            ->helperText('Upload multiple images for the project. The first image will be used as the featured image.'),
                     ])
                     ->columns(2),
+                Forms\Components\Section::make('Project Images')
+                    ->schema([
+                        Forms\Components\Repeater::make('new_images')
+                            ->label('Upload New Images with Captions')
+                            ->schema([
+                                Forms\Components\FileUpload::make('file')
+                                    ->label('Image')
+                                    ->image()
+                                    ->imageEditor()
+                                    ->imageCropAspectRatio('16:9')
+                                    ->imageResizeTargetWidth('800')
+                                    ->imageResizeTargetHeight('450')
+                                    ->directory('projects')
+                                    ->required()
+                                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                                    ->maxSize(4096)
+                                    ->columnSpan(1),
+                                Forms\Components\TextInput::make('caption')
+                                    ->label('Caption')
+                                    ->maxLength(1000)
+                                    ->placeholder('Enter a descriptive caption for this image...')
+                                    ->helperText('Optional: Add a caption that will be displayed below the image')
+                                    ->columnSpan(2),
+                                Forms\Components\Toggle::make('featured')
+                                    ->label('Featured Image')
+                                    ->helperText('Mark this as the main featured image for the project')
+                                    ->columnSpan(1),
+                            ])
+                            ->columns(4)
+                            ->columnSpanFull()
+                            ->helperText('Upload new images with captions. You can mark one image as featured.')
+                            ->visible(fn($record) => $record && $record->exists)
+                            ->addActionLabel('Add Another Image')
+                            ->reorderable(false)
+                            ->collapsible()
+                            ->collapsed(),
+                        Forms\Components\Actions::make([
+                            Forms\Components\Actions\Action::make('manage_images')
+                                ->label('Manage Images in Admin Panel')
+                                ->icon('heroicon-o-photo')
+                                ->url(fn($record) => $record ? route('filament.admin.resources.images.index', ['filter[imageable_type]' => 'App\\Models\\Project', 'filter[imageable_id]' => $record->id]) : '#')
+                                ->openUrlInNewTab()
+                                ->visible(fn($record) => $record && $record->exists)
+                                ->color('info')
+                                ->extraAttributes(['class' => 'w-full']),
+                        ])
+                            ->columnSpanFull()
+                            ->visible(fn($record) => $record && $record->exists),
+                    ])
+                    ->columnSpanFull(),
                 Forms\Components\Section::make('Settings')
                     ->schema([
                         Forms\Components\Select::make('status')
@@ -80,7 +117,8 @@ class ProjectResource extends Resource
                             ->required(),
                     ])
                     ->columns(2),
-            ]);
+            ])
+            ->extraAttributes(['class' => 'project-resource-form']);
     }
 
     public static function table(Table $table): Table

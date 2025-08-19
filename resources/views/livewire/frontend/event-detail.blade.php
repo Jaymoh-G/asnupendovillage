@@ -79,7 +79,58 @@
                                 {!! $event->description !!}
                             </div>
 
-                            @if($event->tags && is_array($event->tags) &&
+                            <!-- Event Image Gallery -->
+                            @if($event->images()->count() > 0)
+                            <div class="event-images-section mb-45">
+                                <h3 class="h4 mb-4">
+                                    {{ $event->title }} Event Images
+                                </h3>
+                                <div class="row g-3">
+                                    @foreach($event->images()->ordered()->get()
+                                    as $image)
+                                    <div class="col-md-6 col-lg-6">
+                                        <div class="event-image-item">
+                                            <img
+                                                src="{{ $image->display_url }}"
+                                                alt="{{ $image->alt_text ?? $event->title }}"
+                                                class="img-fluid rounded"
+                                                style="
+                                                    filter: none !important;
+                                                    width: 100%;
+                                                    height: 200px;
+                                                    object-fit: cover;
+                                                "
+                                            />
+                                            @if($image->featured)
+                                            <div class="featured-badge">
+                                                <i class="fas fa-star"></i>
+                                                Featured
+                                            </div>
+                                            @endif @if($image->caption)
+                                            <div class="image-caption mt-2">
+                                                <p
+                                                    class="text-muted small text-center mb-0"
+                                                >
+                                                    {{ $image->caption }}
+                                                </p>
+                                            </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                            @else
+                            <div class="event-images-section mb-45">
+                                <h3 class="h4 mb-4">
+                                    {{ $event->title }} Event Images
+                                </h3>
+                                <div class="text-center text-muted">
+                                    <i class="fas fa-images fa-3x mb-3"></i>
+                                    <p>No additional event images available</p>
+                                </div>
+                            </div>
+                            @endif @if($event->tags && is_array($event->tags) &&
                             count($event->tags) > 0)
                             <div class="share-links clearfix">
                                 <div class="row justify-content-between">
@@ -302,6 +353,75 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+        }
+
+        /* Event Images Styling */
+        .event-image-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .event-image-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .event-image-item img {
+            transition: transform 0.3s ease;
+        }
+
+        .event-image-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .featured-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: linear-gradient(45deg, #ffac00, #ff8c00);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(255, 172, 0, 0.3);
+        }
+
+        .featured-badge i {
+            margin-right: 4px;
+            color: white;
+        }
+
+        .event-images-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+        }
+
+        .event-images-section h3 {
+            color: #1a685b;
+            border-bottom: 2px solid #ffac00;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* Image Caption Styling */
+        .image-caption {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 8px;
+        }
+
+        .image-caption p {
+            font-size: 13px;
+            line-height: 1.4;
+            color: #6c757d;
+            margin: 0;
         }
     </style>
 </div>

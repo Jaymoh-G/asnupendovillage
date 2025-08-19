@@ -29,12 +29,12 @@ class EditNews extends EditRecord
 
     protected function mutateFormDataBeforeSave(array $data): array
     {
-        // Remove temp_images from data as we'll handle them separately
-        $tempImages = $data['temp_images'] ?? null;
-        unset($data['temp_images']);
+        // Remove new_images from data as we'll handle them separately
+        $newImages = $data['new_images'] ?? null;
+        unset($data['new_images']);
 
         // Store for afterSave
-        $this->data['temp_images'] = $tempImages;
+        $this->data['new_images'] = $newImages;
 
         return $data;
     }
@@ -42,20 +42,35 @@ class EditNews extends EditRecord
     protected function afterSave(): void
     {
         $record = $this->record;
-        $tempImages = $this->data['temp_images'] ?? null;
+        $newImages = $this->data['new_images'] ?? null;
 
-        // Handle new uploaded images using the HasImages trait
-        if ($tempImages && $record) {
-            $this->processImages($record, $tempImages);
+        // Handle new uploaded images with captions
+        if ($newImages && $record) {
+            $this->processImagesWithCaptions($record, $newImages);
         }
     }
 
-    protected function processImages($record, array $tempImages): void
+    protected function processImagesWithCaptions($record, array $newImages): void
     {
-        foreach ($tempImages as $tempImage) {
-            if ($tempImage instanceof \Illuminate\Http\UploadedFile) {
-                // Upload the image using the HasImages trait
-                $record->uploadImages([$tempImage], 'news');
+        foreach ($newImages as $imageData) {
+            if (isset($imageData['file']) && $imageData['file']) {
+                // Create the image record with caption and featured status
+                $image = $record->images()->create([
+                    'filename' => basename($imageData['file']),
+                    'original_name' => basename($imageData['file']),
+                    'path' => $imageData['file'],
+                    'mime_type' => 'image/jpeg', // Default, will be updated
+                    'size' => 0, // Will be updated
+                    'alt_text' => pathinfo($imageData['file'], PATHINFO_FILENAME),
+                    'caption' => $imageData['caption'] ?? null,
+                    'featured' => $imageData['featured'] ?? false,
+                    'sort_order' => $record->images()->count(),
+                ]);
+
+                // If this is marked as featured, unmark others
+                if ($imageData['featured'] ?? false) {
+                    $record->images()->where('id', '!=', $image->id)->update(['featured' => false]);
+                }
             }
         }
 
