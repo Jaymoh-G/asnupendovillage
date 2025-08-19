@@ -26,26 +26,55 @@ class AdminPanelProvider extends PanelProvider
             ->default() // makes this the default panel
             ->id('admin')
             ->path('admin')
-            ->login() // enables login page
+            ->login() // enables Filament login page
+            ->authGuard('web') // use the default Laravel "web" guard
+            ->authPages([])    // explicitly register Filament's built-in auth pages
             ->colors([
                 'primary' => '#43b738',
                 'gray'    => '#202020',
             ])
             ->darkMode(false)
             ->resources([
-                // Register custom Filament resources here
+                // Main Content
+                \App\Filament\Resources\HomePageContentResource::class,
+                \App\Filament\Resources\HomeSliderResource::class,
+                \App\Filament\Resources\PageBannerResource::class,
+                \App\Filament\Resources\StaticPageResource::class,
+                \App\Filament\Resources\FacilityResource::class,
+                \App\Filament\Resources\ProgramResource::class,
+                \App\Filament\Resources\CoreValueResource::class,
+                \App\Filament\Resources\TeamResource::class,
+                \App\Filament\Resources\ProjectResource::class,
+                \App\Filament\Resources\TestimonialResource::class,
+                \App\Filament\Resources\StatisticResource::class,
+                \App\Filament\Resources\DonationResource::class,
+
+                // Media Centre
+                \App\Filament\Resources\YouTubeResource::class,
+                \App\Filament\Resources\AlbumResource::class,
+                \App\Filament\Resources\ImageResource::class,
+                \App\Filament\Resources\DownloadResource::class,
+                \App\Filament\Resources\NewsResource::class,
+                \App\Filament\Resources\CareerResource::class,
+                \App\Filament\Resources\EventsResource::class,
+
+                // Settings & Users
+                \App\Filament\Resources\SettingResource::class,
+                \App\Filament\Resources\UserResource::class,
+                \App\Filament\Resources\RoleResource::class,
+                \App\Filament\Resources\PermissionResource::class,
             ])
             ->navigationGroups([
                 'Main Content',
                 'Media Centre',
                 'Settings & Users',
             ])
-            ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\\Filament\\Admin\\Resources')
-            ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\\Filament\\Admin\\Pages')
+            ->discoverResources(app_path('Filament/Admin/Resources'), 'App\\Filament\\Admin\\Resources')
+            ->discoverPages(app_path('Filament/Admin/Pages'), 'App\\Filament\\Admin\\Pages')
             ->pages([
                 Pages\Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Admin/Widgets'), for: 'App\\Filament\\Admin\\Widgets')
+            ->discoverWidgets(app_path('Filament/Admin/Widgets'), 'App\\Filament\\Admin\\Widgets')
             ->widgets([
                 \App\Filament\Widgets\DashboardStats::class,
                 \App\Filament\Widgets\DonationStats::class,
