@@ -99,6 +99,15 @@
                                         Waiting for payment confirmation...
                                     </small>
                                 </div>
+                                <div class="mt-3">
+                                    <button type="button" class="btn btn-primary btn-sm" wire:click="checkMpesaStatus">
+                                        <i class="fas fa-sync-alt me-1"></i>Check Payment Status
+                                    </button>
+                                    <small class="text-muted d-block mt-1">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Click this button after entering your M-Pesa PIN to check if payment was successful.
+                                    </small>
+                                </div>
                             @elseif($mpesaStatus === 'cancelled')
                                 <span class="text-warning">Payment was cancelled.</span>
                             @elseif($mpesaStatus === 'timeout')
@@ -791,7 +800,7 @@
                     clearInterval(pollingInterval);
                 }
 
-                // Start polling every 5 seconds
+                // Start polling every 3 seconds (more aggressive)
                 pollingInterval = setInterval(() => {
                     attemptCount++;
 
@@ -803,15 +812,36 @@
                     }
 
                     // Call the Livewire method to check status
-                    Livewire.find(document.querySelector('[wire\\:id]').getAttribute('wire:id')).call('checkMpesaStatus');
+                    const livewireComponent = document.querySelector('[wire\\:id]');
+                    if (livewireComponent) {
+                        const wireId = livewireComponent.getAttribute('wire:id');
+                        if (wireId) {
+                            Livewire.find(wireId).call('checkMpesaStatus');
+                        }
+                    }
 
-                }, 5000);
+                }, 3000); // Poll every 3 seconds instead of 5
             });
 
             // Clean up interval when component is destroyed
             document.addEventListener('livewire:destroy', () => {
                 if (pollingInterval) {
                     clearInterval(pollingInterval);
+                }
+            });
+
+            // Add manual status check button functionality
+            document.addEventListener('click', function(e) {
+                if (e.target && e.target.matches('[wire\\:click="checkMpesaStatus"]')) {
+                    // Show loading state
+                    e.target.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Checking...';
+                    e.target.disabled = true;
+
+                    // Re-enable button after 2 seconds
+                    setTimeout(() => {
+                        e.target.innerHTML = '<i class="fas fa-sync-alt me-1"></i>Check Payment Status';
+                        e.target.disabled = false;
+                    }, 2000);
                 }
             });
         });

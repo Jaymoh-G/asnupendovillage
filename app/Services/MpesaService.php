@@ -170,6 +170,8 @@ class MpesaService
     public function checkTransactionStatus($checkoutRequestId)
     {
         try {
+            Log::info('Checking M-Pesa transaction status for: ' . $checkoutRequestId);
+
             $accessToken = $this->getAccessToken();
 
             if (!$accessToken) {
@@ -186,6 +188,8 @@ class MpesaService
                 'CheckoutRequestID' => $checkoutRequestId,
             ];
 
+            Log::info('M-Pesa status check payload: ' . json_encode($payload));
+
             $response = Http::withToken($accessToken)
                 ->withHeaders([
                     'Content-Type' => 'application/json',
@@ -193,9 +197,12 @@ class MpesaService
                 ->post($this->baseUrl . '/mpesa/stkpushquery/v1/query', $payload);
 
             if ($response->successful()) {
-                return $response->json();
+                $responseData = $response->json();
+                Log::info('M-Pesa status check response: ' . json_encode($responseData));
+                return $responseData;
             } else {
                 $errorData = $response->json();
+                Log::error('M-Pesa status check failed: ' . json_encode($errorData));
                 throw new \Exception($errorData['errorMessage'] ?? 'Failed to check transaction status');
             }
         } catch (\Exception $e) {
@@ -210,6 +217,8 @@ class MpesaService
     public function processCallback($callbackData)
     {
         try {
+            Log::info('Processing M-Pesa callback: ' . json_encode($callbackData));
+
             $checkoutRequestId = $callbackData['CheckoutRequestID'] ?? null;
             $resultCode = $callbackData['ResultCode'] ?? null;
             $resultDesc = $callbackData['ResultDesc'] ?? null;
@@ -218,12 +227,22 @@ class MpesaService
             $transactionDate = $callbackData['TransactionDate'] ?? null;
             $phoneNumber = $callbackData['PhoneNumber'] ?? null;
 
+            Log::info('Extracted callback data:', [
+                'checkoutRequestId' => $checkoutRequestId,
+                'resultCode' => $resultCode,
+                'resultDesc' => $resultDesc,
+                'amount' => $amount,
+                'mpesaReceiptNumber' => $mpesaReceiptNumber,
+                'phoneNumber' => $phoneNumber,
+            ]);
+
             if (!$checkoutRequestId) {
                 throw new \Exception('Missing CheckoutRequestID in callback');
             }
 
             // Get stored request data
             $requestData = Cache::get('mpesa_request_' . $checkoutRequestId);
+            Log::info('Retrieved request data from cache: ' . json_encode($requestData));
 
             if (!$requestData) {
                 throw new \Exception('Request data not found for: ' . $checkoutRequestId);
@@ -231,6 +250,7 @@ class MpesaService
 
             // Process the result
             if ($resultCode === 0) {
+                Log::info('Processing successful payment for checkout ID: ' . $checkoutRequestId);
                 // Success
                 $this->handleSuccessfulPayment($checkoutRequestId, $requestData, [
                     'mpesa_receipt_number' => $mpesaReceiptNumber,
@@ -239,12 +259,14 @@ class MpesaService
                     'amount' => $amount,
                 ]);
             } else {
+                Log::info('Processing failed payment for checkout ID: ' . $checkoutRequestId . ' with result code: ' . $resultCode);
                 // Failed
                 $this->handleFailedPayment($checkoutRequestId, $requestData, $resultDesc);
             }
 
             // Clean up cache
             Cache::forget('mpesa_request_' . $checkoutRequestId);
+            Log::info('Cache cleaned up for checkout ID: ' . $checkoutRequestId);
 
             return true;
         } catch (\Exception $e) {
@@ -261,10 +283,16 @@ class MpesaService
     protected function handleSuccessfulPayment($checkoutRequestId, $requestData, $mpesaData)
     {
         try {
+            Log::info('Handling successful payment for checkout ID: ' . $checkoutRequestId);
+            Log::info('Request data: ' . json_encode($requestData));
+            Log::info('M-Pesa data: ' . json_encode($mpesaData));
+
             // Find the donation by reference
             $donation = \App\Models\Donation::where('transaction_reference', $requestData['reference'])->first();
 
             if ($donation) {
+                Log::info('Found donation: ' . $donation->id . ' with status: ' . $donation->status);
+
                 $donation->update([
                     'status' => 'completed',
                     'transaction_reference' => 'MPESA-' . $mpesaData['mpesa_receipt_number'],
@@ -272,7 +300,7 @@ class MpesaService
                         'mpesa_receipt_number' => $mpesaData['mpesa_receipt_number'],
                         'mpesa_transaction_date' => $mpesaData['transaction_date'],
                         'mpesa_phone_number' => $mpesaData['phone_number'],
-                        'checkout_request_id' => $checkoutRequestId,
+                        'mpesa_checkout_id' => $checkoutRequestId, // Changed from checkout_request_id to match frontend
                         'payment_completed_at' => now(),
                     ]),
                 ]);
@@ -281,7 +309,10 @@ class MpesaService
                     'donation_id' => $donation->id,
                     'mpesa_receipt' => $mpesaData['mpesa_receipt_number'],
                     'amount' => $mpesaData['amount'],
+                    'checkout_request_id' => $checkoutRequestId,
                 ]);
+            } else {
+                Log::warning('Donation not found for reference: ' . $requestData['reference']);
             }
         } catch (\Exception $e) {
             Log::error('Failed to handle successful M-Pesa payment: ' . $e->getMessage());

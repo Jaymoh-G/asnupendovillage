@@ -327,9 +327,47 @@ class DonationPage extends Component
                     $this->showError = true;
                     $this->errorMessage = 'Payment failed: ' . ($status['ResultDesc'] ?? 'Unknown error');
                 }
+            } else {
+                // Status not available yet, check if donation was completed via callback
+                $donation = Donation::where('meta->mpesa_checkout_id', $this->mpesaCheckoutId)->first();
+                if ($donation && $donation->status === 'completed') {
+                    // Payment was completed via callback
+                    $this->mpesaStatus = 'completed';
+                    $this->mpesaSuccessMessage = 'M-Pesa payment completed successfully! You will receive a confirmation SMS shortly.';
+
+                    // Store donation details in session for thank you page
+                    session([
+                        'donation_amount' => $donation->amount,
+                        'payment_method' => $donation->payment_method,
+                        'transaction_reference' => $donation->transaction_reference,
+                        'donation_date' => $donation->created_at->format('M d, Y'),
+                    ]);
+
+                    // Redirect to thank you page
+                    return redirect()->route('thank-you');
+                }
             }
         } catch (\Exception $e) {
             Log::error('M-Pesa status check failed: ' . $e->getMessage());
+
+            // Even if status check fails, check if donation was completed via callback
+            $donation = Donation::where('meta->mpesa_checkout_id', $this->mpesaCheckoutId)->first();
+            if ($donation && $donation->status === 'completed') {
+                // Payment was completed via callback
+                $this->mpesaStatus = 'completed';
+                $this->mpesaSuccessMessage = 'M-Pesa payment completed successfully! You will receive a confirmation SMS shortly.';
+
+                // Store donation details in session for thank you page
+                session([
+                    'donation_amount' => $donation->amount,
+                    'payment_method' => $donation->payment_method,
+                    'transaction_reference' => $donation->transaction_reference,
+                    'donation_date' => $donation->created_at->format('M d, Y'),
+                ]);
+
+                // Redirect to thank you page
+                return redirect()->route('thank-you');
+            }
         }
     }
 
