@@ -222,8 +222,16 @@ class DonationPage extends Component
             'transaction_reference' => 'PAYPAL-' . Str::random(8),
         ]);
 
-        $this->showSuccess = true;
-        $this->resetForm();
+        // Store donation details in session for thank you page
+        session([
+            'donation_amount' => $donation->amount,
+            'payment_method' => $donation->payment_method,
+            'transaction_reference' => $donation->transaction_reference,
+            'donation_date' => $donation->created_at->format('M d, Y'),
+        ]);
+
+        // Redirect to thank you page
+        return redirect()->route('thank-you');
     }
 
     private function processBankPayment($donation)
@@ -235,8 +243,16 @@ class DonationPage extends Component
             'transaction_reference' => 'BANK-' . Str::random(8),
         ]);
 
-        $this->showSuccess = true;
-        $this->resetForm();
+        // Store donation details in session for thank you page
+        session([
+            'donation_amount' => $donation->amount,
+            'payment_method' => $donation->payment_method,
+            'transaction_reference' => $donation->transaction_reference,
+            'donation_date' => $donation->created_at->format('M d, Y'),
+        ]);
+
+        // Redirect to thank you page
+        return redirect()->route('thank-you');
     }
 
     private function resetForm()
@@ -278,13 +294,22 @@ class DonationPage extends Component
                     // Payment successful
                     $this->mpesaStatus = 'completed';
                     $this->mpesaSuccessMessage = 'M-Pesa payment completed successfully! You will receive a confirmation SMS shortly.';
-                    $this->showSuccess = true;
-                    $this->resetForm();
 
                     // Find and update the donation
                     $donation = Donation::where('meta->mpesa_checkout_id', $this->mpesaCheckoutId)->first();
                     if ($donation) {
                         $donation->update(['status' => 'completed']);
+
+                        // Store donation details in session for thank you page
+                        session([
+                            'donation_amount' => $donation->amount,
+                            'payment_method' => $donation->payment_method,
+                            'transaction_reference' => $donation->transaction_reference,
+                            'donation_date' => $donation->created_at->format('M d, Y'),
+                        ]);
+
+                        // Redirect to thank you page
+                        return redirect()->route('thank-you');
                     }
                 } elseif ($status['ResultCode'] === 1032) {
                     // User cancelled

@@ -44,6 +44,11 @@ Route::get('/team/{slug}', function ($slug) {
 Route::get('/donate-now', function () {
     return view('donation-page');
 })->name('donate-now');
+
+// thank you page
+Route::get('/thank-you', function () {
+    return view('thank-you');
+})->name('thank-you');
 // contact us
 Route::get('/contact-us', ContactUs::class)->name('contact-us');
 Route::post('/contact/submit', [App\Http\Controllers\ContactController::class, 'submit'])->name('contact.submit');
