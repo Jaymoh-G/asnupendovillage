@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\UserResource\Pages;
+namespace App\Filament\Resources\RoleResource\Pages;
 
-use App\Filament\Resources\UserResource;
+use App\Filament\Resources\RoleResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditUser extends EditRecord
+class EditRole extends EditRecord
 {
-    protected static string $resource = UserResource::class;
+    protected static string $resource = RoleResource::class;
 
     protected function getHeaderActions(): array
     {
@@ -16,7 +16,7 @@ class EditUser extends EditRecord
             Actions\DeleteAction::make()
                 ->visible(function () {
                     $record = $this->getRecord();
-                    return $record && $record->id !== auth()->id() && !$record->hasRole('Super Admin');
+                    return $record && $record->name !== 'Super Admin' && $record->users()->count() === 0;
                 }),
         ];
     }
@@ -26,3 +26,4 @@ class EditUser extends EditRecord
         return $this->getResource()::getUrl('index');
     }
 }
+

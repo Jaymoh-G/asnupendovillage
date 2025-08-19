@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Filament\Resources\UserResource\Pages;
+namespace App\Filament\Resources\PermissionResource\Pages;
 
-use App\Filament\Resources\UserResource;
+use App\Filament\Resources\PermissionResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
-class ListUsers extends ListRecords
+class ListPermissions extends ListRecords
 {
-    protected static string $resource = UserResource::class;
+    protected static string $resource = PermissionResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
             Actions\CreateAction::make()
-                ->label('Create New User')
+                ->label('Create New Permission')
                 ->icon('heroicon-o-plus')
                 ->visible(function () {
                     return auth()->check() && auth()->user()->hasRole('Super Admin');
@@ -22,3 +22,4 @@ class ListUsers extends ListRecords
         ];
     }
 }
+
