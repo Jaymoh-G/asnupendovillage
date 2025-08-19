@@ -52,6 +52,6 @@ class User extends Authenticatable
      */
     public function canAccessFilament(): bool
     {
-        return true;
+        return $this->hasRole(['Editor', 'Admin', 'Super Admin']);
     }
 }

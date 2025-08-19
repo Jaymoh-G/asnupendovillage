@@ -281,10 +281,7 @@ class DonationPage extends Component
      */
     public function checkMpesaStatus()
     {
-        Log::info('checkMpesaStatus called with checkout ID: ' . $this->mpesaCheckoutId);
-
         if (!$this->mpesaCheckoutId) {
-            Log::warning('No mpesaCheckoutId available for status check');
             return;
         }
 
@@ -304,7 +301,6 @@ class DonationPage extends Component
                         $donation->update(['status' => 'completed']);
 
                         // Store donation details in session for thank you page
-                        Log::info('Storing donation details in session and redirecting to thank you page');
                         session([
                             'donation_amount' => $donation->amount,
                             'payment_method' => $donation->payment_method,
@@ -313,7 +309,6 @@ class DonationPage extends Component
                         ]);
 
                         // Redirect to thank you page using Livewire's redirect method
-                        Log::info('Redirecting to thank you page: ' . route('thank-you'));
                         $this->redirect(route('thank-you'));
                     }
                 } elseif ($status['ResultCode'] === 1032) {
@@ -334,16 +329,13 @@ class DonationPage extends Component
                 }
             } else {
                 // Status not available yet, check if donation was completed via callback
-                Log::info('Checking if donation was completed via callback for checkout ID: ' . $this->mpesaCheckoutId);
                 $donation = Donation::whereRaw("CAST(JSON_UNQUOTE(JSON_EXTRACT(meta, '$.mpesa_checkout_id')) AS CHAR CHARACTER SET utf8 COLLATE utf8_unicode_ci) = ?", [$this->mpesaCheckoutId])->first();
                 if ($donation && $donation->status === 'completed') {
-                    Log::info('Found completed donation via callback: ' . $donation->id);
                     // Payment was completed via callback
                     $this->mpesaStatus = 'completed';
                     $this->mpesaSuccessMessage = 'M-Pesa payment completed successfully! You will receive a confirmation SMS shortly.';
 
                     // Store donation details in session for thank you page
-                    Log::info('Storing donation details in session and redirecting to thank you page (callback check)');
                     session([
                         'donation_amount' => $donation->amount,
                         'payment_method' => $donation->payment_method,
@@ -352,7 +344,6 @@ class DonationPage extends Component
                     ]);
 
                     // Redirect to thank you page using Livewire's redirect method
-                    Log::info('Redirecting to thank you page (callback check): ' . route('thank-you'));
                     $this->redirect(route('thank-you'));
                 }
             }
@@ -360,16 +351,13 @@ class DonationPage extends Component
             Log::error('M-Pesa status check failed: ' . $e->getMessage());
 
             // Even if status check fails, check if donation was completed via callback
-            Log::info('Exception fallback: Checking if donation was completed via callback for checkout ID: ' . $this->mpesaCheckoutId);
             $donation = Donation::whereRaw("CAST(JSON_UNQUOTE(JSON_EXTRACT(meta, '$.mpesa_checkout_id')) AS CHAR CHARACTER SET utf8 COLLATE utf8_unicode_ci) = ?", [$this->mpesaCheckoutId])->first();
             if ($donation && $donation->status === 'completed') {
-                Log::info('Exception fallback: Found completed donation via callback: ' . $donation->id);
                 // Payment was completed via callback
                 $this->mpesaStatus = 'completed';
                 $this->mpesaSuccessMessage = 'M-Pesa payment completed successfully! You will receive a confirmation SMS shortly.';
 
                 // Store donation details in session for thank you page
-                Log::info('Storing donation details in session and redirecting to thank you page (exception fallback)');
                 session([
                     'donation_amount' => $donation->amount,
                     'payment_method' => $donation->payment_method,
@@ -378,7 +366,6 @@ class DonationPage extends Component
                 ]);
 
                 // Redirect to thank you page using Livewire's redirect method
-                Log::info('Redirecting to thank you page (exception fallback): ' . route('thank-you'));
                 $this->redirect(route('thank-you'));
             }
         }
