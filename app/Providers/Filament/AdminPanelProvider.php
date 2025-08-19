@@ -2,26 +2,39 @@
 
 namespace App\Providers\Filament;
 
-use App\Models\User;
-use Filament\Http\Middleware\Authenticate;
-use Filament\Http\Middleware\AuthenticateSession;
-use Filament\Http\Middleware\DisableBladeIconComponents;
-use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
-use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
-use Illuminate\Cookie\Middleware\EncryptCookies;
-use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
-use Illuminate\Routing\Middleware\SubstituteBindings;
+use Filament\Http\Middleware\Authenticate;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Cookie\Middleware\EncryptCookies;
+use Filament\Http\Middleware\AuthenticateSession;
+use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Filament\Http\Middleware\DisableBladeIconComponents;
+use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
+        // Simple local debugging - only runs in local environment
+        if (app()->environment('local')) {
+            Log::info('AdminPanelProvider initialized - checking auth status');
+
+            if (Auth::check()) {
+                $user = Auth::user();
+                Log::info('User authenticated: ' . $user->email . ' (ID: ' . $user->id . ')');
+            } else {
+                Log::info('No user authenticated during panel init');
+            }
+        }
+
         return $panel
             ->default() // makes this the default panel
             ->id('admin')
@@ -68,12 +81,9 @@ class AdminPanelProvider extends PanelProvider
                 'Media Centre',
                 'Settings & Users',
             ])
-            ->discoverResources(app_path('Filament/Admin/Resources'), 'App\\Filament\\Admin\\Resources')
-            ->discoverPages(app_path('Filament/Admin/Pages'), 'App\\Filament\\Admin\\Pages')
             ->pages([
                 Pages\Dashboard::class,
             ])
-            ->discoverWidgets(app_path('Filament/Admin/Widgets'), 'App\\Filament\\Admin\\Widgets')
             ->widgets([
                 \App\Filament\Widgets\DashboardStats::class,
                 \App\Filament\Widgets\DonationStats::class,
@@ -92,13 +102,10 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+                \App\Http\Middleware\EnsureUserIsAdmin::class,
             ]);
     }
 
-    public function canAccessPanel(User $user): bool
-    {
-        // ✅ Allow only Admins, Super Admins, or users with explicit permission
-        return $user->hasAnyRole(['Admin', 'Super Admin'])
-            || $user->can('access admin panel');
-    }
+    // In Filament 3.x, panel access control is handled via middleware or policies
+    // You can create a custom middleware to check user roles if needed
 }

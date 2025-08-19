@@ -10,6 +10,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class RoleResource extends Resource
 {
@@ -86,6 +88,13 @@ class RoleResource extends Resource
 
     public static function table(Table $table): Table
     {
+        // Debug: Log user info when accessing roles table
+        if (app()->environment('local') && Auth::check()) {
+            $user = Auth::user();
+            Log::info('RoleResource accessed by user: ' . $user->email . ' (ID: ' . $user->id . ')');
+            Log::info('User roles: ' . $user->getRoleNames()->implode(', '));
+        }
+
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')

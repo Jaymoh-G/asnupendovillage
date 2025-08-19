@@ -19,6 +19,8 @@ use App\Livewire\Frontend\YouTubeVideos;
 use App\Models\Program;
 
 Route::get('/', Home::class)->name('home');
+
+
 // about us
 
 Route::get('/about-us', function () {
