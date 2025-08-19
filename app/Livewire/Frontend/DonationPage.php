@@ -35,14 +35,10 @@ class DonationPage extends Component
     protected $rules = [
         'donor_name' => 'required|min:2|max:255',
         'donor_email' => 'required|email',
-        'donor_phone' => 'required|min:10|max:15|regex:/^(\+254|254|0)?[17]\d{8}$/',
+        'donor_phone' => 'required|min:10|max:15',
         'amount' => 'required|numeric|min:1',
         'payment_method' => 'required|in:mpesa,paypal,bank',
         'message' => 'nullable|max:500',
-    ];
-
-    protected $messages = [
-        'donor_phone.regex' => 'Please enter a valid Kenyan phone number (e.g., 0712345678, +254712345678, or 254712345678).',
     ];
 
     public function mount()
@@ -65,8 +61,43 @@ class DonationPage extends Component
     {
         // Validate phone number format for M-Pesa
         if ($this->payment_method === 'mpesa') {
-            $this->validateOnly('donor_phone');
+            $this->validatePhoneNumber();
         }
+    }
+
+    /**
+     * Custom phone number validation for Kenyan numbers
+     */
+    private function validatePhoneNumber()
+    {
+        $phone = $this->donor_phone;
+
+        // Remove any non-digit characters
+        $cleanPhone = preg_replace('/[^0-9]/', '', $phone);
+
+        // Check if it's a valid Kenyan phone number
+        if (strlen($cleanPhone) < 9 || strlen($cleanPhone) > 12) {
+            $this->addError('donor_phone', 'Phone number must be between 9 and 12 digits.');
+            return false;
+        }
+
+        // Check if it starts with valid Kenyan prefixes
+        $validPrefixes = ['254', '07', '01', '11', '13', '15', '16', '17', '18'];
+        $isValid = false;
+
+        foreach ($validPrefixes as $prefix) {
+            if (strpos($cleanPhone, $prefix) === 0) {
+                $isValid = true;
+                break;
+            }
+        }
+
+        if (!$isValid) {
+            $this->addError('donor_phone', 'Please enter a valid Kenyan phone number (e.g., 0712345678, +254712345678, or 254712345678).');
+            return false;
+        }
+
+        return true;
     }
 
 
@@ -81,7 +112,13 @@ class DonationPage extends Component
             'amount' => $this->amount
         ]);
 
+        // Validate basic rules first
         $this->validate();
+
+        // Additional validation for M-Pesa phone numbers
+        if ($this->payment_method === 'mpesa' && !$this->validatePhoneNumber()) {
+            return;
+        }
 
         try {
             // Create donation record
