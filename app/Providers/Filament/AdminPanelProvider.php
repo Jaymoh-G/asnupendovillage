@@ -9,8 +9,6 @@ use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
-use Filament\Support\Colors\Color;
-use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -66,10 +64,10 @@ class AdminPanelProvider extends PanelProvider
             ]);
     }
 
-public function canAccessPanel(User $user): bool
-{
-    \Log::info('Filament access check for: ' . $user->email);
-
-    return true; // allow everyone for now
-}
+    public function canAccessPanel(User $user): bool
+    {
+        // ✅ Allow access if user has the "Admin" or "Super Admin" role,
+        // or if they have a specific permission
+        return $user->hasAnyRole(['Admin', 'Super Admin']) || $user->can('access admin panel');
+    }
 }
