@@ -175,3 +175,12 @@ Route::get('/downloads/program/{program:slug}', function (Program $program) {
 // M-Pesa routes
 Route::post('/mpesa/callback', [App\Http\Controllers\MpesaController::class, 'callback'])->name('mpesa.callback');
 Route::post('/mpesa/check-status', [App\Http\Controllers\MpesaController::class, 'checkStatus'])->name('mpesa.check-status');
+// routes/web.php
+Route::get('/whoami', function () {
+    return [
+        'user' => auth()->user(),
+        'roles' => auth()->user()?->roles->pluck('name'),
+        'session' => session()->all(),
+    ];
+});
+

@@ -28,7 +28,7 @@ class EnsureUserIsAdmin
             return redirect()->route('filament.admin.auth.login');
         }
 
-        if (! $user->hasAnyRole(['Admin', 'Super Admin'])) {
+        if (! collect($user->getRoleNames())->map(fn($r) => strtolower($r))->intersect(['admin', 'super admin'])->isNotEmpty()) {
             abort(403, 'Unauthorized');
         }
 
