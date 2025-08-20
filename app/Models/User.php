@@ -7,11 +7,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasRoles;
+
 
     /**
      * The attributes that are mass assignable.
@@ -46,12 +48,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
-    /**
-     * Check if the user can access Filament admin panel.
-     */
-    public function canAccessFilament(): bool
+  public function canAccessPanel(Panel $panel): bool
     {
-        return $this->hasRole(['Editor', 'Admin', 'Super Admin']);
+        // Using Spatie role for admin access
+        return $this->hasRole('admin');
     }
 }

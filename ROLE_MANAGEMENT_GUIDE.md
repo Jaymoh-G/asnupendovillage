@@ -272,3 +272,4 @@ php artisan optimize:clear
 
 **Your comprehensive role management system is now fully integrated with Filament!** 🚀
 
+
