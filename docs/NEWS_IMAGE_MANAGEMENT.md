@@ -10,7 +10,8 @@ The News Image Management System automatically handles images uploaded through b
 
 -   Images uploaded through the rich content editor are automatically detected
 -   They are processed and added to the image management system
--   URLs are generated using the `APP_URL` configuration from your `.env` file
+-   URLs are automatically generated using the `APP_URL` configuration from your `.env` file
+-   Filament 3 automatically handles URL generation through the `asset()` helper function
 
 ### 2. Dedicated Image Fields
 
@@ -31,6 +32,8 @@ The News Image Management System automatically handles images uploaded through b
 
 **CRITICAL**: Ensure your `.env` file has the correct `APP_URL` setting:
 
+> **Note**: In Filament 3, the RichEditor automatically handles URL generation using your `APP_URL` setting. No additional configuration is needed beyond setting the correct `APP_URL` in your `.env` file.
+
 ```env
 # For local development
 APP_URL=http://127.0.0.1:8000
@@ -47,6 +50,7 @@ APP_URL=https://staging.yourdomain.com
 -   Images uploaded through RichEditor use this URL for storage
 -   When you deploy to production, all image URLs will automatically use the new domain
 -   No need to manually update image URLs in content
+-   Filament 3 automatically uses the `asset()` helper function which respects your `APP_URL` setting
 
 ## Commands
 
@@ -80,6 +84,7 @@ php artisan news:fix-localhost-urls --news-id=1
 3. **Use dedicated image fields** for featured images and galleries
 4. **Run the fix commands** when migrating between environments
 5. **Clear caches** after changing APP_URL: `php artisan config:clear`
+6. **Restart the application** after changing APP_URL to ensure all cached URLs are regenerated
 
 ## Troubleshooting
 

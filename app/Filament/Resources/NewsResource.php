@@ -57,9 +57,6 @@ class NewsResource extends Resource
                             ->fileAttachmentsDisk('public')
                             ->fileAttachmentsDirectory('news/content')
                             ->fileAttachmentsVisibility('public')
-                            ->fileAttachmentsUrlPrefix(function () {
-                                return config('app.url') . '/storage/';
-                            })
                             ->enableToolbarButtons([
                                 'attachFiles',
                                 'blockquote',
