@@ -135,6 +135,9 @@ class EditNews extends EditRecord
         // Remove protocol and domain
         $path = preg_replace('/^https?:\/\/[^\/]+\//', '', $path);
 
+        // Remove /public/storage/ prefix if present
+        $path = preg_replace('/^public\/storage\//', '', $path);
+
         // Remove /storage/ prefix if present
         $path = preg_replace('/^storage\//', '', $path);
 

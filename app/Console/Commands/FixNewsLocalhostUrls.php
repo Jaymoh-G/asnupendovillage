@@ -93,14 +93,14 @@ class FixNewsLocalhostUrls extends Command
         $appUrl = config('app.url');
         $appUrl = rtrim($appUrl, '/'); // Remove trailing slash
 
-        // Replace various localhost patterns
+        // Replace various localhost patterns with /public/storage/ for hosting compatibility
         $replacements = [
-            'http://localhost/storage/' => $appUrl . '/storage/',
-            'https://localhost/storage/' => $appUrl . '/storage/',
-            'http://127.0.0.1:8000/storage/' => $appUrl . '/storage/',
-            'https://127.0.0.1:8000/storage/' => $appUrl . '/storage/',
-            'http://localhost:8000/storage/' => $appUrl . '/storage/',
-            'https://localhost:8000/storage/' => $appUrl . '/storage/',
+            'http://localhost/storage/' => $appUrl . '/public/storage/',
+            'https://localhost/storage/' => $appUrl . '/public/storage/',
+            'http://127.0.0.1:8000/storage/' => $appUrl . '/public/storage/',
+            'https://127.0.0.1:8000/storage/' => $appUrl . '/public/storage/',
+            'http://localhost:8000/storage/' => $appUrl . '/public/storage/',
+            'https://localhost:8000/storage/' => $appUrl . '/public/storage/',
         ];
 
         foreach ($replacements as $oldUrl => $newUrl) {

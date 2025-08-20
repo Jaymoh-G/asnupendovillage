@@ -57,6 +57,9 @@ class NewsResource extends Resource
                             ->fileAttachmentsDisk('public')
                             ->fileAttachmentsDirectory('news/content')
                             ->fileAttachmentsVisibility('public')
+                            ->getUploadedAttachmentUrlUsing(function (string $file): string {
+                                return config('app.url') . '/public/storage/' . $file;
+                            })
                             ->enableToolbarButtons([
                                 'attachFiles',
                                 'blockquote',
@@ -72,7 +75,7 @@ class NewsResource extends Resource
                                 'strike',
                                 'undo',
                             ])
-                            ->helperText('Images uploaded here will be automatically managed and displayed in the Current Images section below. The URLs will use your APP_URL configuration for proper domain handling.'),
+                            ->helperText('Images uploaded here will be automatically managed and displayed in the Current Images section below. The URLs will now include /public to work with your hosting configuration.'),
                         Textarea::make('excerpt')
                             ->maxLength(500)
                             ->columnSpanFull(),
@@ -463,8 +466,11 @@ class NewsResource extends Resource
             $imagePath,
             asset('storage/' . $imagePath),
             config('app.url') . '/storage/' . $imagePath,
+            config('app.url') . '/public/storage/' . $imagePath,
             'http://localhost/storage/' . $imagePath,
             'https://localhost/storage/' . $imagePath,
+            'http://localhost/public/storage/' . $imagePath,
+            'https://localhost/public/storage/' . $imagePath,
         ];
 
         foreach ($searchPatterns as $pattern) {
