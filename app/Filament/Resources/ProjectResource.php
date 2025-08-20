@@ -107,7 +107,6 @@ class ProjectResource extends Resource
                             ->columns(4)
                             ->columnSpanFull()
                             ->helperText('Upload new images with captions. You can mark one image as featured.')
-                            ->visible(fn($record) => $record && $record->exists)
                             ->addActionLabel('Add Another Image')
                             ->reorderable(false)
                             ->collapsible()

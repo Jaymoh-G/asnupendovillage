@@ -159,7 +159,7 @@ class EventsResource extends Resource
                             ->label('Current Images')
                             ->content(function ($record) {
                                 if (!$record || !$record->exists) {
-                                    return 'No images uploaded yet.';
+                                    return 'Images will appear here after you save the event. You can upload images using the section below or through the rich content editor above.';
                                 }
 
                                 $images = $record->images()->ordered()->get();
@@ -331,7 +331,6 @@ class EventsResource extends Resource
                             ->columns(4)
                             ->columnSpanFull()
                             ->helperText('Upload new images with captions. You can mark one image as featured.')
-                            ->visible(fn($record) => $record && $record->exists)
                             ->addActionLabel('Add Another Image')
                             ->reorderable(false)
                             ->collapsible()
