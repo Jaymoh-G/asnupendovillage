@@ -47,7 +47,7 @@ class StaticPageResource extends Resource
                                 'transparency' => 'Transparency',
                             ])
                             ->required()
-                            ->unique(ignoreRecord: true)
+                            ->unique(true)
                             ->searchable()
                             ->helperText('Select the page you want to manage'),
                         Forms\Components\TextInput::make('title')
@@ -72,6 +72,7 @@ class StaticPageResource extends Resource
                         Forms\Components\RichEditor::make('content')
                             ->label('Page Content')
                             ->toolbarButtons([
+                                'attachFiles',
                                 'bold',
                                 'italic',
                                 'underline',
@@ -90,8 +91,11 @@ class StaticPageResource extends Resource
                             ->fileAttachmentsDisk('public')
                             ->fileAttachmentsDirectory('static-pages')
                             ->fileAttachmentsVisibility('public')
+                            ->getUploadedAttachmentUrlUsing(function ($file) {
+                                return config('app.url') . '/public/storage/' . $file;
+                            })
                             ->columnSpanFull()
-                            ->helperText('Main content of the page. You can use rich text formatting and upload images.'),
+                            ->helperText('Main content of the page. You can use rich text formatting and upload images. Images uploaded here will use /public/storage/ paths for hosting compatibility.'),
                     ])
                     ->collapsible()
                     ->collapsed(false),

@@ -42,7 +42,14 @@ class CareerResource extends Resource
 
                 Forms\Components\RichEditor::make('content')
                     ->label('Detailed Content')
+                    ->fileAttachmentsDisk('public')
+                    ->fileAttachmentsDirectory('careers/content')
+                    ->fileAttachmentsVisibility('public')
+                    ->getUploadedAttachmentUrlUsing(function (string $file): string {
+                        return config('app.url') . '/public/storage/' . $file;
+                    })
                     ->toolbarButtons([
+                        'attachFiles',
                         'bold',
                         'italic',
                         'underline',
@@ -57,7 +64,7 @@ class CareerResource extends Resource
                         'codeBlock',
                     ])
                     ->columnSpanFull()
-                    ->helperText('Detailed job description with formatting options'),
+                    ->helperText('Detailed job description with formatting options. Images uploaded here will use /public/storage/ paths for hosting compatibility.'),
 
                 Forms\Components\FileUpload::make('pdf_file')
                     ->label('Job Description PDF')

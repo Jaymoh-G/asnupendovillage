@@ -42,7 +42,29 @@ class ProgramResource extends Resource
                     ->unique(),
                 Forms\Components\RichEditor::make('content')
                     ->label('Content')
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
+                    ->fileAttachmentsDisk('public')
+                    ->fileAttachmentsDirectory('programs/content')
+                    ->fileAttachmentsVisibility('public')
+                    ->getUploadedAttachmentUrlUsing(function (string $file): string {
+                        return config('app.url') . '/public/storage/' . $file;
+                    })
+                    ->enableToolbarButtons([
+                        'attachFiles',
+                        'blockquote',
+                        'bold',
+                        'bulletList',
+                        'codeBlock',
+                        'h2',
+                        'h3',
+                        'italic',
+                        'link',
+                        'orderedList',
+                        'redo',
+                        'strike',
+                        'undo',
+                    ])
+                    ->helperText('Images uploaded here will be automatically managed and displayed in the Current Images section below. The URLs will now include /public to work with your hosting configuration.'),
                 Forms\Components\Textarea::make('excerpt')
                     ->label('Excerpt')
                     ->maxLength(500)

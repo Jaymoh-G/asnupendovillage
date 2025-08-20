@@ -53,7 +53,28 @@ class FacilityResource extends Resource
                             ->label('Facility Content')
                             ->required()
                             ->columnSpanFull()
-                            ->helperText('Rich content with formatting, images, and attachments'),
+                            ->fileAttachmentsDisk('public')
+                            ->fileAttachmentsDirectory('facilities/content')
+                            ->fileAttachmentsVisibility('public')
+                            ->getUploadedAttachmentUrlUsing(function (string $file): string {
+                                return config('app.url') . '/public/storage/' . $file;
+                            })
+                            ->enableToolbarButtons([
+                                'attachFiles',
+                                'blockquote',
+                                'bold',
+                                'bulletList',
+                                'codeBlock',
+                                'h2',
+                                'h3',
+                                'italic',
+                                'link',
+                                'orderedList',
+                                'redo',
+                                'strike',
+                                'undo',
+                            ])
+                            ->helperText('Rich content with formatting, images, and attachments. Images uploaded here will use /public/storage/ paths for hosting compatibility.'),
                     ])
                     ->columns(1),
 

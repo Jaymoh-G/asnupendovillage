@@ -62,7 +62,29 @@ class EventsResource extends Resource
                             ]),
                         RichEditor::make('description')
                             ->required()
-                            ->columnSpanFull(),
+                            ->columnSpanFull()
+                            ->fileAttachmentsDisk('public')
+                            ->fileAttachmentsDirectory('events/content')
+                            ->fileAttachmentsVisibility('public')
+                            ->getUploadedAttachmentUrlUsing(function (string $file): string {
+                                return config('app.url') . '/public/storage/' . $file;
+                            })
+                            ->enableToolbarButtons([
+                                'attachFiles',
+                                'blockquote',
+                                'bold',
+                                'bulletList',
+                                'codeBlock',
+                                'h2',
+                                'h3',
+                                'italic',
+                                'link',
+                                'orderedList',
+                                'redo',
+                                'strike',
+                                'undo',
+                            ])
+                            ->helperText('Rich content with formatting, images, and attachments. Images uploaded here will use /public/storage/ paths for hosting compatibility.'),
                         Textarea::make('excerpt')
                             ->maxLength(500)
                             ->columnSpanFull(),
