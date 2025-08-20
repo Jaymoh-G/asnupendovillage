@@ -44,7 +44,7 @@ class YouTubeResource extends Resource
                             ->label('Slug')
                             ->required()
                             ->maxLength(255)
-                            ->unique('youtube_videos', 'slug')
+                            ->unique('youtube_videos', 'slug', fn($record) => $record)
                             ->helperText('Auto-generated from title, but can be customized'),
 
                         Forms\Components\TextInput::make('video_id')

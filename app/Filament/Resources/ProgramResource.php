@@ -39,7 +39,7 @@ class ProgramResource extends Resource
                     ->label('Slug')
                     ->required()
                     ->maxLength(255)
-                    ->unique(),
+                    ->unique(true),
                 Forms\Components\RichEditor::make('content')
                     ->label('Content')
                     ->columnSpanFull()
