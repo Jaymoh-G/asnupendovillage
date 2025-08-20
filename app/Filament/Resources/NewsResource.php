@@ -53,7 +53,29 @@ class NewsResource extends Resource
                             ]),
                         RichEditor::make('content')
                             ->required()
-                            ->columnSpanFull(),
+                            ->columnSpanFull()
+                            ->fileAttachmentsDisk('public')
+                            ->fileAttachmentsDirectory('news/content')
+                            ->fileAttachmentsVisibility('public')
+                            ->fileAttachmentsUrlPrefix(function () {
+                                return config('app.url') . '/storage/';
+                            })
+                            ->enableToolbarButtons([
+                                'attachFiles',
+                                'blockquote',
+                                'bold',
+                                'bulletList',
+                                'codeBlock',
+                                'h2',
+                                'h3',
+                                'italic',
+                                'link',
+                                'orderedList',
+                                'redo',
+                                'strike',
+                                'undo',
+                            ])
+                            ->helperText('Images uploaded here will be automatically managed and displayed in the Current Images section below. The URLs will use your APP_URL configuration for proper domain handling.'),
                         Textarea::make('excerpt')
                             ->maxLength(500)
                             ->columnSpanFull(),
@@ -93,7 +115,7 @@ class NewsResource extends Resource
                     ->schema([
                         // Display existing images with delete functionality
                         Forms\Components\Placeholder::make('existing_images')
-                            ->label('Current Images')
+                            ->label('Current Images (Including Rich Content Images)')
                             ->content(function ($record) {
                                 if (!$record || !$record->exists) {
                                     return 'No images uploaded yet.';
@@ -108,8 +130,10 @@ class NewsResource extends Resource
                                 foreach ($images as $image) {
                                     $isFeatured = $image->featured ? ' (Featured)' : '';
                                     $featuredClass = $image->featured ? 'featured-image' : '';
+                                    $isFromRichContent = static::isImageFromRichContent($record, $image) ? ' (Rich Content)' : '';
 
-                                    $html .= '<div class="' . $featuredClass . '" style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px; text-align: center; position: relative;">';
+                                    $richContentClass = static::isImageFromRichContent($record, $image) ? 'rich-content-image' : '';
+                                    $html .= '<div class="' . $featuredClass . ' ' . $richContentClass . '" style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px; text-align: center; position: relative; ' . (static::isImageFromRichContent($record, $image) ? 'border-left: 4px solid #10b981;' : '') . '">';
 
                                     // Edit button (pencil icon) - opens modal to edit caption
                                     $html .= '<button type="button" onclick="editImageCaption(' . $image->id . ', \'' . addslashes($image->caption ?? '') . '\', \'' . $image->original_name . '\')" style="position: absolute; top: 5px; left: 5px; background: #3b82f6; color: white; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; font-size: 12px; line-height: 1; display: flex; align-items: center; justify-content: center; z-index: 10;">✎</button>';
@@ -118,7 +142,7 @@ class NewsResource extends Resource
                                     $html .= '<button type="button" onclick="deleteImage(' . $image->id . ', \'' . $image->original_name . '\', ' . $record->id . ')" style="position: absolute; top: 5px; right: 5px; background: #ef4444; color: white; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; font-size: 14px; line-height: 1; display: flex; align-items: center; justify-content: center;">×</button>';
 
                                     $html .= '<img src="' . asset('storage/' . $image->path) . '" style="width: 100%; height: 120px; object-fit: cover; border-radius: 4px; margin-bottom: 8px;" alt="' . $image->alt_text . '">';
-                                    $html .= '<p style="margin: 0; font-size: 12px; color: #6b7280;">' . $image->original_name . $isFeatured . '</p>';
+                                    $html .= '<p style="margin: 0; font-size: 12px; color: #6b7280;">' . $image->original_name . $isFeatured . $isFromRichContent . '</p>';
                                     if ($image->caption) {
                                         $html .= '<p style="margin: 4px 0 0 0; font-size: 11px; color: #9ca3af; font-style: italic;">' . $image->caption . '</p>';
                                     }
@@ -126,8 +150,16 @@ class NewsResource extends Resource
                                 }
                                 $html .= '</div>';
 
-                                // Add JavaScript for delete and edit functionality using AJAX
-                                $html .= '<script>
+                                // Add CSS and JavaScript for delete and edit functionality using AJAX
+                                $html .= '<style>
+                                    .rich-content-image {
+                                        background-color: #f0fdf4;
+                                    }
+                                    .rich-content-image:hover {
+                                        background-color: #dcfce7;
+                                    }
+                                </style>
+                                <script>
                                     function deleteImage(imageId, imageName, newsId) {
                                         if (confirm("Are you sure you want to delete the image \"" + imageName + "\"? This action cannot be undone.")) {
                                             // Show loading state
@@ -241,6 +273,7 @@ class NewsResource extends Resource
                         // Upload new images with captions
                         Forms\Components\Repeater::make('new_images')
                             ->label('Upload New Images with Captions')
+                            ->helperText('Note: Images uploaded through the rich content editor above will also appear in the Current Images section.')
                             ->schema([
                                 FileUpload::make('file')
                                     ->label('Image')
@@ -413,5 +446,36 @@ class NewsResource extends Resource
         }
 
         return $data;
+    }
+
+    /**
+     * Check if an image was uploaded through RichEditor
+     */
+    public static function isImageFromRichContent($record, $image): bool
+    {
+        if (!$record || !$record->content) {
+            return false;
+        }
+
+        // Check if the image path appears in the rich content
+        $imagePath = $image->path;
+        $content = $record->content;
+
+        // Look for the image in the content with different URL formats
+        $searchPatterns = [
+            $imagePath,
+            asset('storage/' . $imagePath),
+            config('app.url') . '/storage/' . $imagePath,
+            'http://localhost/storage/' . $imagePath,
+            'https://localhost/storage/' . $imagePath,
+        ];
+
+        foreach ($searchPatterns as $pattern) {
+            if (str_contains($content, $pattern)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
