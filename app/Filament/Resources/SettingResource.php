@@ -276,6 +276,7 @@ class SettingResource extends Resource
             'index' => Pages\ListSettings::route('/'),
             'create' => Pages\CreateSetting::route('/create'),
             'edit' => Pages\EditSetting::route('/{record}/edit'),
+            'manage' => Pages\ManageSettings::route('/manage'),
         ];
     }
 
