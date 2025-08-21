@@ -10,6 +10,13 @@ use App\Traits\HasImages;
 
 class Album extends Model
 {
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'albums';
     use HasFactory, HasImages;
 
     protected $fillable = [

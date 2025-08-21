@@ -7,6 +7,13 @@ use Illuminate\Support\Str;
 
 class Career extends Model
 {
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'careers';
     protected $fillable = [
         'title',
         'description',

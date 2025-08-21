@@ -9,6 +9,13 @@ use Illuminate\Support\Str;
 
 class Testimonial extends Model
 {
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'testimonials';
     use HasImages;
 
     protected $fillable = [

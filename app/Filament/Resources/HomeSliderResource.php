@@ -11,6 +11,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Log;
 
 class HomeSliderResource extends Resource
 {
@@ -188,6 +189,12 @@ class HomeSliderResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::count();
+        try {
+            return (string) HomeSlider::count();
+        } catch (\Exception $e) {
+            // Log the error and return null to prevent the application from crashing
+            Log::error('Error getting HomeSlider count for navigation badge: ' . $e->getMessage());
+            return null;
+        }
     }
 }

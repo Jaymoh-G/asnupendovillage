@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Log;
 
 class ProgramResource extends Resource
 {
@@ -39,7 +40,7 @@ class ProgramResource extends Resource
                     ->label('Slug')
                     ->required()
                     ->maxLength(255)
-                    ->unique(true),
+                    ->unique('programs', 'slug'),
                 Forms\Components\RichEditor::make('content')
                     ->label('Content')
                     ->columnSpanFull()
@@ -338,6 +339,12 @@ class ProgramResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::count();
+        try {
+            return (string) Program::count();
+        } catch (\Exception $e) {
+            // Log the error and return null to prevent the application from crashing
+            Log::error('Error getting Program count for navigation badge: ' . $e->getMessage());
+            return null;
+        }
     }
 }

@@ -9,6 +9,13 @@ class StaticPage extends Model
 {
     use HasFactory;
 
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'static_pages';
+
     protected $fillable = [
         'page_name',
         'title',

@@ -10,6 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Log;
 
 class StaticPageResource extends Resource
 {
@@ -47,7 +48,7 @@ class StaticPageResource extends Resource
                                 'transparency' => 'Transparency',
                             ])
                             ->required()
-                            ->unique(true)
+                            ->unique('static_pages', 'page_name')
                             ->searchable()
                             ->helperText('Select the page you want to manage'),
                         Forms\Components\TextInput::make('title')
@@ -370,6 +371,12 @@ class StaticPageResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::count();
+        try {
+            return (string) StaticPage::count();
+        } catch (\Exception $e) {
+            // Log the error and return null to prevent the application from crashing
+            Log::error('Error getting StaticPage count for navigation badge: ' . $e->getMessage());
+            return null;
+        }
     }
 }

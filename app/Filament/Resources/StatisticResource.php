@@ -9,6 +9,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Log;
 
 class StatisticResource extends Resource
 {
@@ -138,6 +139,12 @@ class StatisticResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::count();
+        try {
+            return (string) Statistic::count();
+        } catch (\Exception $e) {
+            // Log the error and return null to prevent the application from crashing
+            Log::error('Error getting Statistic count for navigation badge: ' . $e->getMessage());
+            return null;
+        }
     }
 }

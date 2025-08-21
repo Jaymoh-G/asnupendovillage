@@ -32,7 +32,7 @@ class PermissionResource extends Resource
                             ->label('Permission Name')
                             ->required()
                             ->maxLength(255)
-                            ->unique(ignoreRecord: true)
+                            ->unique('permissions', 'name')
                             ->placeholder('e.g., view_content, create_users'),
 
                         Forms\Components\Textarea::make('description')
@@ -90,13 +90,13 @@ class PermissionResource extends Resource
                     ->label('Created')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(true),
 
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Updated')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(true),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('roles')
@@ -132,7 +132,7 @@ class PermissionResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
                         ->visible(function () {
-                            return auth()->check() && auth()->user()->hasRole('Super Admin');
+                            return \Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->hasRole('Super Admin');
                         }),
                 ]),
             ])
@@ -160,5 +160,3 @@ class PermissionResource extends Resource
         return parent::getEloquentQuery()->withCount('roles');
     }
 }
-
-

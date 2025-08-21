@@ -9,6 +9,13 @@ use App\Traits\HasImages;
 
 class News extends Model
 {
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'news';
     use HasImages;
 
     protected $fillable = [

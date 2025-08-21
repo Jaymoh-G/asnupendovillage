@@ -8,6 +8,13 @@ use Illuminate\Support\Str;
 
 class Team extends Model
 {
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'teams';
     use HasImages;
 
     protected $fillable = [

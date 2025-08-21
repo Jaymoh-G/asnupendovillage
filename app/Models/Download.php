@@ -7,6 +7,13 @@ use Illuminate\Support\Facades\Storage;
 
 class Download extends Model
 {
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'downloads';
     protected $fillable = [
         'title',
         'description',

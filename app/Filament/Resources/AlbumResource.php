@@ -11,6 +11,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Log;
 
 class AlbumResource extends Resource
 {
@@ -32,7 +33,7 @@ class AlbumResource extends Resource
                             ->label('Album Name')
                             ->required()
                             ->maxLength(255)
-                            ->live(onBlur: true)
+                            ->live()
                             ->afterStateUpdated(function (string $operation, $state, Forms\Set $set) {
                                 if ($operation === 'create') {
                                     $set('slug', Str::slug($state));
@@ -43,7 +44,7 @@ class AlbumResource extends Resource
                             ->label('Slug')
                             ->required()
                             ->maxLength(255)
-                            ->unique(ignoreRecord: true),
+                            ->unique('albums', 'slug'),
 
 
 
@@ -221,6 +222,12 @@ class AlbumResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::count();
+        try {
+            return (string) Album::count();
+        } catch (\Exception $e) {
+            // Log the error and return null to prevent the application from crashing
+            Log::error('Error getting Album count for navigation badge: ' . $e->getMessage());
+            return null;
+        }
     }
 }

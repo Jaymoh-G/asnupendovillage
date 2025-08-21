@@ -34,6 +34,7 @@ use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use App\Models\Image;
+use Illuminate\Support\Facades\Log;
 
 class EventsResource extends Resource
 {
@@ -439,6 +440,12 @@ class EventsResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::count();
+        try {
+            return (string) Event::count();
+        } catch (\Exception $e) {
+            // Log the error and return null to prevent the application from crashing
+            Log::error('Error getting Event count for navigation badge: ' . $e->getMessage());
+            return null;
+        }
     }
 }

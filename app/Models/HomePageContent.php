@@ -7,6 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class HomePageContent extends Model
 {
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'home_page_contents';
     use HasFactory;
 
     protected $fillable = [

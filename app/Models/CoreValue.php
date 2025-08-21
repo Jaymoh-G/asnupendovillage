@@ -8,6 +8,13 @@ use Illuminate\Support\Str;
 
 class CoreValue extends Model
 {
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'core_values';
     use HasFactory;
 
     protected $fillable = [

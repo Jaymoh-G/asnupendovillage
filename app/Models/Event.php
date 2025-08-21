@@ -10,6 +10,13 @@ use App\Traits\HasImages;
 
 class Event extends Model
 {
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'events';
     use HasFactory, HasImages;
 
     protected $fillable = [

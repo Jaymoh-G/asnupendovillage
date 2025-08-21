@@ -9,6 +9,13 @@ use Illuminate\Support\Facades\Storage;
 
 class HomeSlider extends Model
 {
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'home_sliders';
     use HasFactory;
 
     protected $fillable = [

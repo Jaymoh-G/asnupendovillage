@@ -8,6 +8,13 @@ use Illuminate\Support\Facades\Storage;
 
 class PageBanner extends Model
 {
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'page_banners';
     use HasFactory;
 
     protected $fillable = [

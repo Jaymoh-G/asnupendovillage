@@ -28,6 +28,7 @@ use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
+use Illuminate\Support\Facades\Log;
 
 class NewsResource extends Resource
 {
@@ -408,7 +409,13 @@ class NewsResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::count();
+        try {
+            return (string) News::count();
+        } catch (\Exception $e) {
+            // Log the error and return null to prevent the application from crashing
+            Log::error('Error getting News count for navigation badge: ' . $e->getMessage());
+            return null;
+        }
     }
 
     /**

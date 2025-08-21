@@ -11,6 +11,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\KeyValue;
+use Illuminate\Support\Facades\Log;
 
 class HomePageContentResource extends Resource
 {
@@ -269,6 +270,12 @@ class HomePageContentResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::count();
+        try {
+            return (string) HomePageContent::count();
+        } catch (\Exception $e) {
+            // Log the error and return null to prevent the application from crashing
+            Log::error('Error getting HomePageContent count for navigation badge: ' . $e->getMessage());
+            return null;
+        }
     }
 }

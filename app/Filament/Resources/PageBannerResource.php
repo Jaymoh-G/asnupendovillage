@@ -9,6 +9,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Log;
 
 class PageBannerResource extends Resource
 {
@@ -46,7 +47,7 @@ class PageBannerResource extends Resource
                                 'media-centre' => 'Media Centre',
                             ])
                             ->required()
-                            ->unique(ignoreRecord: true)
+                            ->unique('page_banners', 'page_name')
                             ->searchable(),
                         Forms\Components\TextInput::make('title')
                             ->label('Page Title')
@@ -156,6 +157,12 @@ class PageBannerResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::count();
+        try {
+            return (string) PageBanner::count();
+        } catch (\Exception $e) {
+            // Log the error and return null to prevent the application from crashing
+            Log::error('Error getting PageBanner count for navigation badge: ' . $e->getMessage());
+            return null;
+        }
     }
 }

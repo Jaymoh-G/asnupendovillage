@@ -8,6 +8,13 @@ use Illuminate\Support\Str;
 
 class Gallery extends Model
 {
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'galleries';
     use HasFactory;
 
     protected $fillable = [
