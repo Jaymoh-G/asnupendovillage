@@ -103,6 +103,24 @@ class StaticPageResource extends Resource
 
                 Forms\Components\Section::make('Featured Image')
                     ->schema([
+                        // Display existing featured image
+                        Forms\Components\Placeholder::make('existing_featured_image')
+                            ->label('Current Featured Image')
+                            ->content(function ($record) {
+                                if (!$record || !$record->exists || !$record->featured_image) {
+                                    return 'No featured image uploaded yet.';
+                                }
+
+                                $html = '<div style="text-align: center;">';
+                                $html .= '<img src="' . $record->featured_image_url . '" style="max-width: 100%; height: auto; border-radius: 8px; border: 1px solid #e5e7eb;" alt="Featured Image">';
+                                $html .= '<p style="margin: 8px 0 0 0; font-size: 12px; color: #6b7280;">Current featured image</p>';
+                                $html .= '</div>';
+
+                                return new \Illuminate\Support\HtmlString($html);
+                            })
+                            ->columnSpanFull()
+                            ->visible(fn($record) => $record && $record->exists && $record->featured_image),
+
                         Forms\Components\FileUpload::make('featured_image')
                             ->label('Featured Image')
                             ->image()
@@ -122,6 +140,33 @@ class StaticPageResource extends Resource
 
                 Forms\Components\Section::make('Additional Images')
                     ->schema([
+                        // Display existing images
+                        Forms\Components\Placeholder::make('existing_images')
+                            ->label('Current Page Images')
+                            ->content(function ($record) {
+                                if (!$record || !$record->exists) {
+                                    return 'Images will appear here after you save the page.';
+                                }
+
+                                $images = $record->images;
+                                if (!$images || !is_array($images) || empty($images)) {
+                                    return 'No additional images uploaded yet.';
+                                }
+
+                                $html = '<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px;">';
+                                foreach ($record->image_urls as $imageUrl) {
+                                    $html .= '<div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px; text-align: center;">';
+                                    $html .= '<img src="' . $imageUrl . '" style="width: 100%; height: 120px; object-fit: cover; border-radius: 4px; margin-bottom: 8px;" alt="Page Image">';
+                                    $html .= '<p style="margin: 0; font-size: 12px; color: #6b7280;">' . basename($imageUrl) . '</p>';
+                                    $html .= '</div>';
+                                }
+                                $html .= '</div>';
+
+                                return new \Illuminate\Support\HtmlString($html);
+                            })
+                            ->columnSpanFull()
+                            ->visible(fn($record) => $record && $record->exists),
+
                         Forms\Components\FileUpload::make('images')
                             ->label('Page Images')
                             ->multiple()
@@ -166,6 +211,33 @@ class StaticPageResource extends Resource
                             ->fileAttachmentsVisibility('public')
                             ->columnSpanFull()
                             ->helperText('Content for the first section'),
+                        // Display existing section 1 images
+                        Forms\Components\Placeholder::make('existing_section1_images')
+                            ->label('Current Section 1 Images')
+                            ->content(function ($record) {
+                                if (!$record || !$record->exists) {
+                                    return 'Images will appear here after you save the page.';
+                                }
+
+                                $images = $record->section1_images;
+                                if (!$images || !is_array($images) || empty($images)) {
+                                    return 'No section 1 images uploaded yet.';
+                                }
+
+                                $html = '<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px;">';
+                                foreach ($record->section1_image_urls as $imageUrl) {
+                                    $html .= '<div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px; text-align: center;">';
+                                    $html .= '<img src="' . $imageUrl . '" style="width: 100%; height: 120px; object-fit: cover; border-radius: 4px; margin-bottom: 8px;" alt="Section 1 Image">';
+                                    $html .= '<p style="margin: 0; font-size: 12px; color: #6b7280;">' . basename($imageUrl) . '</p>';
+                                    $html .= '</div>';
+                                }
+                                $html .= '</div>';
+
+                                return new \Illuminate\Support\HtmlString($html);
+                            })
+                            ->columnSpanFull()
+                            ->visible(fn($record) => $record && $record->exists),
+
                         Forms\Components\FileUpload::make('section1_images')
                             ->label('Section 1 Images')
                             ->multiple()
@@ -210,6 +282,33 @@ class StaticPageResource extends Resource
                             ->fileAttachmentsVisibility('public')
                             ->columnSpanFull()
                             ->helperText('Content for the second section'),
+                        // Display existing section 2 images
+                        Forms\Components\Placeholder::make('existing_section2_images')
+                            ->label('Current Section 2 Images')
+                            ->content(function ($record) {
+                                if (!$record || !$record->exists) {
+                                    return 'Images will appear here after you save the page.';
+                                }
+
+                                $images = $record->section2_images;
+                                if (!$images || !is_array($images) || empty($images)) {
+                                    return 'No section 2 images uploaded yet.';
+                                }
+
+                                $html = '<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px;">';
+                                foreach ($record->section2_image_urls as $imageUrl) {
+                                    $html .= '<div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px; text-align: center;">';
+                                    $html .= '<img src="' . $imageUrl . '" style="width: 100%; height: 120px; object-fit: cover; border-radius: 4px; margin-bottom: 8px;" alt="Section 2 Image">';
+                                    $html .= '<p style="margin: 0; font-size: 12px; color: #6b7280;">' . basename($imageUrl) . '</p>';
+                                    $html .= '</div>';
+                                }
+                                $html .= '</div>';
+
+                                return new \Illuminate\Support\HtmlString($html);
+                            })
+                            ->columnSpanFull()
+                            ->visible(fn($record) => $record && $record->exists),
+
                         Forms\Components\FileUpload::make('section2_images')
                             ->label('Section 2 Images')
                             ->multiple()
@@ -254,6 +353,32 @@ class StaticPageResource extends Resource
                             ->fileAttachmentsVisibility('public')
                             ->columnSpanFull()
                             ->helperText('Content for the third section'),
+                        // Display existing section 3 images
+                        Forms\Components\Placeholder::make('existing_section3_images')
+                            ->label('Current Section 3 Images')
+                            ->content(function ($record) {
+                                if (!$record || !$record->exists) {
+                                    return 'Images will appear here after you save the page.';
+                                }
+
+                                $images = $record->section3_images;
+                                if (!$images || !is_array($images) || empty($images)) {
+                                    return 'No section 3 images uploaded yet.';
+                                }
+
+                                $html = '<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px;">';
+                                foreach ($record->section3_image_urls as $imageUrl) {
+                                    $html .= '<div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px; text-align: center;">';
+                                    $html .= '<img src="' . $imageUrl . '" style="width: 100%; height: 120px; object-fit: cover; border-radius: 4px; margin-bottom: 8px;" alt="Section 3 Image">';
+                                    $html .= '</div>';
+                                }
+                                $html .= '</div>';
+
+                                return new \Illuminate\Support\HtmlString($html);
+                            })
+                            ->columnSpanFull()
+                            ->visible(fn($record) => $record && $record->exists),
+
                         Forms\Components\FileUpload::make('section3_images')
                             ->label('Section 3 Images')
                             ->multiple()
