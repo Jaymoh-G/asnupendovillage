@@ -119,22 +119,25 @@
     transition: all 0.3s ease !important;
 }
 
-/* Left-aligned Hero Content */
-.hero-content-left {
-    text-align: left !important;
+/* Centered Hero Content */
+.hero-content-center {
+    text-align: center !important;
     padding-bottom: 3rem !important;
 }
 
-.hero-content-left .sub-title {
-    margin-left: 0 !important;
+.hero-content-center .sub-title {
+    margin-left: auto !important;
+    margin-right: auto !important;
 }
 
-.hero-content-left .hero-title {
-    text-align: left !important;
+.hero-content-center .hero-title {
+    text-align: center !important;
 }
 
-.hero-content-left .hero-description {
-    text-align: left !important;
+.hero-content-center .hero-description {
+    text-align: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
 }
 
 .hero-style1 .sub-title:hover {
@@ -161,9 +164,9 @@
     margin-top: 2rem !important;
 }
 
-/* Left-aligned Hero Button */
-.hero-button-left {
-    text-align: left !important;
+/* Centered Hero Button */
+.hero-button-center {
+    text-align: center !important;
     margin-top: 2rem !important;
     display: block !important;
 }
@@ -239,11 +242,11 @@
         font-size: 1rem !important;
     }
 
-    .hero-content-left {
+    .hero-content-center {
         padding-bottom: 2rem !important;
     }
 
-    .hero-button-left {
+    .hero-button-center {
         margin-top: 1.5rem !important;
     }
 
@@ -269,12 +272,12 @@
         font-size: 0.95rem !important;
     }
 
-    .hero-content-left {
+    .hero-content-center {
         padding-bottom: 1.5rem !important;
         text-align: center !important;
     }
 
-    .hero-button-left {
+    .hero-button-center {
         margin-top: 1.25rem !important;
     }
 
@@ -306,11 +309,11 @@
         font-size: 0.9rem !important;
     }
 
-    .hero-content-left {
+    .hero-content-center {
         padding-bottom: 1rem !important;
     }
 
-    .hero-button-left {
+    .hero-button-center {
         margin-top: 1rem !important;
     }
 

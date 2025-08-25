@@ -813,13 +813,7 @@ Video Area
         data-bg-src="{{ asset('assets/img/bg/donation-bg1-1.png') }}"
         id="project-sec"
     >
-        <div
-            class="shape-mockup donation-bg-shape1-1"
-            data-bottom="0"
-            data-right="0"
-        >
-            <img src="{{ asset('assets/img/shape/donation-shape1-1.png') }}" alt="shape" />
-        </div>
+        
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
@@ -907,7 +901,7 @@ Blog Area
                                     <a
                                         href="{{ route('news.detail', $news->slug) }}"
                                     >
-                                    
+
                                         <img
                                             src="{{ $news->featured_image_url ?? asset('assets/img/blog/blog_1_1.jpg') }}"
                                             alt="{{ $news->title }}"

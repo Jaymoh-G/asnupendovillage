@@ -23,11 +23,13 @@
                     >
                         <div class="container">
                             <div
-                                class="row align-items-end"
+                                class="row justify-content-center"
                                 style="min-height: 600px"
                             >
-                                <div class="col-xl-8 col-lg-7">
-                                    <div class="hero-style1 hero-content-left">
+                                <div class="col-xl-8 col-lg-10 col-md-12">
+                                    <div
+                                        class="hero-style1 hero-content-center"
+                                    >
                                         @if($slider->subtitle)
                                         <span
                                             class="sub-title"
@@ -55,7 +57,7 @@
                                         @endif @if($slider->button_text &&
                                         $slider->button_url)
                                         <div
-                                            class="hero-button-left"
+                                            class="hero-button-center"
                                             data-ani="slideinup"
                                             data-ani-delay="0.7s"
                                         >
