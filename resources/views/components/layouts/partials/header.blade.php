@@ -31,21 +31,24 @@
                 <li>
                     <a href="{{ route('home') }}">Home</a>
                 </li>
-                <li><a href="{{ route('about-us') }}">About Us</a></li>
                 <li class="menu-item-has-children">
-                    <a href="#">Donations</a>
+                    <a href="{{ route('about-us') }}">About Us</a>
                     <ul class="sub-menu">
-                        <li><a href="donation.html">Donations</a></li>
                         <li>
-                            <a href="donation-details.html">Donation Details</a>
+                            <a href="{{ route('founder') }}">Founder</a>
                         </li>
                         <li>
-                            <a href="{{ route('donate-now') }}">Donate Now</a>
+                            <a href="{{ route('team') }}">Our Team</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('testimonials') }}"
+                                >Testimonials</a
+                            >
                         </li>
                     </ul>
                 </li>
                 <li class="menu-item-has-children">
-                    <a href="#">Our Programs</a>
+                    <a href="{{ route('programs') }}">Our Programs</a>
                     <ul class="sub-menu">
                         @forelse($programs as $program)
                         <li>
@@ -59,24 +62,6 @@
                             <a href="{{ route('programs') }}">All Programs</a>
                         </li>
                         @endforelse
-                    </ul>
-                </li>
-                <li class="menu-item-has-children">
-                    <a href="#">Pages</a>
-                    <ul class="sub-menu">
-                        <li><a href="team.html">Volunteers</a></li>
-                        <li>
-                            <a href="team-details.html">Volunteer Details</a>
-                        </li>
-
-                        <li><a href="pricing.html">Pricing</a></li>
-                        <li><a href="faq.html">FAQS</a></li>
-                        <li>
-                            <a href="{{ route('testimonials') }}"
-                                >Testimonials</a
-                            >
-                        </li>
-                        <li><a href="error.html">Error Page</a></li>
                     </ul>
                 </li>
                 <li class="menu-item-has-children">
@@ -98,12 +83,46 @@
                         @endforelse
                     </ul>
                 </li>
-                <li><a href="{{ route('gallery') }}">Photo Gallery</a></li>
                 <li class="menu-item-has-children">
-                    <a href="#">Blog</a>
+                    <a href="{{ route('projects') }}">Projects</a>
                     <ul class="sub-menu">
-                        <li><a href="blog.html">Blog</a></li>
-                        <li><a href="blog-details.html">Blog Details</a></li>
+                        @forelse($projects as $project)
+                        <li>
+                            <a
+                                href="{{ route('projects.detail', $project->slug) }}"
+                                >{{ $project->name }}</a
+                            >
+                        </li>
+                        @empty
+                        <li>
+                            <a href="{{ route('projects') }}">All Projects</a>
+                        </li>
+                        @endforelse
+                    </ul>
+                </li>
+                <li class="menu-item-has-children">
+                    <a href="{{ route('media-centre') }}">Media Centre</a>
+                    <ul class="sub-menu">
+                        <li>
+                            <a href="{{ route('news') }}">News</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('events') }}">Events</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('gallery') }}">Photo Gallery</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('youtube-gallery') }}"
+                                >Youtube Gallery</a
+                            >
+                        </li>
+                        <li>
+                            <a href="{{ route('careers') }}">Careers</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('downloads') }}">Downloads</a>
+                        </li>
                     </ul>
                 </li>
                 <li>
@@ -342,7 +361,9 @@
                                 </ul>
                             </li>
                             <li class="menu-item-has-children">
-                                <a href="{{ route('programs') }}">Our Programs</a>
+                                <a href="{{ route('programs') }}"
+                                    >Our Programs</a
+                                >
                                 <ul class="sub-menu">
                                     @forelse($programs as $program)
                                     <li>

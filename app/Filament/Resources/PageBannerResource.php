@@ -47,7 +47,7 @@ class PageBannerResource extends Resource
                                 'media-centre' => 'Media Centre',
                             ])
                             ->required()
-                            ->unique('page_banners', 'page_name')
+                            ->unique('page_banners', 'page_name', fn($record) => $record)
                             ->searchable(),
                         Forms\Components\TextInput::make('title')
                             ->label('Page Title')

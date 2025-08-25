@@ -22,12 +22,15 @@
                         style="height: 800px"
                     >
                         <div class="container">
-                            <div class="row justify-content-center">
-                                <div class="col-xl-12">
-                                    <div class="hero-style1 text-center">
+                            <div
+                                class="row align-items-end"
+                                style="min-height: 600px"
+                            >
+                                <div class="col-xl-8 col-lg-7">
+                                    <div class="hero-style1 hero-content-left">
                                         @if($slider->subtitle)
                                         <span
-                                            class="sub-title justify-content-center"
+                                            class="sub-title"
                                             data-ani="slideinup"
                                             data-ani-delay="0.2s"
                                             >{{ $slider->subtitle }}</span
@@ -43,7 +46,7 @@
                                         </h1>
                                         @if($slider->description)
                                         <p
-                                            class="hero-text"
+                                            class="hero-text hero-description"
                                             data-ani="slideinup"
                                             data-ani-delay="0.6s"
                                         >
@@ -52,13 +55,13 @@
                                         @endif @if($slider->button_text &&
                                         $slider->button_url)
                                         <div
-                                            class="btn-wrap justify-content-center"
+                                            class="hero-button-left"
                                             data-ani="slideinup"
                                             data-ani-delay="0.7s"
                                         >
                                             <a
                                                 href="{{ $slider->button_url }}"
-                                                class="th-btn style4"
+                                                class="th-btn style4 hero-cta-btn"
                                             >
                                                 {{ $slider->button_text }}
                                                 <i

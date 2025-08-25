@@ -907,14 +907,7 @@ Blog Area
                                     <a
                                         href="{{ route('news.detail', $news->slug) }}"
                                     >
-                                        <div
-                                            class="blog-img-shape1"
-                                            data-mask-src="{{
-                                                asset(
-                                                    'assets/img/blog/blog-card-bg-shape1-2.png'
-                                                )
-                                            }}"
-                                        ></div>
+                                    
                                         <img
                                             src="{{ $news->featured_image_url ?? asset('assets/img/blog/blog_1_1.jpg') }}"
                                             alt="{{ $news->title }}"

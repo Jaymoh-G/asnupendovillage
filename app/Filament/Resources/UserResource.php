@@ -41,7 +41,7 @@ class UserResource extends Resource
                             ->email()
                             ->required()
                             ->maxLength(255)
-                            ->unique('users', 'email')
+                            ->unique('users', 'email', fn($record) => $record)
                             ->placeholder('Enter email address'),
 
                         Forms\Components\TextInput::make('password')

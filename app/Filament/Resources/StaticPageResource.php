@@ -48,7 +48,7 @@ class StaticPageResource extends Resource
                                 'transparency' => 'Transparency',
                             ])
                             ->required()
-                            ->unique('static_pages', 'page_name')
+                            ->unique('static_pages', 'page_name', fn($record) => $record)
                             ->searchable()
                             ->helperText('Select the page you want to manage'),
                         Forms\Components\TextInput::make('title')

@@ -53,7 +53,7 @@ class YouTubeResource extends Resource
                             ->required()
                             ->maxLength(20)
                             ->helperText('The part after "v=" in YouTube URL (e.g., "dQw4w9WgXcQ")')
-                            ->unique('youtube_videos', 'video_id'),
+                            ->unique('youtube_videos', 'video_id', fn($record) => $record),
 
                         Forms\Components\Textarea::make('description')
                             ->label('Description')

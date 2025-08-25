@@ -46,14 +46,7 @@
                         <a
                             href="{{ route('programs.detail', $program->slug) }}"
                         >
-                            <div
-                                class="blog-img-shape1"
-                                data-mask-src="{{
-                                    asset(
-                                        'assets/img/blog/blog-card-bg-shape1-2.png'
-                                    )
-                                }}"
-                            ></div>
+                         
                             @if($program->image_url)
                             <img
                                 src="{{ $program->image_url }}"

@@ -229,14 +229,7 @@
                                 <a
                                     href="{{ url('/events/' . ($event->slug ?? $event->id)) }}"
                                 >
-                                    <div
-                                        class="blog-img-shape1"
-                                        data-mask-src="{{
-                                            asset(
-                                                'assets/img/blog/blog-card-bg-shape1-2.png'
-                                            )
-                                        }}"
-                                    ></div>
+
                                     @if($event->featured_image_url)
                                     <img
                                         src="{{ $event->featured_image_url }}"
@@ -321,14 +314,7 @@
                                 <a
                                     href="{{ url('/news/' . ($item->slug ?? $item->id)) }}"
                                 >
-                                    <div
-                                        class="blog-img-shape1"
-                                        data-mask-src="{{
-                                            asset(
-                                                'assets/img/blog/blog-card-bg-shape1-2.png'
-                                            )
-                                        }}"
-                                    ></div>
+                                   
                                     @if($item->featured_image_url)
                                     <img
                                         src="{{ $item->featured_image_url }}"

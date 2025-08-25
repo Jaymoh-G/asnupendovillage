@@ -32,7 +32,7 @@ class PermissionResource extends Resource
                             ->label('Permission Name')
                             ->required()
                             ->maxLength(255)
-                            ->unique('permissions', 'name')
+                            ->unique('permissions', 'name', fn($record) => $record)
                             ->placeholder('e.g., view_content, create_users'),
 
                         Forms\Components\Textarea::make('description')

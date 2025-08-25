@@ -40,7 +40,7 @@ class ProgramResource extends Resource
                     ->label('Slug')
                     ->required()
                     ->maxLength(255)
-                    ->unique('programs', 'slug'),
+                    ->unique('programs', 'slug', fn($record) => $record),
                 Forms\Components\RichEditor::make('content')
                     ->label('Content')
                     ->columnSpanFull()

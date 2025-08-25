@@ -41,7 +41,7 @@ class HomePageContentResource extends Resource
                                 'video-section' => 'Video Section',
                             ])
                             ->required()
-                            ->unique('home_page_contents', 'section_name')
+                            ->unique('home_page_contents', 'section_name', fn($record) => $record)
                             ->searchable()
                             ->default('about-us')
                             ->helperText('Select the homepage section you want to manage'),

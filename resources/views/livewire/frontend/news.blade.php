@@ -43,14 +43,7 @@
                 <div class="blog-card">
                     <div class="blog-img">
                         <a href="{{ route('news.detail', $item->slug) }}">
-                            <div
-                                class="blog-img-shape1"
-                                data-mask-src="{{
-                                    asset(
-                                        'assets/img/blog/blog-card-bg-shape1-2.png'
-                                    )
-                                }}"
-                            ></div>
+                          
                             @if($item->featured_image_url)
                             <img
                                 src="{{ $item->featured_image_url }}"

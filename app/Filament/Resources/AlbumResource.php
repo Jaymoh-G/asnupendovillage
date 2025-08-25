@@ -44,7 +44,7 @@ class AlbumResource extends Resource
                             ->label('Slug')
                             ->required()
                             ->maxLength(255)
-                            ->unique('albums', 'slug'),
+                            ->unique('albums', 'slug', fn($record) => $record),
 
 
 
