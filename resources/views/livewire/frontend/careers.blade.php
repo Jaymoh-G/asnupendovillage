@@ -9,6 +9,25 @@
             transition: all 0.3s ease;
             height: 100%;
             border: 1px solid rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+
+        .feature-card.closed-position {
+            opacity: 0.8;
+            background: #f8f9fa;
+            border: 1px solid rgba(108, 117, 125, 0.2);
+        }
+
+        .feature-card.closed-position::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(108, 117, 125, 0.05);
+            border-radius: 20px;
+            pointer-events: none;
         }
 
         .feature-card:hover {
@@ -96,6 +115,24 @@
             animation: pulse 2s infinite;
         }
 
+        .deadline-meta-item.closed {
+            color: #6c757d;
+            font-weight: 600;
+            background: rgba(108, 117, 125, 0.1) !important;
+        }
+
+        .deadline-meta-item.expired {
+            color: #fd7e14;
+            font-weight: 600;
+            background: rgba(253, 126, 20, 0.1) !important;
+        }
+
+        .status-meta-item.closed {
+            color: #6c757d;
+            font-weight: 600;
+            background: rgba(108, 117, 125, 0.1) !important;
+        }
+
         .pdf-meta-item {
             background: linear-gradient(135deg, #2ed573, #1e90ff) !important;
             color: white !important;
@@ -165,7 +202,9 @@
         <div class="row gy-4 gx-4">
             @forelse($careers as $careerItem)
             <div class="col-md-6 col-lg-4">
-                <div class="feature-card">
+                <div
+                    class="feature-card {{ $careerItem->status === 'closed' ? 'closed-position' : '' }}"
+                >
                     <div class="box-content">
                         <div class="content-icon-row">
                             <div class="box-icon">
@@ -191,16 +230,41 @@
                                             <i class="fas fa-file-pdf"></i>
                                         </a>
                                     </span>
-                                    @endif @if($careerItem->application_deadline
-                                    &&
-                                    !$careerItem->application_deadline->isPast())
-                                    <span class="meta-item deadline-meta-item">
+                                    @endif
+                                    @if($careerItem->application_deadline)
+                                    @if($careerItem->application_deadline->isPast())
+                                    @if($careerItem->status === 'closed')
+                                    <span
+                                        class="meta-item deadline-meta-item closed"
+                                    >
+                                        <i class="fas fa-lock"></i>
+                                        Closed
+                                    </span>
+                                    @else
+                                    <span
+                                        class="meta-item deadline-meta-item expired"
+                                    >
+                                        <i class="fas fa-clock"></i>
+                                        Deadline Passed
+                                    </span>
+                                    @endif @else
+                                    <span
+                                        class="meta-item deadline-meta-item {{ $careerItem->application_deadline->diffInDays(now()) <= 7 ? 'urgent' : '' }}"
+                                    >
                                         @if($careerItem->application_deadline->diffInDays(now())
                                         <= 7) Apply by
                                         {{ $careerItem->application_deadline->format('M d') }}
                                         @else
                                         {{ $careerItem->application_deadline->format('M d, Y') }}
                                         @endif
+                                    </span>
+                                    @endif @endif @if($careerItem->status ===
+                                    'closed')
+                                    <span
+                                        class="meta-item status-meta-item closed"
+                                    >
+                                        <i class="fas fa-lock"></i>
+                                        Closed
                                     </span>
                                     @endif
                                 </div>
@@ -211,14 +275,32 @@
                         <div class="career-description">
                             {{ \Illuminate\Support\Str::limit($careerItem->description, 120) }}
                         </div>
-                        @endif
-
+                        @endif @if($careerItem->status === 'closed')
+                        <div
+                            class="th-btn btn-sm disabled"
+                            style="
+                                background: #6c757d;
+                                cursor: not-allowed;
+                                opacity: 0.7;
+                            "
+                        >
+                            Position Closed
+                            <i class="fas fa-lock ms-2"></i>
+                        </div>
+                        @else
                         <a
                             href="{{ route('careers.detail', $careerItem->slug ?? $careerItem->id) }}"
                             class="th-btn btn-sm"
-                            >View Details
-                            <i class="fas fa-arrow-up-right ms-2"></i
-                        ></a>
+                        >
+                            @if($careerItem->application_deadline &&
+                            $careerItem->application_deadline->isPast()) View &
+                            Apply
+                            <i class="fas fa-clock ms-2"></i>
+                            @else View Details
+                            <i class="fas fa-arrow-up-right ms-2"></i>
+                            @endif
+                        </a>
+                        @endif
                     </div>
                 </div>
             </div>

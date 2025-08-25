@@ -20,6 +20,9 @@ use App\Models\Program;
 
 Route::get('/', Home::class)->name('home');
 
+// Search functionality
+Route::get('/search', [App\Http\Controllers\SearchController::class, 'search'])->name('search');
+
 
 // about us
 
@@ -54,6 +57,17 @@ Route::get('/thank-you', function () {
 // contact us
 Route::get('/contact-us', ContactUs::class)->name('contact-us');
 Route::post('/contact/submit', [App\Http\Controllers\ContactController::class, 'submit'])->name('contact.submit');
+
+// Generic static page route for other static pages
+Route::get('/page/{pageName}', function ($pageName) {
+    $page = \App\Models\StaticPage::where('page_name', $pageName)->where('is_active', true)->first();
+
+    if (!$page) {
+        abort(404);
+    }
+
+    return view('static-page', ['page' => $page]);
+})->name('static.page');
 // gallery
 Route::get('/photo-gallery', Gallery::class)->name('gallery');
 // album detail
@@ -183,4 +197,3 @@ Route::get('/whoami', function () {
         'session' => session()->all(),
     ];
 });
-

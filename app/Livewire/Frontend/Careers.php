@@ -12,13 +12,14 @@ class Careers extends Component
 
     public function mount()
     {
-        $this->careers = Career::where('status', 'open')
-            ->where(function($query) {
-                $query->whereNull('application_deadline')
-                      ->orWhere('application_deadline', '>', now());
-            })
-            ->orderByDesc('updated_at')
-            ->get();
+        $this->careers = Career::orderByRaw("
+            CASE
+                WHEN status = 'open' AND (application_deadline IS NULL OR application_deadline > NOW()) THEN 1
+                WHEN status = 'open' AND application_deadline <= NOW() THEN 2
+                WHEN status = 'closed' THEN 3
+                ELSE 4
+            END
+        ")->orderByDesc('updated_at')->get();
     }
 
     public function show($id)
