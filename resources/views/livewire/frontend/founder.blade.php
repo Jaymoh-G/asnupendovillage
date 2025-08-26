@@ -31,12 +31,7 @@
             <div class="row gy-4 align-items-center">
                 <div class="col-lg-6">
                     <div class="img-box1">
-                        <div
-                            class="img1"
-                            data-mask-src="{{
-                                asset('assets/img/normal/about_1_1-mask.png')
-                            }}"
-                        >
+                        <div class="img1">
                             <img
                                 src="{{ isset($pageContent->section1_image_urls[0]) ? $pageContent->section1_image_urls[0] : asset('assets/img/normal/about_1_1.png') }}"
                                 alt="Founder"
@@ -105,12 +100,7 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="img-box1">
-                        <div
-                            class="img1"
-                            data-mask-src="{{
-                                asset('assets/img/normal/about_1_1-mask.png')
-                            }}"
-                        >
+                        <div class="img1">
                             <img
                                 src="{{
                                     isset($pageContent->section2_image_urls[0]) ? $pageContent->section2_image_urls[0] : asset('assets/img/normal/about_1_1.png')
@@ -227,6 +217,28 @@
         }
         .section-image-item:hover img {
             transform: scale(1.05);
+        }
+
+        /* Image Border Styling */
+        .img-box1 .img1 {
+            border: 3px solid #ffac00;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            position: relative;
+            z-index: 2;
+        }
+
+        .img-box1 .img1 img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Remove background from decorative shapes */
+        .about-shape1-1 {
+            background: transparent !important;
+            z-index: 1;
         }
     </style>
 </div>
