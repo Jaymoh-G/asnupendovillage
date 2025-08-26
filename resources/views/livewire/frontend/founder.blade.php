@@ -223,16 +223,21 @@
         .img-box1 .img1 {
             border: 3px solid #ffac00;
             border-radius: 15px;
-            overflow: hidden;
+            overflow: visible;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
             position: relative;
             z-index: 2;
+            height: auto;
+            display: block;
+            width: auto;
         }
 
         .img-box1 .img1 img {
-            width: 100%;
+            width: auto;
             height: auto;
             display: block;
+            max-width: 100%;
+            max-height: 600px;
         }
 
         /* Remove background from decorative shapes */
