@@ -58,9 +58,6 @@
                         @if($pageContent && $pageContent->section1_image_urls && count($pageContent->section1_image_urls) > 0)
                         <div
                             class="img1"
-                            data-mask-src="{{
-                                asset('assets/img/normal/about_1_1-mask.png')
-                            }}"
                         >
                             <img
                                 src="{{ $pageContent->section1_image_urls[0] }}"
@@ -76,9 +73,6 @@
                         $pageContent->hasMultipleImages())
                         <div
                             class="img1"
-                            data-mask-src="{{
-                                asset('assets/img/normal/about_1_1-mask.png')
-                            }}"
                         >
                             <img
                                 src="{{ $pageContent->first_image_url }}"
@@ -93,9 +87,6 @@
                         @else
                         <div
                             class="img1"
-                            data-mask-src="{{
-                                asset('assets/img/normal/about_1_1-mask.png')
-                            }}"
                         >
                             <img
                                 src="{{
@@ -262,9 +253,6 @@
                         count($pageContent->section1_images) > 0)
                         <div
                             class="img1"
-                            data-mask-src="{{
-                                asset('assets/img/normal/about_1_1-mask.png')
-                            }}"
                         >
                             <img
                                 src="{{ $pageContent->section1_image_urls[0] }}"
@@ -279,9 +267,6 @@
                         @else
                         <div
                             class="img1"
-                            data-mask-src="{{
-                                asset('assets/img/normal/about_1_1-mask.png')
-                            }}"
                         >
                             <img
                                 src="{{

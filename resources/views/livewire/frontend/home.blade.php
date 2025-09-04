@@ -246,9 +246,6 @@ About Area
                     <div class="img-box1">
                         <div
                             class="img1"
-                            data-mask-src="{{
-                                asset('assets/img/normal/about_1_1-mask.png')
-                            }}"
                         >
                             <img
                                 src="@if($homePageContent->has('about-us') && $homePageContent['about-us']->image){{ asset('storage/' . $homePageContent['about-us']->image) }}@else{{ asset('assets/img/normal/about_1_1.png') }}@endif"
@@ -834,7 +831,7 @@ Video Area
                         @foreach($latestProjects as $project)
                         <div class="swiper-slide">
                             <div class="donation-card" data-theme-color="">
-                            
+
                                 <div class="box-thumb">
                                     <img
                                         src="{{ $project->image_url ?? asset('assets/img/project/project_1_1.png') }}"
