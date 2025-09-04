@@ -834,10 +834,7 @@ Video Area
                         @foreach($latestProjects as $project)
                         <div class="swiper-slide">
                             <div class="donation-card" data-theme-color="">
-                                <div
-                                    class="donation-card-shape"
-                                    data-mask-src="assets/img/donation/donation-card-bg-shape1-1.png"
-                                ></div>
+                            
                                 <div class="box-thumb">
                                     <img
                                         src="{{ $project->image_url ?? asset('assets/img/project/project_1_1.png') }}"
@@ -909,7 +906,7 @@ Blog Area
                                     </a>
                                 </div>
                                 <div class="blog-content">
-                                    
+
                                     <div class="blog-meta">
                                         <a href="{{ route('news') }}"
                                             ><i class="fas fa-calendar"></i

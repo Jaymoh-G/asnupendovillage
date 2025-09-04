@@ -34,14 +34,7 @@
                     @forelse($projects as $project)
                     <div class="col-md-4">
                         <div class="donation-card" data-theme-color="#FF5528">
-                            <div
-                                class="donation-card-shape"
-                                data-mask-src="{{
-                                    asset(
-                                        'assets/img/donation/donation-card-bg-shape1-1.png'
-                                    )
-                                }}"
-                            ></div>
+                           
                             <div class="box-thumb">
                                 <img
                                     src="{{ $project->image_url ?? asset('assets/img/donation/donation1-3.png') }}"
