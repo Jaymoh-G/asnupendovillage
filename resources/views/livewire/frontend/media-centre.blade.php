@@ -229,7 +229,6 @@
                                 <a
                                     href="{{ url('/events/' . ($event->slug ?? $event->id)) }}"
                                 >
-
                                     @if($event->featured_image_url)
                                     <img
                                         src="{{ $event->featured_image_url }}"
@@ -314,7 +313,6 @@
                                 <a
                                     href="{{ url('/news/' . ($item->slug ?? $item->id)) }}"
                                 >
-                                   
                                     @if($item->featured_image_url)
                                     <img
                                         src="{{ $item->featured_image_url }}"
@@ -516,9 +514,9 @@
                         </div>
                         <div class="col-md-4 text-end">
                             <a
-                                href="{{ url('/downloads') }}"
+                                href="{{ url('/monthly-reports') }}"
                                 class="th-btn btn-sm"
-                                >View All Downloads
+                                >View All Monthly Reports
                                 <i class="fas fa-arrow-up-right ms-2"></i
                             ></a>
                         </div>

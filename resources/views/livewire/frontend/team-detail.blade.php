@@ -88,23 +88,19 @@
                             <p class="about-card_text">{{ $team->bio }}</p>
 
                             @endif
-
-                          
-
                         </div>
                     </div>
                 </div>
             </div>
-             @if($team->bio)
+            @if($team->quote)
             <div class="row gy-40">
                 <div class="col-xl-12">
-                    <h3 class="title mt-n2 mb-25">From the {{ $team->position }}</h3>
+                    <h3 class="title mt-n2 mb-25">
+                        From the {{ $team->position }}
+                    </h3>
 
-                    <p>{{ $team->bio }}</p>
-
-
+                    <p>{{ $team->quote }}</p>
                 </div>
-
             </div>
             @endif
         </div>

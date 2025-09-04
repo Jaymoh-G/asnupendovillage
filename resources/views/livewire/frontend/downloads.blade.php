@@ -149,11 +149,11 @@
         <div class="container">
             <div class="breadcumb-content">
                 <h1 class="breadcumb-title">
-                    {{ $pageBanner->title ? $pageBanner->title : 'Downloads' }}
+                    {{ $pageBanner->title ? $pageBanner->title : 'Monthly Reports' }}
                 </h1>
                 <ul class="breadcumb-menu">
                     <li><a href="{{ route('home') }}">Home</a></li>
-                    <li>Downloads</li>
+                    <li>Monthly Reports</li>
                 </ul>
             </div>
         </div>
@@ -162,10 +162,10 @@
     <div class="breadcumb-wrapper" style="background-color: #000000">
         <div class="container">
             <div class="breadcumb-content">
-                <h1 class="breadcumb-title">Downloads</h1>
+                <h1 class="breadcumb-title">Monthly Reports</h1>
                 <ul class="breadcumb-menu">
                     <li><a href="{{ route('home') }}">Home</a></li>
-                    <li>Downloads</li>
+                    <li>Monthly Reports</li>
                 </ul>
             </div>
         </div>
@@ -221,7 +221,7 @@
                             </div>
                             <div class="content-stack">
                                 <h3 class="box-title">
-                                    {{ \Illuminate\Support\Str::limit($download->title ?? 'Download', 25) }}
+                                    {{ \Illuminate\Support\Str::limit($download->title ?? 'Monthly Report', 25) }}
                                 </h3>
                                 <div class="download-meta">
                                     @if($download->program)
@@ -233,6 +233,8 @@
                                     <span class="meta-item">
                                         <i class="fas fa-weight me-2"></i>
                                         {{ number_format($download->file_size / 1048576, 1)
+
+
 
 
 
@@ -260,7 +262,7 @@
                 </div>
             </div>
             @empty
-            <div class="col-12 text-center">No downloads found.</div>
+            <div class="col-12 text-center">No monthly reports found.</div>
             @endforelse
         </div>
         <div class="mt-5 d-flex justify-content-center">

@@ -126,7 +126,9 @@
                             <a href="{{ route('careers') }}">Careers</a>
                         </li>
                         <li>
-                            <a href="{{ route('downloads') }}">Downloads</a>
+                            <a href="{{ route('downloads') }}"
+                                >Monthly Reports</a
+                            >
                         </li>
                     </ul>
                 </li>
@@ -457,7 +459,7 @@
                                     </li>
                                     <li>
                                         <a href="{{ route('downloads') }}"
-                                            >Downloads</a
+                                            >Monthly Reports</a
                                         >
                                     </li>
                                 </ul>

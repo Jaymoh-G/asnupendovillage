@@ -22,6 +22,7 @@ class Team extends Model
         'slug',
         'position',
         'bio',
+        'quote',
         'email',
         'phone',
         'image',

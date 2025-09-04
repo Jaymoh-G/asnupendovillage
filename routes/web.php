@@ -92,8 +92,8 @@ Route::get('/news', function () {
 Route::get('/news/{slug}', function ($slug) {
     return view('news-detail-page', ['slug' => $slug]);
 })->name('news.detail');
-// news
-Route::get('/downloads', function () {
+// monthly reports (formerly downloads)
+Route::get('/monthly-reports', function () {
     return view('downloads-page');
 })->name('downloads');
 
@@ -182,7 +182,7 @@ Route::post('/admin/testimonials/{testimonialId}/delete-image/{imageId}', [App\F
     ->name('admin.testimonials.delete-image')
     ->middleware(['auth', 'web']);
 
-Route::get('/downloads/program/{program:slug}', function (Program $program) {
+Route::get('/monthly-reports/program/{program:slug}', function (Program $program) {
     return view('downloads-page', ['programId' => $program->id]);
 })->name('downloads.by-program');
 

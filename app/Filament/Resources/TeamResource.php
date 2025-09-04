@@ -50,6 +50,12 @@ class TeamResource extends Resource
                             ->rows(4)
                             ->maxLength(1000),
 
+                        Forms\Components\Textarea::make('quote')
+                            ->label('Word from the Member')
+                            ->rows(3)
+                            ->maxLength(500)
+                            ->helperText('A short personal quote or message (optional).'),
+
                         Forms\Components\FileUpload::make('image')
                             ->label('Profile Image')
                             ->image()
