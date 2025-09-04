@@ -43,7 +43,7 @@
                 <div class="blog-card">
                     <div class="blog-img">
                         <a href="#">
-                          
+
                             @if($event->featured_image_url)
                             <img
                                 src="{{ $event->featured_image_url }}"
@@ -62,14 +62,7 @@
                         </a>
                     </div>
                     <div class="blog-content">
-                        <div
-                            class="blog-card-shape"
-                            data-mask-src="{{
-                                asset(
-                                    'assets/img/blog/blog-card-bg-shape1-1.png'
-                                )
-                            }}"
-                        ></div>
+                       
                         <div class="blog-meta">
                             <a href="{{ route('events') }}"
                                 ><i class="fas fa-calendar"></i

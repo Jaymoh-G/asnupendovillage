@@ -24,6 +24,21 @@ class DownloadResource extends Resource
 
     protected static ?int $navigationSort = 4;
 
+    public static function getModelLabel(): string
+    {
+        return 'Monthly Report';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'Monthly Reports';
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return 'Monthly Reports';
+    }
+
     public static function form(Form $form): Form
     {
         return $form

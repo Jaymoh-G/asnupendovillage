@@ -13071,7 +13071,7 @@ span.select2-selection.select2-selection--single:focus {
 }
 .contact-feature .box-text {
     line-height: 24px;
-    max-width: 200px;
+    max-width: 250px;
 }
 .contact-feature .box-text:not(:last-child) {
     margin-bottom: 2px;

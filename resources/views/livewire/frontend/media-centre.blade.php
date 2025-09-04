@@ -247,14 +247,7 @@
                                 </a>
                             </div>
                             <div class="blog-content">
-                                <div
-                                    class="blog-card-shape"
-                                    data-mask-src="{{
-                                        asset(
-                                            'assets/img/blog/blog-card-bg-shape1-1.png'
-                                        )
-                                    }}"
-                                ></div>
+
                                 <div class="blog-meta">
                                     <a href="{{ url('/events') }}"
                                         ><i class="fas fa-calendar"></i
@@ -331,14 +324,7 @@
                                 </a>
                             </div>
                             <div class="blog-content">
-                                <div
-                                    class="blog-card-shape"
-                                    data-mask-src="{{
-                                        asset(
-                                            'assets/img/blog/blog-card-bg-shape1-1.png'
-                                        )
-                                    }}"
-                                ></div>
+                             
                                 <div class="blog-meta">
                                     <a href="{{ url('/news') }}"
                                         ><i class="fas fa-calendar"></i

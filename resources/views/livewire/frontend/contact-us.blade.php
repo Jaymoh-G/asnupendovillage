@@ -101,9 +101,14 @@ Contact Area
                     </div>
                     <div class="col-xl-8 col-lg-7">
                         <div class="contact-map">
-                            @if(\App\Models\Setting::get('google_map_link'))
+                            @php $mapEmbed =
+                            \App\Models\Setting::get('google_map_embed');
+                            $mapLink =
+                            \App\Models\Setting::get('google_map_link'); @endphp
+                            @if(!empty($mapEmbed)) {!! $mapEmbed !!}
+                            @elseif(!empty($mapLink))
                             <iframe
-                                src="{{ \App\Models\Setting::get('google_map_link') }}"
+                                src="{{ $mapLink }}"
                                 allowfullscreen=""
                                 loading="lazy"
                             ></iframe>

@@ -79,8 +79,8 @@ class StatsOverview extends BaseWidget
                 ->color('primary')
                 ->chart([7, 2, 10, 3, 15, 4, 17]),
 
-            Stat::make('Downloads', Download::count())
-                ->description('Available downloads')
+            Stat::make('Monthly Reports', Download::count())
+                ->description('Available monthly reports')
                 ->descriptionIcon('heroicon-m-arrow-down-tray')
                 ->color('info')
                 ->chart([17, 16, 14, 15, 14, 13, 12]),

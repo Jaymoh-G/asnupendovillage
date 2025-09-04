@@ -28,6 +28,7 @@ class ManageSettings extends Page
     public ?string $contact_phone = null;
     public ?string $contact_address = null;
     public ?string $google_map_link = null;
+    public ?string $google_map_embed = null;
     public ?string $social_facebook = null;
     public ?string $social_twitter = null;
     public ?string $social_instagram = null;
@@ -61,6 +62,7 @@ class ManageSettings extends Page
         $this->contact_phone = $formData['contact_phone'] ?? null;
         $this->contact_address = $formData['contact_address'] ?? null;
         $this->google_map_link = $formData['google_map_link'] ?? null;
+        $this->google_map_embed = $formData['google_map_embed'] ?? null;
         $this->social_facebook = $formData['social_facebook'] ?? null;
         $this->social_twitter = $formData['social_twitter'] ?? null;
         $this->social_instagram = $formData['social_instagram'] ?? null;
@@ -134,6 +136,11 @@ class ManageSettings extends Page
                                     ->url()
                                     ->maxLength(500)
                                     ->default(Setting::get('google_map_link', '')),
+                                Forms\Components\Textarea::make('google_map_embed')
+                                    ->label('Google Map Embed (paste full iframe)')
+                                    ->rows(4)
+                                    ->helperText('Optional. Paste the full <iframe> embed code. If provided, this will be used instead of the link.')
+                                    ->default(Setting::get('google_map_embed', '')),
                             ])
                             ->icon('heroicon-o-phone'),
 
@@ -331,6 +338,7 @@ class ManageSettings extends Page
             'contact_phone' => Setting::get('contact_phone', ''),
             'contact_address' => Setting::get('contact_address', ''),
             'google_map_link' => Setting::get('google_map_link', ''),
+            'google_map_embed' => Setting::get('google_map_embed', ''),
             'social_facebook' => Setting::get('social_facebook', ''),
             'social_twitter' => Setting::get('social_twitter', ''),
             'social_instagram' => Setting::get('social_instagram', ''),

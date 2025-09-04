@@ -813,7 +813,7 @@ Video Area
         data-bg-src="{{ asset('assets/img/bg/donation-bg1-1.png') }}"
         id="project-sec"
     >
-        
+
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
@@ -909,14 +909,7 @@ Blog Area
                                     </a>
                                 </div>
                                 <div class="blog-content">
-                                    <div
-                                        class="blog-card-shape"
-                                        data-mask-src="{{
-                                            asset(
-                                                'assets/img/blog/blog-card-bg-shape1-1.png'
-                                            )
-                                        }}"
-                                    ></div>
+                                    
                                     <div class="blog-meta">
                                         <a href="{{ route('news') }}"
                                             ><i class="fas fa-calendar"></i

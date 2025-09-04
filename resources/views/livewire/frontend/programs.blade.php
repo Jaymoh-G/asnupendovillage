@@ -46,7 +46,7 @@
                         <a
                             href="{{ route('programs.detail', $program->slug) }}"
                         >
-                         
+
                             @if($program->image_url)
                             <img
                                 src="{{ $program->image_url }}"
@@ -66,14 +66,7 @@
                         </a>
                     </div>
                     <div class="blog-content">
-                        <div
-                            class="blog-card-shape"
-                            data-mask-src="{{
-                                asset(
-                                    'assets/img/blog/blog-card-bg-shape1-1.png'
-                                )
-                            }}"
-                        ></div>
+                      
                         <div class="blog-meta">
                             <a href="{{ route('programs') }}"
                                 ><i class="fas fa-tags"></i>Program</a

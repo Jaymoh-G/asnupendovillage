@@ -221,7 +221,7 @@
                             </div>
                             <div class="content-stack">
                                 <h3 class="box-title">
-                                    {{ \Illuminate\Support\Str::limit($download->title ?? 'Monthly Report', 25) }}
+                                    {{ \Illuminate\Support\Str::limit($download->title ?? 'Monthly Report', 48) }}
                                 </h3>
                                 <div class="download-meta">
                                     @if($download->program)

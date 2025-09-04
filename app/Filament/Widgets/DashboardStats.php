@@ -91,8 +91,8 @@ class DashboardStats extends BaseWidget
                 ->chart([15, 4, 5, 2, 10, 2, 7])
                 ->url(route('filament.admin.resources.programs.index')),
 
-            Stat::make('Downloads', Download::count())
-                ->description('Available files')
+            Stat::make('Monthly Reports', Download::count())
+                ->description('Available monthly reports')
                 ->descriptionIcon('heroicon-m-arrow-down-tray')
                 ->color('info')
                 ->chart([17, 16, 14, 15, 14, 13, 12])

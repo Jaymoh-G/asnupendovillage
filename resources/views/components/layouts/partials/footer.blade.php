@@ -108,28 +108,28 @@ Footer Area ==============================-->
                         <div class="menu-all-pages-container">
                             <ul class="menu">
                                 <li>
-                                    <a href="{{ route('donate-now') }}"
-                                        >Give Donation1</a
+                                    <a href="{{ route('programs') }}"
+                                        >Our Programs</a
                                     >
                                 </li>
                                 <li>
-                                    <a href="{{ route('programs') }}"
-                                        >Education Support</a
-                                    >
-                                </li>
-                                <li>
-                                    <a href="{{ route('programs') }}"
-                                        >Food Support</a
-                                    >
-                                </li>
-                                <li>
-                                    <a href="{{ route('programs') }}"
-                                        >Health Support</a
+                                    <a href="{{ route('facilities') }}"
+                                        >Facilities</a
                                     >
                                 </li>
                                 <li>
                                     <a href="{{ route('projects') }}"
-                                        >Our Campaign</a
+                                        >Projects</a
+                                    >
+                                </li>
+                                <li>
+                                    <a href="{{ route('media-centre') }}"
+                                        >Media Centre</a
+                                    >
+                                </li>
+                                <li>
+                                    <a href="{{ route('contact-us') }}"
+                                        >Contact Us</a
                                     >
                                 </li>
                             </ul>

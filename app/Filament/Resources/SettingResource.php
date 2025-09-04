@@ -72,6 +72,11 @@ class SettingResource extends Resource
                                     ->default(fn() => Setting::get('google_map_link', ''))
                                     ->url()
                                     ->maxLength(500),
+                                Forms\Components\Textarea::make('google_map_embed')
+                                    ->label('Google Map Embed (paste full iframe)')
+                                    ->default(fn() => Setting::get('google_map_embed', ''))
+                                    ->rows(4)
+                                    ->helperText('Optional. Paste the full <iframe> embed code. If provided, this will be used instead of the link.'),
                             ])
                             ->icon('heroicon-o-phone'),
 

@@ -25,7 +25,7 @@
                         <a
                             href="{{ route('facilities.detail', $facility->slug) }}"
                         >
-                        
+
                             @if($facility->featured_image_url)
                             <img
                                 src="{{ $facility->featured_image_url }}"
@@ -44,14 +44,7 @@
                         </a>
                     </div>
                     <div class="blog-content">
-                        <div
-                            class="blog-card-shape"
-                            data-mask-src="{{
-                                asset(
-                                    'assets/img/blog/blog-card-bg-shape1-1.png'
-                                )
-                            }}"
-                        ></div>
+                        
                         <div class="blog-meta">
                             <a href="{{ route('facilities') }}"
                                 ><i class="fas fa-building"></i>Facility</a
