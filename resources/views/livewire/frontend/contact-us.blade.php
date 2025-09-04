@@ -1,5 +1,10 @@
 <div>
     @section('content')
+    <style>
+        .contact-feature .box-text {
+            max-width: 250px;
+        }
+    </style>
     <!--==============================
     Breadcumb
 ============================== -->
