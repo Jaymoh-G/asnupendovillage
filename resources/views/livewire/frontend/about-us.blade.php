@@ -138,6 +138,11 @@
     ==============================-->
     @if($coreValues && $coreValues->count() > 0)
     <section class="space-top">
+        <style>
+            /* Ensure all core value cards have equal height */
+            .feature-card { display: flex; flex-direction: column; height: 100%; }
+            .feature-card .box-text { flex-grow: 1; }
+        </style>
         <div class="container">
             <div class="title-area text-center mb-50">
                 <span class="sub-title">Our Foundation</span>
@@ -145,8 +150,8 @@
             </div>
             <div class="row gy-4 justify-content-center">
                 @foreach($coreValues as $coreValue)
-                <div class="col-lg-3 col-md-6">
-                    <div class="feature-card">
+                <div class="col-lg-3 col-md-6 d-flex">
+                    <div class="feature-card h-100 w-100">
                         <div class="feature-card-bg-shape">
                             <img
                                 src="{{
@@ -176,12 +181,6 @@
                         <p class="box-text">
                             {{ $coreValue->description }}
                         </p>
-                        <a
-                            class="link-btn style2"
-                            href="{{ route('contact-us') }}"
-                            >Learn More
-                            <i class="fa-solid fa-arrow-up-right ms-2"></i
-                        ></a>
                     </div>
                 </div>
                 @endforeach

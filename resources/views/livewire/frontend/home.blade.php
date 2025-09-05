@@ -58,10 +58,23 @@ Service Area
             <div class="row justify-content-center">
                 <div class="col-lg-7">
                     <div class="title-area text-center">
-                        <span class="sub-title">Our Programs</span>
-                        <h2 class="sec-title">
-                            We Do it for all People Humanist Services
-                        </h2>
+                        @if(isset($homePageContent) && $homePageContent->has('programs'))
+                            @php $programsSection = $homePageContent['programs']; @endphp
+                            @if($programsSection->subtitle)
+                                <span class="sub-title">{{ $programsSection->subtitle }}</span>
+                            @endif
+                            @if($programsSection->title)
+                                <h2 class="sec-title">{{ $programsSection->title }}</h2>
+                            @endif
+                            @if($programsSection->description)
+                                <p class="sec-text">{{ $programsSection->description }}</p>
+                            @endif
+                        @else
+                            <span class="sub-title">Our Programs</span>
+                            <h2 class="sec-title">
+                                We Do it for all People Humanist Services
+                            </h2>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -474,9 +487,10 @@ Story Area
             </div>
         </div>
     </div>
+    @if(false)
     <!--==============================
-Team Area
-==============================-->
+    Team Area
+    ==============================-->
     <section class="space-bottom team-area-1">
         <div class="container">
             <div class="title-area text-center">
@@ -590,6 +604,7 @@ Team Area
             @endif
         </div>
     </section>
+    @endif
     <!--==============================
 Video Area
 ==============================-->
@@ -875,6 +890,17 @@ Video Area
 Blog Area
 ==============================-->
     <section class="space" id="blog-sec">
+        <style>
+            /* Remove black & white (grayscale) effect from news images */
+            .blog-card .blog-img img {
+                -webkit-filter: none !important;
+                filter: none !important;
+            }
+            .blog-card:hover .blog-img img {
+                -webkit-filter: none !important;
+                filter: none !important;
+            }
+        </style>
         <div class="container">
             <div class="title-area text-center">
                 <span class="sub-title">News & Articles</span>

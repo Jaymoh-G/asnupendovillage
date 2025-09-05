@@ -35,6 +35,7 @@ class HomePageContentResource extends Resource
                             ->label('Section')
                             ->options([
                                 'about-us' => 'About Us Section',
+                                'programs' => 'Programs Section',
                                 'statistics' => 'Statistics Section',
                                 'cta-section' => 'CTA Section',
                                 'story-section' => 'Story Section',
@@ -234,6 +235,7 @@ class HomePageContentResource extends Resource
                     ->label('Section')
                     ->options([
                         'about-us' => 'About Us Section',
+                        'programs' => 'Programs Section',
                         'statistics' => 'Statistics Section',
                         'cta-section' => 'CTA Section',
                         'story-section' => 'Story Section',
