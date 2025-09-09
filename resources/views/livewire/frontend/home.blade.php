@@ -303,11 +303,7 @@ About Area
                                     @foreach($homePageContent['about-us']->checklist_items as $item)
                                         <li @if($item['color']) data-theme-color="{{ $item['color'] }}" @endif>{{ $item['text'] }}</li>
                                     @endforeach
-                                @else
-                                    <li>Charity For Foods</li>
-                                    <li data-theme-color="var(--theme-color2)">Charity For Water</li>
-                                    <li data-theme-color="#FF5528">Charity For Education</li>
-                                    <li data-theme-color="#122F2A">Charity For Medical</li>
+
                                 @endif
                             </ul>
                         </div>

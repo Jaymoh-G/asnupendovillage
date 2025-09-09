@@ -522,7 +522,7 @@
     ==============================-->
     @if($donationPage && ($donationPage->section1_title || $donationPage->section1_content || $donationPage->section2_title || $donationPage->section2_content || $donationPage->section3_title || $donationPage->section3_content))
     <section class="space-top">
-      
+
         <div class="container">
             <div class="title-area text-center">
                 <span class="sub-title after-none before-none"
