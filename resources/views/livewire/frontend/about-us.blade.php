@@ -1,4 +1,8 @@
 <div>
+    <style>
+        /* Hide the orange bar above images */
+        .img-box1:before { display: none !important; }
+    </style>
     <!--==============================
     Breadcumb
 ============================== -->
@@ -518,16 +522,7 @@
     ==============================-->
     @if($donationPage && ($donationPage->section1_title || $donationPage->section1_content || $donationPage->section2_title || $donationPage->section2_content || $donationPage->section3_title || $donationPage->section3_content))
     <section class="space-top">
-        <div
-            class="shape-mockup process-shape1-1 jump-reverse d-xxl-block d-none"
-            data-top="20%"
-            data-left="0"
-        >
-            <img
-                src="{{ asset('assets/img/shape/hand-bg-shape2-1.png') }}"
-                alt="img"
-            />
-        </div>
+      
         <div class="container">
             <div class="title-area text-center">
                 <span class="sub-title after-none before-none"

@@ -1,5 +1,9 @@
 <div>
     @section('content')
+    <style>
+        /* Hide the orange bar above images */
+        .img-box1:before { display: none !important; }
+    </style>
 
     <!--==============================
 Hero Area
