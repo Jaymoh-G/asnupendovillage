@@ -314,6 +314,18 @@
                                     </div>
                                 </div>
 
+                                <!-- Hidden defaults required by backend -->
+                                <input
+                                    type="hidden"
+                                    name="preferred_payment_method"
+                                    value="other"
+                                />
+                                <input
+                                    type="hidden"
+                                    name="currency"
+                                    value="KES"
+                                />
+
                                 <!-- Submit Button -->
                                 <div class="text-center mt-4">
                                     <button type="submit" class="th-btn">

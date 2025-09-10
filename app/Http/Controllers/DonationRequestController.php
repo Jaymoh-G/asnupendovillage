@@ -22,7 +22,7 @@ class DonationRequestController extends Controller
             'message' => 'nullable|string|max:2000',
         ]);
 
-        $toEmail = \App\Models\Setting::get('contact_email', 'info@asnupendovillage.org');
+        $toEmail = \App\Models\Setting::get('contact_email', 'info@breeztech.co.ke');
 
         try {
             $lines = [
