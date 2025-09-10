@@ -442,9 +442,9 @@ Story Area
                                 <div class="year-counter_number">
                                     <span class="counter-number">
                                         @if($homePageContent->has('story-section') && $homePageContent['story-section']->story_years_experience)
-                                            {{ $homePageContent['story-section']->story_years_experience }}
+                                            {{ $homePageContent['story-section']->story_years_experience }}+
                                         @else
-                                            16
+                                            16+
                                         @endif
                                     </span>
                                 </div>
