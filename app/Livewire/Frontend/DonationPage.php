@@ -48,8 +48,9 @@ class DonationPage extends Component
         $this->currency = 'KES';
 
         // Fetch static page content for donation page
-        $this->pageBanner = PageBanner::getBannerForPage('donation');
-        $this->pageContent = StaticPage::getByPageName('donation');
+        // Align with route/view slug 'donate-now' so the correct banner is found
+        $this->pageBanner = PageBanner::getBannerForPage('donate-now');
+        $this->pageContent = StaticPage::getByPageName('donate-now');
     }
 
     public function updatedPaymentMethod()

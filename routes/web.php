@@ -17,6 +17,8 @@ use App\Livewire\Frontend\Events;
 use App\Livewire\Frontend\Facilities;
 use App\Livewire\Frontend\YouTubeVideos;
 use App\Models\Program;
+use App\Http\Controllers\NewsletterController;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', Home::class)->name('home');
 
@@ -60,6 +62,9 @@ Route::post('/contact/submit', [App\Http\Controllers\ContactController::class, '
 
 // donation request (send details via email)
 Route::post('/donation/request', [App\Http\Controllers\DonationRequestController::class, 'submit'])->name('donation.request');
+
+// Newsletter subscribe
+Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
 
 // Generic static page route for other static pages
 Route::get('/page/{pageName}', function ($pageName) {
@@ -195,8 +200,8 @@ Route::post('/mpesa/check-status', [App\Http\Controllers\MpesaController::class,
 // routes/web.php
 Route::get('/whoami', function () {
     return [
-        'user' => auth()->user(),
-        'roles' => auth()->user()?->roles->pluck('name'),
+        'user' => Auth::user(),
+        'roles' => optional(Auth::user())->roles->pluck('name'),
         'session' => session()->all(),
     ];
 });

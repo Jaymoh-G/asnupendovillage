@@ -18,9 +18,9 @@
         <button class="th-menu-toggle"><i class="fal fa-times"></i></button>
         <div class="mobile-logo">
             <a href="{{ route('home') }}">
-                @if(\App\Models\Setting::get('header_logo'))
+                @if(\App\Models\Setting::get('mobile_logo'))
                 <img
-                    src="{{ asset('storage/' . \App\Models\Setting::get('header_logo')) }}"
+                    src="{{ asset('storage/' . \App\Models\Setting::get('mobile_logo')) }}"
                     alt="{{ \App\Models\Setting::get('site_name', 'ASN Upendo Village') }}"
                 />
                 @else
@@ -326,9 +326,9 @@
                     <div class="d-inline-block d-lg-none col-auto">
                         <div class="header-logo">
                             <a href="{{ route('home') }}">
-                                @if(\App\Models\Setting::get('header_logo'))
+                                @if(\App\Models\Setting::get('mobile_logo'))
                                 <img
-                                    src="{{ asset('storage/' . \App\Models\Setting::get('header_logo')) }}"
+                                    src="{{ asset('storage/' . \App\Models\Setting::get('mobile_logo')) }}"
                                     alt="{{ \App\Models\Setting::get('site_name', 'ASN Upendo Village') }}"
                                 />
                                 @else
@@ -498,6 +498,21 @@
 </header>
 
 <style>
+    /* Constrain logo sizes */
+    .header-logo img {
+        height: 88px;
+        width: auto;
+        max-width: 100%;
+        object-fit: contain;
+    }
+
+    .mobile-logo img {
+        height: 40px;
+        width: auto;
+        max-width: 100%;
+        object-fit: contain;
+    }
+
     /* Center Font Awesome icons in box-icon containers */
     .box-icon {
         position: relative;

@@ -15,16 +15,22 @@ Footer Area ==============================-->
                             Subscribe to Our Newsletter
                         </h4>
                         <p class="subscribe-box_text">
-                            Regular inspections and feedback mechanisms
+                            Get regular updates and news from us
                         </p>
                     </div>
                     <div class="col-xl-6 col-lg-8">
-                        <form class="newsletter-form">
+                        <form
+                            class="newsletter-form"
+                            action="{{ route('newsletter.subscribe') }}"
+                            method="POST"
+                        >
+                            @csrf
                             <div class="form-group">
                                 <input
                                     class="form-control"
                                     type="email"
                                     placeholder="Enter Email Address"
+                                    name="email"
                                     required=""
                                 />
                             </div>
@@ -81,16 +87,13 @@ Footer Area ==============================-->
                                 []); if (is_string($quickLinks)) { $quickLinks =
                                 json_decode($quickLinks, true) ?: []; } @endphp
                                 @if(!empty($quickLinks) &&
-                                is_array($quickLinks))
-                                @foreach($quickLinks as $link)
+                                is_array($quickLinks)) @foreach($quickLinks as $link)
                                 <li>
                                     <a href="{{ $link['url'] ?? '#' }}">{{
                                         $link["title"] ?? "Link"
                                     }}</a>
                                 </li>
                                 @endforeach @else
-
-
 
                                 <li>
                                     <a href="{{ route('contact-us') }}"
@@ -145,11 +148,19 @@ Footer Area ==============================-->
                                     <i class="fal fa-phone"></i>
                                     <div
                                         class="bg-shape1"
-                                        data-mask-src="{{ asset('assets/img/shape/info_card_icon_bg_shape_1_1.png') }}"
+                                        data-mask-src="{{
+                                            asset(
+                                                'assets/img/shape/info_card_icon_bg_shape_1_1.png'
+                                            )
+                                        }}"
                                     ></div>
                                     <div
                                         class="bg-shape2"
-                                        data-mask-src="{{ asset('assets/img/shape/info_card_icon_bg_shape_1_1.png') }}"
+                                        data-mask-src="{{
+                                            asset(
+                                                'assets/img/shape/info_card_icon_bg_shape_1_1.png'
+                                            )
+                                        }}"
                                     ></div>
                                 </div>
                                 <div class="box-content">
@@ -167,11 +178,19 @@ Footer Area ==============================-->
                                     <i class="fal fa-envelope-open"></i>
                                     <div
                                         class="bg-shape1"
-                                        data-mask-src="{{ asset('assets/img/shape/info_card_icon_bg_shape_1_1.png') }}"
+                                        data-mask-src="{{
+                                            asset(
+                                                'assets/img/shape/info_card_icon_bg_shape_1_1.png'
+                                            )
+                                        }}"
                                     ></div>
                                     <div
                                         class="bg-shape2"
-                                        data-mask-src="{{ asset('assets/img/shape/info_card_icon_bg_shape_1_1.png') }}"
+                                        data-mask-src="{{
+                                            asset(
+                                                'assets/img/shape/info_card_icon_bg_shape_1_1.png'
+                                            )
+                                        }}"
                                     ></div>
                                 </div>
                                 <div class="box-content">
@@ -195,7 +214,6 @@ Footer Area ==============================-->
                                     <i class="fab fa-facebook-f"></i>
                                 </a>
                                 @endif
-
                                 @if(\App\Models\Setting::get('social_youtube')
                                 &&
                                 !empty(\App\Models\Setting::get('social_youtube')))

@@ -44,6 +44,7 @@ class ManageSettings extends Page
     public ?string $mailchimp_list_id = null;
     public $header_logo = null; // FileUpload returns array or string
     public $footer_logo = null; // FileUpload returns array or string
+    public $mobile_logo = null; // FileUpload returns array or string
     public ?string $footer_about = null;
     public $footer_quick_links = []; // Repeater returns array
 
@@ -78,6 +79,7 @@ class ManageSettings extends Page
         $this->mailchimp_list_id = $formData['mailchimp_list_id'] ?? null;
         $this->header_logo = $formData['header_logo'] ?? null;
         $this->footer_logo = $formData['footer_logo'] ?? null;
+        $this->mobile_logo = $formData['mobile_logo'] ?? null;
         $this->footer_about = $formData['footer_about'] ?? null;
         $this->footer_quick_links = $formData['footer_quick_links'] ?? [];
     }
@@ -107,6 +109,12 @@ class ManageSettings extends Page
                                     ->directory('settings')
                                     ->maxSize(2048)
                                     ->default(Setting::get('header_logo', '')),
+                                Forms\Components\FileUpload::make('mobile_logo')
+                                    ->label('Mobile Logo')
+                                    ->image()
+                                    ->directory('settings')
+                                    ->maxSize(2048)
+                                    ->default(Setting::get('mobile_logo', '')),
                             ])
                             ->icon('heroicon-o-home'),
 
@@ -291,6 +299,11 @@ class ManageSettings extends Page
                 $value = $value[0] ?? null;
             }
 
+            if ($key === 'mobile_logo' && is_array($value)) {
+                // FileUpload returns an array, we need to get the first file path
+                $value = $value[0] ?? null;
+            }
+
             Setting::set($key, $value);
         }
 
@@ -320,7 +333,7 @@ class ManageSettings extends Page
         if (is_string($footerLogo) && !empty($footerLogo)) {
             $footerLogo = [$footerLogo]; // FileUpload expects array
         } elseif (empty($footerLogo)) {
-            $footerLogo = null;
+            $footerLogo = []; // Use empty array for FileUpload compatibility
         }
 
         // Get header logo and ensure it's properly formatted
@@ -328,7 +341,15 @@ class ManageSettings extends Page
         if (is_string($headerLogo) && !empty($headerLogo)) {
             $headerLogo = [$headerLogo]; // FileUpload expects array
         } elseif (empty($headerLogo)) {
-            $headerLogo = null;
+            $headerLogo = []; // Use empty array for FileUpload compatibility
+        }
+
+        // Get mobile logo and ensure it's properly formatted
+        $mobileLogo = Setting::get('mobile_logo', '');
+        if (is_string($mobileLogo) && !empty($mobileLogo)) {
+            $mobileLogo = [$mobileLogo]; // FileUpload expects array
+        } elseif (empty($mobileLogo)) {
+            $mobileLogo = []; // Use empty array for FileUpload compatibility
         }
 
         return [
@@ -353,6 +374,7 @@ class ManageSettings extends Page
             'mailchimp_api_key' => Setting::get('mailchimp_api_key', ''),
             'mailchimp_list_id' => Setting::get('mailchimp_list_id', ''),
             'header_logo' => $headerLogo,
+            'mobile_logo' => $mobileLogo,
             'footer_logo' => $footerLogo,
             'footer_about' => Setting::get('footer_about', ''),
             'footer_quick_links' => $footerQuickLinks,
