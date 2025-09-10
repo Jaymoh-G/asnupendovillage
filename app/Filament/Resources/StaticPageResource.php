@@ -128,9 +128,6 @@ class StaticPageResource extends Resource
                             ->disk('public')
                             ->directory('static-pages')
                             ->visibility('public')
-                            ->getUploadedFileUrlUsing(function ($file) {
-                                return rtrim(config('app.url'), '/') . '/public/storage/' . ltrim($file, '/');
-                            })
                             ->maxSize(5120)
                             ->helperText('Upload a featured image for the page. Images will maintain their natural aspect ratio.')
                             ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
@@ -176,9 +173,6 @@ class StaticPageResource extends Resource
                             ->disk('public')
                             ->directory('static-pages/gallery')
                             ->visibility('public')
-                            ->getUploadedFileUrlUsing(function ($file) {
-                                return rtrim(config('app.url'), '/') . '/public/storage/' . ltrim($file, '/');
-                            })
                             ->maxSize(5120)
                             ->helperText('Upload additional images for the page. These will be displayed in a gallery format. Images will maintain their natural aspect ratio.')
                             ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
@@ -248,9 +242,6 @@ class StaticPageResource extends Resource
                             ->disk('public')
                             ->directory('static-pages/section1')
                             ->visibility('public')
-                            ->getUploadedFileUrlUsing(function ($file) {
-                                return rtrim(config('app.url'), '/') . '/public/storage/' . ltrim($file, '/');
-                            })
                             ->maxSize(5120)
                             ->helperText('Images for section 1. Images will maintain their natural aspect ratio.')
                             ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
@@ -320,9 +311,6 @@ class StaticPageResource extends Resource
                             ->disk('public')
                             ->directory('static-pages/section2')
                             ->visibility('public')
-                            ->getUploadedFileUrlUsing(function ($file) {
-                                return rtrim(config('app.url'), '/') . '/public/storage/' . ltrim($file, '/');
-                            })
                             ->maxSize(5120)
                             ->helperText('Images for section 2. Images will maintain their natural aspect ratio.')
                             ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
@@ -391,9 +379,6 @@ class StaticPageResource extends Resource
                             ->disk('public')
                             ->directory('static-pages/section3')
                             ->visibility('public')
-                            ->getUploadedFileUrlUsing(function ($file) {
-                                return rtrim(config('app.url'), '/') . '/public/storage/' . ltrim($file, '/');
-                            })
                             ->maxSize(5120)
                             ->helperText('Images for section 3. Images will maintain their natural aspect ratio.')
                             ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
