@@ -39,142 +39,91 @@
     @endif
 
     <!--==============================
-    Donation Page Header
-    ==============================-->
-
-    <!--==============================
     Donation Form Section
     ==============================-->
     <section class="space-bottom">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-lg-12">
-                    <div>
-                        @if($showSuccess)
-                        <div
-                            class="alert alert-success alert-dismissible fade show"
-                            role="alert"
-                        >
-                            <i class="fas fa-check-circle me-2"></i>
-                            <strong>Thank you!</strong> Your donation has been
-                            successfully processed. You will receive a
-                            confirmation email shortly.
-                            <button
-                                type="button"
-                                class="btn-close"
-                                data-bs-dismiss="alert"
-                                aria-label="Close"
-                            ></button>
-                        </div>
-                        @endif
+                <div class="col-lg-10">
+                    @if(session('success'))
+                    <div
+                        class="alert alert-success alert-dismissible fade show"
+                        role="alert"
+                    >
+                        <i class="fas fa-check-circle me-2"></i>
+                        {{ session("success") }}
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="alert"
+                            aria-label="Close"
+                        ></button>
+                    </div>
+                    @endif @if(session('error'))
+                    <div
+                        class="alert alert-danger alert-dismissible fade show"
+                        role="alert"
+                    >
+                        <i class="fas fa-exclamation-circle me-2"></i>
+                        {{ session("error") }}
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="alert"
+                            aria-label="Close"
+                        ></button>
+                    </div>
+                    @endif
 
-                        @if($showError)
-                        <div
-                            class="alert alert-danger alert-dismissible fade show"
-                            role="alert"
-                        >
-                            <i class="fas fa-exclamation-circle me-2"></i>
-                            <strong>Error!</strong> {{ $errorMessage }}
-                            <button
-                                type="button"
-                                class="btn-close"
-                                data-bs-dismiss="alert"
-                                aria-label="Close"
-                            ></button>
-                        </div>
-                        @endif
-
-                        <!-- M-Pesa Status Display -->
-                        @if($mpesaStatus && $mpesaStatus !== 'completed' && $mpesaStatus !== 'failed')
-                        <div class="alert alert-info alert-dismissible fade show" role="alert">
-                            <i class="fas fa-info-circle me-2"></i>
-                            <strong>M-Pesa Payment Status:</strong>
-                            @if($mpesaStatus === 'initiating')
-                                <span class="text-warning">Initializing payment...</span>
-                            @elseif($mpesaStatus === 'pending')
-                                <span class="text-primary">STK push sent! Please check your phone and enter your M-Pesa PIN.</span>
-                                <div class="mt-2">
-                                    <small class="text-muted">
-                                        <i class="fas fa-clock me-1"></i>
-                                        Waiting for payment confirmation...
-                                    </small>
-                                </div>
-                                <div class="mt-3">
-                                    <button type="button" class="btn btn-primary btn-sm" wire:click="checkMpesaStatus">
-                                        <i class="fas fa-sync-alt me-1"></i>Check Payment Status
-                                    </button>
-                                    <small class="text-muted d-block mt-1">
-                                        <i class="fas fa-info-circle me-1"></i>
-                                        Click this button after entering your M-Pesa PIN to check if payment was successful.
-                                    </small>
-                                </div>
-                            @elseif($mpesaStatus === 'cancelled')
-                                <span class="text-warning">Payment was cancelled.</span>
-                            @elseif($mpesaStatus === 'timeout')
-                                <span class="text-warning">Payment request timed out.</span>
-                            @endif
-                        </div>
-                        @endif
-
-                        <!-- M-Pesa Success Messages -->
-                        @if($mpesaSuccessMessage && $mpesaStatus === 'pending')
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            <i class="fas fa-mobile-alt me-2"></i>
-                            <strong>M-Pesa Payment Initiated!</strong>
-                            <div class="mt-2">
-                                {{ $mpesaSuccessMessage }}
-                            </div>
-                            <button
-                                type="button"
-                                class="btn-close"
-                                data-bs-dismiss="alert"
-                                aria-label="Close"
-                            ></button>
-                        </div>
-                        @endif
-
-                        @if($mpesaSuccessMessage && $mpesaStatus === 'completed')
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            <i class="fas fa-check-circle me-2"></i>
-                            <strong>Payment Successful!</strong>
-                            <div class="mt-2">
-                                {{ $mpesaSuccessMessage }}
-                            </div>
-                            <button
-                                type="button"
-                                class="btn-close"
-                                data-bs-dismiss="alert"
-                                aria-label="Close"
-                            ></button>
-                        </div>
-                        @endif
-
-                        <div class="card shadow-lg">
-                            <div class="card-body p-5">
-                                <form
-                                    wire:submit.prevent="donate"
-                                    method="POST"
+                    <div class="card shadow-lg border-0 rounded-4">
+                        <div class="card-body p-4 p-md-5">
+                            <div
+                                class="alert alert-info mb-4 rounded-3"
+                                role="alert"
+                            >
+                                <i class="fas fa-info-circle me-2"></i>
+                                Please fill out this form to
+                                <strong>request donation payment details</strong
+                                >. Our team will review your request and send
+                                <strong
+                                    >payment instructions to your email</strong
                                 >
-                                    <div class="row">
-                                        <!-- Personal Information -->
-                                        <div class="col-md-8">
-                                            <h4 class="mb-4">
-                                                Personal Information
+                                shortly.
+                            </div>
+                            <form
+                                action="{{ route('donation.request') }}"
+                                method="POST"
+                            >
+                                @csrf
+                                <div class="row g-4">
+                                    <!-- Personal Information -->
+                                    <div class="col-lg-7">
+                                        <div
+                                            class="bg-light p-4 rounded-3 h-100"
+                                        >
+                                            <h4
+                                                class="mb-3 d-flex align-items-center"
+                                            >
+                                                <i
+                                                    class="fas fa-user me-2 text-theme"
+                                                ></i>
+                                                Your Contact Information
                                             </h4>
 
-                                            <div class="row">
-                                                <div class="col-md-4">
+                                            <div class="row g-3">
+                                                <div class="col-md-6">
                                                     <label
                                                         for="donor_name"
-                                                        class="form-label"
+                                                        class="form-label fw-semibold"
                                                         >Full Name *</label
                                                     >
                                                     <input
                                                         type="text"
-                                                        class="form-control @error('donor_name') is-invalid @enderror"
+                                                        class="form-control form-control-lg @error('donor_name') is-invalid @enderror"
                                                         id="donor_name"
-                                                        wire:model="donor_name"
+                                                        name="donor_name"
                                                         placeholder="Enter your full name"
+                                                        required
                                                     />
                                                     @error('donor_name')
                                                     <div
@@ -184,20 +133,47 @@
                                                     </div>
                                                     @enderror
                                                 </div>
-
-                                                <div class="col-md-4">
+                                                <div class="col-md-6">
+                                                    <label
+                                                        for="donor_phone"
+                                                        class="form-label fw-semibold"
+                                                        >Phone Number *</label
+                                                    >
+                                                    <input
+                                                        type="tel"
+                                                        class="form-control form-control-lg @error('donor_phone') is-invalid @enderror"
+                                                        id="donor_phone"
+                                                        name="donor_phone"
+                                                        placeholder="e.g., 0712345678"
+                                                        required
+                                                    />
+                                                    @error('donor_phone')
+                                                    <div
+                                                        class="invalid-feedback"
+                                                    >
+                                                        {{ $message }}
+                                                    </div>
+                                                    @enderror
+                                                </div>
+                                                <div class="col-12">
                                                     <label
                                                         for="donor_email"
-                                                        class="form-label"
+                                                        class="form-label fw-semibold"
                                                         >Email Address *</label
                                                     >
                                                     <input
                                                         type="email"
-                                                        class="form-control @error('donor_email') is-invalid @enderror"
+                                                        class="form-control form-control-lg @error('donor_email') is-invalid @enderror"
                                                         id="donor_email"
-                                                        wire:model="donor_email"
+                                                        name="donor_email"
                                                         placeholder="Your email address"
+                                                        required
                                                     />
+                                                    <small class="text-muted"
+                                                        >We will send payment
+                                                        details to this
+                                                        email.</small
+                                                    >
                                                     @error('donor_email')
                                                     <div
                                                         class="invalid-feedback"
@@ -207,54 +183,19 @@
                                                     @enderror
                                                 </div>
 
-                                                <div class="col-md-4">
-                                                    <label
-                                                        for="donor_phone"
-                                                        class="form-label"
-                                                        >Phone Number *</label
-                                                    >
-                                                    <input
-                                                        type="tel"
-                                                        class="form-control @error('donor_phone') is-invalid @enderror"
-                                                        id="donor_phone"
-                                                        wire:model="donor_phone"
-                                                        placeholder="e.g., 0712345678"
-                                                        wire:blur="validatePhoneNumber"
-                                                    />
-                                                    <div class="form-text small">
-                                                        <i class="fas fa-info-circle me-1"></i>
-                                                        Enter your M-Pesa registered phone number
-                                                        @if($payment_method === 'mpesa')
-                                                        <br><small class="text-info">Format: 0712345678, +254712345678, or 254712345678</small>
-                                                        <br><button type="button" class="btn btn-sm btn-outline-info mt-1" wire:click="validatePhoneNumber">
-                                                            <i class="fas fa-check me-1"></i>Validate Phone Number
-                                                        </button>
-                                                        @endif
-                                                    </div>
-                                                    @error('donor_phone')
-                                                    <div
-                                                        class="invalid-feedback"
-                                                    >
-                                                        {{ $message }}
-                                                    </div>
-                                                    @enderror
-                                                </div>
-                                            </div>
-
-                                            <div class="row mt-3">
-                                                <div class="col-md-12">
+                                                <div class="col-12">
                                                     <label
                                                         for="message"
-                                                        class="form-label"
-                                                        >Message
-                                                        (Optional)</label
+                                                        class="form-label fw-semibold"
+                                                        >Additional
+                                                        information</label
                                                     >
                                                     <textarea
-                                                        class="form-control @error('message') is-invalid @enderror"
+                                                        class="form-control form-control-lg @error('message') is-invalid @enderror"
                                                         id="message"
-                                                        wire:model="message"
-                                                        rows="3"
-                                                        placeholder="Leave a message with your donation..."
+                                                        name="message"
+                                                        rows="4"
+                                                        placeholder="Share any preference (e.g., purpose of donation, reference, special instructions)"
                                                     ></textarea>
                                                     @error('message')
                                                     <div
@@ -266,34 +207,53 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
 
-                                        <!-- Donation Details -->
-                                        <div class="col-md-4">
-                                            <h4 class="mb-4">
-                                                Donation Details
+                                    <!-- Donation Details -->
+                                    <div class="col-lg-5">
+                                        <div
+                                            class="bg-light p-4 rounded-3 h-100"
+                                        >
+                                            <h4
+                                                class="mb-3 d-flex align-items-center"
+                                            >
+                                                <i
+                                                    class="fas fa-donate me-2 text-theme"
+                                                ></i>
+                                                Donation Intent
                                             </h4>
 
                                             <div class="form-group mb-3">
                                                 <label
                                                     for="amount"
-                                                    class="form-label"
+                                                    class="form-label fw-semibold"
                                                     >Donation Amount *</label
                                                 >
-                                                <div class="input-group">
+                                                <div
+                                                    class="input-group input-group-lg"
+                                                >
                                                     <span
                                                         class="input-group-text"
-                                                        >{{ $currency }}</span
+                                                        >{{
+                                                            $currency ?? "KES"
+                                                        }}</span
                                                     >
                                                     <input
                                                         type="number"
                                                         class="form-control @error('amount') is-invalid @enderror"
                                                         id="amount"
-                                                        wire:model="amount"
+                                                        name="amount"
                                                         placeholder="Enter amount"
                                                         min="1"
                                                         step="0.01"
+                                                        required
                                                     />
                                                 </div>
+                                                <small class="text-muted"
+                                                    >This helps us provide
+                                                    accurate payment
+                                                    instructions.</small
+                                                >
                                                 @error('amount')
                                                 <div class="invalid-feedback">
                                                     {{ $message }}
@@ -302,315 +262,74 @@
                                             </div>
 
                                             <div class="form-group mb-3">
-                                                <label class="form-label"
-                                                    >Payment Method *</label
+                                                <label
+                                                    for="preferred_contact_method"
+                                                    class="form-label fw-semibold"
+                                                    >Preferred Contact Method
+                                                    (Optional)</label
                                                 >
-                                                <div
-                                                    wire:loading
-                                                    wire:target="payment_method"
-                                                    class="text-muted small mb-2"
+                                                <select
+                                                    class="form-select form-select-lg @error('preferred_contact_method') is-invalid @enderror"
+                                                    id="preferred_contact_method"
+                                                    name="preferred_contact_method"
                                                 >
-                                                    <i
-                                                        class="fas fa-spinner fa-spin me-1"
-                                                    ></i
-                                                    >Loading instructions...
+                                                    <option value="" selected>
+                                                        Default (Email)
+                                                    </option>
+                                                    <option value="email">
+                                                        Email
+                                                    </option>
+                                                    <option value="phone">
+                                                        Phone
+                                                    </option>
+                                                </select>
+                                                @error('preferred_contact_method')
+                                                <div class="invalid-feedback">
+                                                    {{ $message }}
                                                 </div>
-                                                <div
-                                                    class="payment-methods p-3 rounded"
-                                                    style="
-                                                        background: linear-gradient(
-                                                            135deg,
-                                                            #f8f9fa 0%,
-                                                            #ffffff 100%
-                                                        );
-                                                        border: 1px solid
-                                                            #dee2e6;
-                                                    "
+                                                @enderror
+                                            </div>
+
+                                            <div class="form-group mb-0">
+                                                <label
+                                                    for="donation_purpose"
+                                                    class="form-label fw-semibold"
+                                                    >Donation Purpose
+                                                    (Optional)</label
                                                 >
-                                                    <div
-                                                        class="form-check mb-2"
-                                                    >
-                                                        <input
-                                                            class="form-check-input"
-                                                            type="radio"
-                                                            wire:model.live="payment_method"
-                                                            value="mpesa"
-                                                            id="mpesa"
-                                                        />
-                                                        <label
-                                                            class="form-check-label"
-                                                            for="mpesa"
-                                                        >
-                                                            <i
-                                                                class="fas fa-mobile-alt text-success me-2"
-                                                            ></i>
-                                                            M-Pesa
-                                                        </label>
-                                                    </div>
-                                                    <div
-                                                        class="form-check mb-2"
-                                                    >
-                                                        <input
-                                                            class="form-check-input"
-                                                            type="radio"
-                                                            wire:model.live="payment_method"
-                                                            value="paypal"
-                                                            id="paypal"
-                                                        />
-                                                        <label
-                                                            class="form-check-label"
-                                                            for="paypal"
-                                                        >
-                                                            <i
-                                                                class="fab fa-paypal text-primary me-2"
-                                                            ></i>
-                                                            PayPal
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input
-                                                            class="form-check-input"
-                                                            type="radio"
-                                                            wire:model.live="payment_method"
-                                                            value="bank"
-                                                            id="bank"
-                                                        />
-                                                        <label
-                                                            class="form-check-label"
-                                                            for="bank"
-                                                        >
-                                                            <i
-                                                                class="fas fa-university text-info me-2"
-                                                            ></i>
-                                                            Bank Transfer
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                @error('payment_method')
-                                                <div
-                                                    class="text-danger small mt-1"
-                                                >
+                                                <input
+                                                    type="text"
+                                                    class="form-control form-control-lg @error('donation_purpose') is-invalid @enderror"
+                                                    id="donation_purpose"
+                                                    name="donation_purpose"
+                                                    placeholder="e.g., General support, specific program name"
+                                                />
+                                                @error('donation_purpose')
+                                                <div class="invalid-feedback">
                                                     {{ $message }}
                                                 </div>
                                                 @enderror
                                             </div>
                                         </div>
                                     </div>
+                                </div>
 
-                                    <!-- Payment Method Instructions -->
-                                    @if($payment_method)
-                                    <div
-                                        class="payment-instructions mt-4 p-4 rounded border"
-                                        wire:loading.class="opacity-50"
-                                        style="
-                                            @if ($payment_method === 'mpesa')
-                                                background:
-                                                linear-gradient(
-                                                    135deg,
-                                                    #f8f9fa 0%,
-                                                    #e8f5e8 100%
-                                                )
-                                            ;
-                                            border-left: 4px solid #28a745 !important;
-                                            @elseif ($payment_method === 'paypal')
-                                                background: linear-gradient(135deg, #f8f9fa 0%, #e8f4fd 100%);
-                                            border-left: 4px solid #0070ba !important;
-                                            @elseif ($payment_method === 'bank')
-                                                background: linear-gradient(135deg, #f8f9fa 0%, #e8f4ff 100%);
-                                            border-left: 4px solid #17a2b8 !important;
-                                            @endif;
-                                        "
+                                <!-- Submit Button -->
+                                <div class="text-center mt-4">
+                                    <button type="submit" class="th-btn">
+                                        <i class="fas fa-paper-plane me-2"></i>
+                                        Request Donation Payment Details
+                                    </button>
+                                    <p
+                                        class="text-muted mt-2 mb-0"
+                                        style="font-size: 0.9rem"
                                     >
-                                        @if($payment_method === 'mpesa')
-                                        <h5 class="text-success mb-3">
-                                            <i
-                                                class="fas fa-mobile-alt me-2"
-                                            ></i
-                                            >M-Pesa Payment Instructions
-                                        </h5>
-                                        <p class="mb-2">
-                                            You will receive an M-Pesa prompt on
-                                            your phone to complete the payment.
-                                        </p>
-                                        <ul class="mb-0">
-                                            <li>
-                                                Ensure your phone has sufficient
-                                                M-Pesa balance
-                                            </li>
-                                            <li>
-                                                Enter your M-Pesa PIN when
-                                                prompted
-                                            </li>
-                                            <li>
-                                                You will receive a confirmation
-                                                SMS
-                                            </li>
-                                        </ul>
-                                        @elseif($payment_method === 'paypal')
-                                        <h5 class="text-primary mb-3">
-                                            <i class="fab fa-paypal me-2"></i
-                                            >PayPal Payment Instructions
-                                        </h5>
-                                        <p class="mb-2">
-                                            You will be redirected to PayPal to
-                                            complete your payment securely.
-                                        </p>
-                                        <ul class="mb-0">
-                                            <li>
-                                                You can pay with your PayPal
-                                                balance or card
-                                            </li>
-                                            <li>
-                                                No PayPal account required for
-                                                card payments
-                                            </li>
-                                            <li>
-                                                Secure payment processing by
-                                                PayPal
-                                            </li>
-                                        </ul>
-                                        @elseif($payment_method === 'bank')
-                                        <h5 class="text-info mb-3">
-                                            <i
-                                                class="fas fa-university me-2"
-                                            ></i
-                                            >Bank Transfer Instructions
-                                        </h5>
-                                        <p class="mb-2">
-                                            Please use the following bank
-                                            details to make your transfer:
-                                        </p>
-                                        <div
-                                            class="bank-details p-4 bg-white rounded border shadow-sm"
-                                            style="
-                                                border-color: #17a2b8 !important;
-                                            "
-                                        >
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <strong>Bank Name:</strong
-                                                    ><br />
-                                                    <span
-                                                        class="text-muted"
-                                                        >{{ \App\Models\Setting::get('payment_bank_name', 'Equity Bank Kenya') }}</span
-                                                    >
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <strong
-                                                        >Account Name:</strong
-                                                    ><br />
-                                                    <span
-                                                        class="text-muted"
-                                                        >{{ \App\Models\Setting::get('payment_account_name', 'ASN Upendo Village') }}</span
-                                                    >
-                                                </div>
-                                            </div>
-                                            <div class="row mt-2">
-                                                <div class="col-md-6">
-                                                    <strong
-                                                        >Account Number:</strong
-                                                    ><br />
-                                                    <span
-                                                        class="text-muted"
-                                                        >{{ \App\Models\Setting::get('payment_account_number', '1234567890') }}</span
-                                                    >
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <strong>Branch:</strong
-                                                    ><br />
-                                                    <span
-                                                        class="text-muted"
-                                                        >{{ \App\Models\Setting::get('payment_branch', 'Nairobi Main Branch') }}</span
-                                                    >
-                                                </div>
-                                            </div>
-                                            <div class="row mt-2">
-                                                <div class="col-md-6">
-                                                    <strong>Swift Code:</strong
-                                                    ><br />
-                                                    <span
-                                                        class="text-muted"
-                                                        >{{ \App\Models\Setting::get('payment_swift_code', 'EQBLKEXX') }}</span
-                                                    >
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <strong>Reference:</strong
-                                                    ><br />
-                                                    <span class="text-muted"
-                                                        >DON-{{
-                                                            date("Ymd")
-                                                        }}-{{
-                                                            rand(1000, 9999)
-                                                        }}</span
-                                                    >
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <p class="mt-3 mb-2">
-                                            <strong>Important Notes:</strong>
-                                        </p>
-                                        <ul class="mb-0">
-                                            <li>
-                                                Please include the reference
-                                                number in your transfer
-                                                description
-                                            </li>
-                                            <li>
-                                                Transfers typically take 1-2
-                                                business days to process
-                                            </li>
-                                            <li>
-                                                You will receive a confirmation
-                                                email once the transfer is
-                                                received
-                                            </li>
-                                        </ul>
-                                        @endif
-                                    </div>
-                                    @endif
-
-                                    <!-- Submit Button -->
-                                    <div class="text-center mt-4">
-                                        <button
-                                            type="submit"
-                                            class="th-btn"
-                                            wire:loading.attr="disabled"
-                                            wire:loading.class="disabled"
-                                            @if($mpesaProcessing || $mpesaStatus === 'pending') disabled @endif
-                                        >
-                                            @if($mpesaProcessing)
-                                                <i class="fas fa-spinner fa-spin me-2"></i>
-                                                Initiating M-Pesa Payment...
-                                            @elseif($mpesaStatus === 'pending')
-                                                <i class="fas fa-mobile-alt me-2"></i>
-                                                STK Push Sent - Check Your Phone
-                                            @else
-                                                <span wire:loading.remove>
-                                                    <i class="fas fa-heart me-2"></i>
-                                                    Make Donation
-                                                </span>
-                                                <span wire:loading>
-                                                    <i class="fas fa-spinner fa-spin me-2"></i>
-                                                    Processing...
-                                                </span>
-                                            @endif
-                                        </button>
-
-                                        @if($mpesaStatus === 'pending')
-                                        <div class="mt-3">
-                                            <button
-                                                type="button"
-                                                class="btn btn-outline-secondary btn-sm"
-                                                wire:click="checkMpesaStatus"
-                                            >
-                                                <i class="fas fa-sync-alt me-1"></i>
-                                                Check Payment Status
-                                            </button>
-                                        </div>
-                                        @endif
-                                    </div>
-                                </form>
-                            </div>
+                                        By submitting this form, you agree to be
+                                        contacted at the email provided with
+                                        donation payment instructions.
+                                    </p>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -619,231 +338,49 @@
     </section>
 
     <style>
-        .payment-methods {
-            border-radius: 0.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .payment-methods:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .payment-instructions {
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .payment-instructions:hover {
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-        }
-
-        .bank-details {
-            transition: all 0.3s ease;
-        }
-
-        .bank-details:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(23, 162, 184, 0.2) !important;
-        }
-
-        .form-control:focus {
-            border-color: #007bff;
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-        }
-
-        .form-check-input:checked {
-            background-color: #007bff;
-            border-color: #007bff;
-        }
-
-        .form-check-input:focus {
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-        }
-
-        .form-check-label {
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .form-check-label:hover {
-            color: #007bff;
-        }
-
         .th-btn {
-            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
-            border: none;
-            color: white;
+            background: var(--theme-color, #1a685b);
+            border: 1px solid var(--theme-color, #1a685b);
+            color: #fff;
             padding: 12px 30px;
             border-radius: 50px;
             font-weight: 600;
             transition: all 0.3s ease;
         }
-
         .th-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+            box-shadow: 0 5px 15px
+                color-mix(in srgb, var(--theme-color, #1a685b) 30%, transparent);
+            opacity: 0.95;
         }
-
-        .th-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
+        .text-theme {
+            color: var(--theme-color, #1a685b);
         }
-
-        /* Donation Content Styling */
-        .donation-content {
-            line-height: 1.8;
-            color: #666;
-            font-size: 1.1rem;
+        .alert-info {
+            border-left: 4px solid var(--theme-color2, #ffac00);
         }
-
-        .donation-content p {
-            margin-bottom: 20px;
+        .input-group-text {
+            background: color-mix(
+                in srgb,
+                var(--theme-color, #1a685b) 10%,
+                #fff
+            );
+            color: var(--theme-color, #1a685b);
+            border-color: color-mix(
+                in srgb,
+                var(--theme-color, #1a685b) 25%,
+                #ddd
+            );
         }
-
-        .donation-content h3,
-        .donation-content h4 {
-            color: #1a685b;
-            margin-top: 30px;
-            margin-bottom: 15px;
-        }
-
-        .donation-content ul,
-        .donation-content ol {
-            margin-bottom: 20px;
-            padding-left: 20px;
-        }
-
-        .donation-content li {
-            margin-bottom: 10px;
-        }
-
-        /* Impact Section Styling */
-        .impact-content {
-            line-height: 1.8;
-            color: #666;
-            font-size: 1.1rem;
-        }
-
-        .impact-content p {
-            margin-bottom: 20px;
-        }
-
-        .impact-content h3,
-        .impact-content h4 {
-            color: #1a685b;
-            margin-top: 30px;
-            margin-bottom: 15px;
-        }
-
-        /* Additional Info Section Styling */
-        .additional-info {
-            background: #f8f9fa;
-            padding: 40px;
-            border-radius: 15px;
-            border: 2px solid #e9ecef;
-            line-height: 1.8;
-            color: #666;
-        }
-
-        .additional-info p {
-            margin-bottom: 20px;
-        }
-
-        .additional-info h3,
-        .additional-info h4 {
-            color: #1a685b;
-            margin-top: 25px;
-            margin-bottom: 15px;
-        }
-
-        .additional-info ul,
-        .additional-info ol {
-            margin-bottom: 20px;
-            padding-left: 20px;
-        }
-
-        .additional-info li {
-            margin-bottom: 10px;
-        }
-
-        /* Title Area Styling */
-        .title-area .sub-title {
-            color: #ffac00;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 15px;
-            display: block;
-        }
-
-        .title-area .sec-title {
-            color: #1a685b;
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 0;
+        .form-control:focus,
+        .form-select:focus {
+            border-color: color-mix(
+                in srgb,
+                var(--theme-color, #1a685b) 45%,
+                #ccc
+            );
+            box-shadow: 0 0 0 0.2rem
+                color-mix(in srgb, var(--theme-color, #1a685b) 20%, transparent);
         }
     </style>
-
-    <!-- M-Pesa Status Polling Script -->
-    <script>
-        document.addEventListener('livewire:init', () => {
-            let pollingInterval = null;
-            let attemptCount = 0;
-
-            Livewire.on('start-mpesa-polling', (data) => {
-                const { checkoutId, maxAttempts } = data;
-                attemptCount = 0;
-
-                // Clear any existing interval
-                if (pollingInterval) {
-                    clearInterval(pollingInterval);
-                }
-
-                // Start polling every 3 seconds (more aggressive)
-                pollingInterval = setInterval(() => {
-                    attemptCount++;
-
-                    // Check if we've exceeded max attempts
-                    if (attemptCount >= maxAttempts) {
-                        clearInterval(pollingInterval);
-                        console.log('M-Pesa polling timeout reached');
-                        return;
-                    }
-
-                    // Call the Livewire method to check status
-                    const livewireComponent = document.querySelector('[wire\\:id]');
-                    if (livewireComponent) {
-                        const wireId = livewireComponent.getAttribute('wire:id');
-                        if (wireId) {
-                            Livewire.find(wireId).call('checkMpesaStatus');
-                        }
-                    }
-
-                }, 3000); // Poll every 3 seconds instead of 5
-            });
-
-            // Clean up interval when component is destroyed
-            document.addEventListener('livewire:destroy', () => {
-                if (pollingInterval) {
-                    clearInterval(pollingInterval);
-                }
-            });
-
-            // Add manual status check button functionality
-            document.addEventListener('click', function(e) {
-                if (e.target && e.target.matches('[wire\\:click="checkMpesaStatus"]')) {
-                    // Show loading state
-                    e.target.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Checking...';
-                    e.target.disabled = true;
-
-                    // Re-enable button after 2 seconds
-                    setTimeout(() => {
-                        e.target.innerHTML = '<i class="fas fa-sync-alt me-1"></i>Check Payment Status';
-                        e.target.disabled = false;
-                    }, 2000);
-                }
-            });
-        });
-    </script>
 </div>

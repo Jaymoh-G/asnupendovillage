@@ -58,6 +58,9 @@ Route::get('/thank-you', function () {
 Route::get('/contact-us', ContactUs::class)->name('contact-us');
 Route::post('/contact/submit', [App\Http\Controllers\ContactController::class, 'submit'])->name('contact.submit');
 
+// donation request (send details via email)
+Route::post('/donation/request', [App\Http\Controllers\DonationRequestController::class, 'submit'])->name('donation.request');
+
 // Generic static page route for other static pages
 Route::get('/page/{pageName}', function ($pageName) {
     $page = \App\Models\StaticPage::where('page_name', $pageName)->where('is_active', true)->first();
