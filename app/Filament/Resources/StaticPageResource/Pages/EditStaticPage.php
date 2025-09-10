@@ -6,6 +6,7 @@ use App\Filament\Resources\StaticPageResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 
 class EditStaticPage extends EditRecord
 {
@@ -138,9 +139,9 @@ class EditStaticPage extends EditRecord
                             ->multiple()
                             ->image()
                             ->imageEditor()
-                            ->imageCropAspectRatio('16:9')
-                            ->imageResizeTargetWidth('800')
-                            ->imageResizeTargetHeight('450')
+                            ->imageCropAspectRatio(fn(Get $get) => $get('page_name') === 'founder' ? '3:4' : '16:9')
+                            ->imageResizeTargetWidth(fn(Get $get) => $get('page_name') === 'founder' ? '900' : '800')
+                            ->imageResizeTargetHeight(fn(Get $get) => $get('page_name') === 'founder' ? '1200' : '450')
                             ->directory('static-pages/section1')
                             ->visibility('public')
                             ->maxSize(5120)
@@ -182,9 +183,9 @@ class EditStaticPage extends EditRecord
                             ->multiple()
                             ->image()
                             ->imageEditor()
-                            ->imageCropAspectRatio('16:9')
-                            ->imageResizeTargetWidth('800')
-                            ->imageResizeTargetHeight('450')
+                            ->imageCropAspectRatio(fn(Get $get) => $get('page_name') === 'founder' ? '3:4' : '16:9')
+                            ->imageResizeTargetWidth(fn(Get $get) => $get('page_name') === 'founder' ? '900' : '800')
+                            ->imageResizeTargetHeight(fn(Get $get) => $get('page_name') === 'founder' ? '1200' : '450')
                             ->directory('static-pages/section2')
                             ->visibility('public')
                             ->maxSize(5120)

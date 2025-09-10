@@ -122,25 +122,13 @@
                         <div class="widget widget_categories">
                             <h3 class="widget_title">Program Information</h3>
                             <ul>
-                                @if($program->featured)
-                                <li>
-                                    <strong>Status:</strong>
-                                    <span class="status-badge status-active"
-                                        >Featured Program</span
-                                    >
-                                </li>
-                                @endif @if($program->excerpt)
+                             @if($program->excerpt)
                                 <li>
                                     <strong>Description:</strong>
                                     {{ \Illuminate\Support\Str::limit($program->excerpt, 100) }}
                                 </li>
                                 @endif
-                                <li>
-                                    <strong>Category:</strong>
-                                    <span class="program-category"
-                                        >Community Development</span
-                                    >
-                                </li>
+
                             </ul>
                         </div>
 

@@ -4,6 +4,11 @@
         .contact-feature .box-text {
             max-width: 250px;
         }
+        /* Ensure the map is not black & white */
+        .contact-map iframe {
+            -webkit-filter: none !important;
+            filter: none !important;
+        }
     </style>
     <!--==============================
     Breadcumb

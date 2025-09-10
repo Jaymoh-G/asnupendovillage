@@ -135,6 +135,25 @@
             </div>
         </div>
     </section>
+    @endif @if($pageContent && isset($pageContent->section3_image_urls) &&
+    is_array($pageContent->section3_image_urls) &&
+    count($pageContent->section3_image_urls) > 0)
+    <section class="space">
+        <div class="container">
+            <div class="row gy-4">
+                @foreach($pageContent->section3_image_urls as $imageUrl)
+                <div class="col-md-6 col-lg-4">
+                    <div class="section-image-item">
+                        <img
+                            src="{{ $imageUrl }}"
+                            alt="Founder Section Image"
+                        />
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
     @endif
 
     <style>
@@ -223,21 +242,21 @@
         .img-box1 .img1 {
             border: 3px solid #ffac00;
             border-radius: 15px;
-            overflow: visible;
+            overflow: hidden;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
             position: relative;
             z-index: 2;
-            height: auto;
-            display: block;
-            width: auto;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
         }
 
         .img-box1 .img1 img {
-            width: auto;
+            width: 100%;
             height: auto;
             display: block;
-            max-width: 100%;
-            max-height: 600px;
+            aspect-ratio: 3 / 4; /* Portrait ratio */
+            object-fit: cover;
         }
 
         /* Remove background from decorative shapes */

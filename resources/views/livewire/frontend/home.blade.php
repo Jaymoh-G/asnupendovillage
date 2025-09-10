@@ -3,6 +3,13 @@
     <style>
         /* Hide the orange bar above images */
         .img-box1:before { display: none !important; }
+
+        /* Programs section: equal-height cards */
+        #programSlider1 .swiper-wrapper { align-items: stretch; }
+        #programSlider1 .swiper-slide { height: auto; }
+        .service-card { display: flex; flex-direction: column; height: 100%; }
+        .service-card .box-content { display: flex; flex-direction: column; flex: 1; }
+        .service-card .box-content .th-btn { margin-top: auto; }
     </style>
 
     <!--==============================
