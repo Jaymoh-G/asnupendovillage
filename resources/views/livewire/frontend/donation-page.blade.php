@@ -95,19 +95,18 @@
                                 method="POST"
                             >
                                 @csrf
-                                <div class="row g-4">
-                                    <!-- Personal Information -->
-                                    <div class="col-lg-7">
+                                <div class="row justify-content-center">
+                                    <div class="col-lg-10">
                                         <div
-                                            class="bg-light p-4 rounded-3 h-100"
+                                            class="bg-light p-4 p-md-5 rounded-3"
                                         >
                                             <h4
-                                                class="mb-3 d-flex align-items-center"
+                                                class="mb-4 d-flex align-items-center"
                                             >
                                                 <i
                                                     class="fas fa-user me-2 text-theme"
                                                 ></i>
-                                                Your Contact Information
+                                                Donation Request Information
                                             </h4>
 
                                             <div class="row g-3">
@@ -182,13 +181,67 @@
                                                     </div>
                                                     @enderror
                                                 </div>
-
+                                                <div class="col-md-6">
+                                                    <label
+                                                        for="preferred_contact_method"
+                                                        class="form-label fw-semibold"
+                                                        >Preferred Contact
+                                                        Method (Optional)</label
+                                                    >
+                                                    <select
+                                                        class="form-select form-select-lg @error('preferred_contact_method') is-invalid @enderror"
+                                                        id="preferred_contact_method"
+                                                        name="preferred_contact_method"
+                                                    >
+                                                        <option
+                                                            value=""
+                                                            selected
+                                                        >
+                                                            Default (Email)
+                                                        </option>
+                                                        <option value="email">
+                                                            Email
+                                                        </option>
+                                                        <option value="phone">
+                                                            Phone
+                                                        </option>
+                                                    </select>
+                                                    @error('preferred_contact_method')
+                                                    <div
+                                                        class="invalid-feedback"
+                                                    >
+                                                        {{ $message }}
+                                                    </div>
+                                                    @enderror
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label
+                                                        for="donation_purpose"
+                                                        class="form-label fw-semibold"
+                                                        >Donation Purpose
+                                                        (Optional)</label
+                                                    >
+                                                    <input
+                                                        type="text"
+                                                        class="form-control form-control-lg @error('donation_purpose') is-invalid @enderror"
+                                                        id="donation_purpose"
+                                                        name="donation_purpose"
+                                                        placeholder="e.g., General support, specific program name"
+                                                    />
+                                                    @error('donation_purpose')
+                                                    <div
+                                                        class="invalid-feedback"
+                                                    >
+                                                        {{ $message }}
+                                                    </div>
+                                                    @enderror
+                                                </div>
                                                 <div class="col-12">
                                                     <label
                                                         for="message"
                                                         class="form-label fw-semibold"
                                                         >Additional
-                                                        information</label
+                                                        Information</label
                                                     >
                                                     <textarea
                                                         class="form-control form-control-lg @error('message') is-invalid @enderror"
@@ -205,110 +258,6 @@
                                                     </div>
                                                     @enderror
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Donation Details -->
-                                    <div class="col-lg-5">
-                                        <div
-                                            class="bg-light p-4 rounded-3 h-100"
-                                        >
-                                            <h4
-                                                class="mb-3 d-flex align-items-center"
-                                            >
-                                                <i
-                                                    class="fas fa-donate me-2 text-theme"
-                                                ></i>
-                                                Donation Intent
-                                            </h4>
-
-                                            <div class="form-group mb-3">
-                                                <label
-                                                    for="amount"
-                                                    class="form-label fw-semibold"
-                                                    >Donation Amount *</label
-                                                >
-                                                <div
-                                                    class="input-group input-group-lg"
-                                                >
-                                                    <span
-                                                        class="input-group-text"
-                                                        >{{
-                                                            $currency ?? "KES"
-                                                        }}</span
-                                                    >
-                                                    <input
-                                                        type="number"
-                                                        class="form-control @error('amount') is-invalid @enderror"
-                                                        id="amount"
-                                                        name="amount"
-                                                        placeholder="Enter amount"
-                                                        min="1"
-                                                        step="0.01"
-                                                        required
-                                                    />
-                                                </div>
-                                                <small class="text-muted"
-                                                    >This helps us provide
-                                                    accurate payment
-                                                    instructions.</small
-                                                >
-                                                @error('amount')
-                                                <div class="invalid-feedback">
-                                                    {{ $message }}
-                                                </div>
-                                                @enderror
-                                            </div>
-
-                                            <div class="form-group mb-3">
-                                                <label
-                                                    for="preferred_contact_method"
-                                                    class="form-label fw-semibold"
-                                                    >Preferred Contact Method
-                                                    (Optional)</label
-                                                >
-                                                <select
-                                                    class="form-select form-select-lg @error('preferred_contact_method') is-invalid @enderror"
-                                                    id="preferred_contact_method"
-                                                    name="preferred_contact_method"
-                                                >
-                                                    <option value="" selected>
-                                                        Default (Email)
-                                                    </option>
-                                                    <option value="email">
-                                                        Email
-                                                    </option>
-                                                    <option value="phone">
-                                                        Phone
-                                                    </option>
-                                                </select>
-                                                @error('preferred_contact_method')
-                                                <div class="invalid-feedback">
-                                                    {{ $message }}
-                                                </div>
-                                                @enderror
-                                            </div>
-
-                                            <div class="form-group mb-0">
-                                                <label
-                                                    for="donation_purpose"
-                                                    class="form-label fw-semibold"
-                                                    >Donation Purpose
-                                                    (Optional)</label
-                                                >
-                                                <input
-                                                    type="text"
-                                                    class="form-control form-control-lg @error('donation_purpose') is-invalid @enderror"
-                                                    id="donation_purpose"
-                                                    name="donation_purpose"
-                                                    placeholder="e.g., General support, specific program name"
-                                                />
-                                                @error('donation_purpose')
-                                                <div class="invalid-feedback">
-                                                    {{ $message }}
-                                                </div>
-                                                @enderror
                                             </div>
                                         </div>
                                     </div>
