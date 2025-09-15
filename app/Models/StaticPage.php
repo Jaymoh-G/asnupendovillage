@@ -93,7 +93,7 @@ class StaticPage extends Model
             return null;
         }
 
-        return rtrim(config('app.url'), '/') . '/public/storage/' . ltrim($this->featured_image, '/');
+        return rtrim(config('app.url'), '/') . '/storage/' . ltrim($this->featured_image, '/');
     }
 
     /**
@@ -105,7 +105,7 @@ class StaticPage extends Model
             return [];
         }
 
-        $base = rtrim(config('app.url'), '/') . '/public/storage/';
+        $base = rtrim(config('app.url'), '/') . '/storage/';
         return array_map(function ($image) use ($base) {
             return $base . ltrim($image, '/');
         }, $this->images);
@@ -145,7 +145,7 @@ class StaticPage extends Model
             return [];
         }
 
-        $base = rtrim(config('app.url'), '/') . '/public/storage/';
+        $base = rtrim(config('app.url'), '/') . '/storage/';
         return array_map(function ($image) use ($base) {
             return $base . ltrim($image, '/');
         }, $this->section1_images);
@@ -160,7 +160,7 @@ class StaticPage extends Model
             return [];
         }
 
-        $base = rtrim(config('app.url'), '/') . '/public/storage/';
+        $base = rtrim(config('app.url'), '/') . '/storage/';
         return array_map(function ($image) use ($base) {
             return $base . ltrim($image, '/');
         }, $this->section2_images);
@@ -175,7 +175,7 @@ class StaticPage extends Model
             return [];
         }
 
-        $base = rtrim(config('app.url'), '/') . '/public/storage/';
+        $base = rtrim(config('app.url'), '/') . '/storage/';
         return array_map(function ($image) use ($base) {
             return $base . ltrim($image, '/');
         }, $this->section3_images);
