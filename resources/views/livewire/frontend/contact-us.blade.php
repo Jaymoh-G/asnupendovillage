@@ -52,6 +52,35 @@ Contact Area
         id="contact-sec"
     >
         <div class="container">
+            @if(session('success'))
+            <div
+                class="alert alert-success alert-dismissible fade show"
+                role="alert"
+            >
+                <i class="fas fa-check-circle me-2"></i>
+                {{ session("success") }}
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"
+                ></button>
+            </div>
+            @endif @if(session('error'))
+            <div
+                class="alert alert-danger alert-dismissible fade show"
+                role="alert"
+            >
+                <i class="fas fa-exclamation-circle me-2"></i>
+                {{ session("error") }}
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"
+                ></button>
+            </div>
+            @endif
             <div class="contact-wrap1">
                 <div class="row gx-60 gy-40">
                     <div class="col-xl-4 col-lg-5">
