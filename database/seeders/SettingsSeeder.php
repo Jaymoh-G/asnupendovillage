@@ -15,12 +15,30 @@ class SettingsSeeder extends Seeder
         $settings = [
             // Contact Information
             [
-                'key' => 'contact_email',
+                'key' => 'info_email',
                 'value' => 'info@asnupendovillage.org',
+                'type' => 'email',
+                'group' => 'contact',
+                'label' => 'Info Email',
+                'description' => 'General information email address',
+                'sort_order' => 0,
+            ],
+            [
+                'key' => 'contact_email',
+                'value' => 'info@breezetech.co.ke',
                 'type' => 'email',
                 'group' => 'contact',
                 'label' => 'Contact Email',
                 'description' => 'Primary contact email address',
+                'sort_order' => 1,
+            ],
+            [
+                'key' => 'donation_email',
+                'value' => 'donations@asnupendovillage.org',
+                'type' => 'email',
+                'group' => 'contact',
+                'label' => 'Donation Email',
+                'description' => 'Email for donation requests and inquiries',
                 'sort_order' => 1,
             ],
             [

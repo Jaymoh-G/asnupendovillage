@@ -57,7 +57,7 @@ class ContactController extends Controller
             Log::info('Contact form submission attempt', $emailData);
 
             // Send email
-            $adminEmail = \App\Models\Setting::get('contact_email', 'info@asnupendovillage.org');
+            $adminEmail = \App\Models\Setting::get('contact_email', 'info@breezetech.co.ke');
 
             Mail::to($adminEmail)->send(new ContactFormMail($emailData));
 

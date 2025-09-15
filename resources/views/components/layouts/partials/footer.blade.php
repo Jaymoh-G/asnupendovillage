@@ -196,10 +196,16 @@ Footer Area ==============================-->
                                 <div class="box-content">
                                     <p class="box-text">Email us any time:</p>
                                     <h4 class="box-title">
-                                        <a
-                                            href="mailto:{{ \App\Models\Setting::get('contact_email', 'info@asnupendovillage.org') }}"
-                                            >{{ \App\Models\Setting::get('contact_email', 'info@asnupendovillage.org') }}</a
-                                        >
+                                        @php $infoEmail =
+                                        \App\Models\Setting::get('info_email');
+                                        $contactEmail =
+                                        \App\Models\Setting::get('contact_email',
+                                        'info@asnupendovillage.org');
+                                        $emailToShow = $infoEmail ?:
+                                        $contactEmail; @endphp
+                                        <a href="mailto:{{ $emailToShow }}">{{
+                                            $emailToShow
+                                        }}</a>
                                     </h4>
                                 </div>
                             </div>

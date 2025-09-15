@@ -49,11 +49,21 @@ class SettingResource extends Resource
                         // Contact Information
                         Forms\Components\Tabs\Tab::make('Contact')
                             ->schema([
+                                Forms\Components\TextInput::make('info_email')
+                                    ->label('Info Email')
+                                    ->default(fn() => Setting::get('info_email', ''))
+                                    ->email()
+                                    ->maxLength(255),
                                 Forms\Components\TextInput::make('contact_email')
                                     ->label('Contact Email')
                                     ->default(fn() => Setting::get('contact_email', ''))
                                     ->email()
                                     ->required()
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('donation_email')
+                                    ->label('Donation Email')
+                                    ->default(fn() => Setting::get('donation_email', ''))
+                                    ->email()
                                     ->maxLength(255),
                                 Forms\Components\TextInput::make('contact_phone')
                                     ->label('Contact Phone')

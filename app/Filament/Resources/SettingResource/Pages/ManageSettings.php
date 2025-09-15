@@ -24,7 +24,9 @@ class ManageSettings extends Page
     // Add properties for all form fields
     public ?string $site_name = null;
     public ?string $site_description = null;
+    public ?string $info_email = null;
     public ?string $contact_email = null;
+    public ?string $donation_email = null;
     public ?string $contact_phone = null;
     public ?string $contact_address = null;
     public ?string $google_map_link = null;
@@ -59,7 +61,9 @@ class ManageSettings extends Page
         // Also set the properties
         $this->site_name = $formData['site_name'] ?? null;
         $this->site_description = $formData['site_description'] ?? null;
+        $this->info_email = $formData['info_email'] ?? null;
         $this->contact_email = $formData['contact_email'] ?? null;
+        $this->donation_email = $formData['donation_email'] ?? null;
         $this->contact_phone = $formData['contact_phone'] ?? null;
         $this->contact_address = $formData['contact_address'] ?? null;
         $this->google_map_link = $formData['google_map_link'] ?? null;
@@ -121,12 +125,22 @@ class ManageSettings extends Page
                         // Contact Information
                         Forms\Components\Tabs\Tab::make('Contact')
                             ->schema([
+                                Forms\Components\TextInput::make('info_email')
+                                    ->label('Info Email')
+                                    ->email()
+                                    ->maxLength(255)
+                                    ->default(Setting::get('info_email', '')),
                                 Forms\Components\TextInput::make('contact_email')
                                     ->label('Contact Email')
                                     ->email()
                                     ->required()
                                     ->maxLength(255)
                                     ->default(Setting::get('contact_email', '')),
+                                Forms\Components\TextInput::make('donation_email')
+                                    ->label('Donation Email')
+                                    ->email()
+                                    ->maxLength(255)
+                                    ->default(Setting::get('donation_email', '')),
                                 Forms\Components\TextInput::make('contact_phone')
                                     ->label('Contact Phone')
                                     ->tel()
