@@ -37,6 +37,26 @@ class Image extends Model
         'sort_order' => 'integer',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function (Image $image) {
+            if (empty($image->caption)) {
+                $image->caption = pathinfo($image->original_name ?? $image->filename, PATHINFO_FILENAME);
+            }
+            if (empty($image->alt_text)) {
+                $image->alt_text = pathinfo($image->original_name ?? $image->filename, PATHINFO_FILENAME);
+            }
+        });
+
+        static::updating(function (Image $image) {
+            if (is_null($image->caption) || $image->caption === '') {
+                $image->caption = pathinfo($image->original_name ?? $image->filename, PATHINFO_FILENAME);
+            }
+        });
+    }
+
     /**
      * Validation rules
      */

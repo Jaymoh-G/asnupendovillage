@@ -32,9 +32,11 @@
                 </div>
                 <div class="row gy-4 gx-4">
                     @forelse($projects as $project)
-                    <div class="col-md-4">
-                        <div class="donation-card" data-theme-color="#FF5528">
-                           
+                    <div class="col-md-4 d-flex">
+                        <div
+                            class="donation-card w-100 d-flex flex-column h-100"
+                            data-theme-color="#1a685b"
+                        >
                             <div class="box-thumb">
                                 <img
                                     src="{{ $project->image_url ?? asset('assets/img/donation/donation1-3.png') }}"
@@ -44,7 +46,9 @@
                                     {{ \Illuminate\Support\Str::limit($project->name, 15) }}
                                 </div>
                             </div>
-                            <div class="box-content">
+                            <div
+                                class="box-content d-flex flex-column flex-grow-1"
+                            >
                                 <h3 class="box-title">
                                     <a
                                         href="#"
@@ -70,7 +74,7 @@
                                 </div>
                                 <a
                                     href="{{ route('projects.detail', $project->slug) }}"
-                                    class="th-btn style6"
+                                    class="th-btn style6 mt-auto"
                                     >View Details
                                     <i class="fas fa-arrow-up-right ms-2"></i
                                 ></a>
@@ -114,6 +118,9 @@
         /* Ensure proper spacing in donation cards */
         .donation-card .box-content {
             padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
         }
 
         .donation-card .box-title {
@@ -122,6 +129,17 @@
 
         .donation-card_progress-wrap {
             margin-bottom: 20px;
+        }
+
+        /* Equal height donation cards */
+        .donation-card {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+        }
+        .donation-card .th-btn.mt-auto {
+            margin-top: auto;
         }
     </style>
 </div>

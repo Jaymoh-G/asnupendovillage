@@ -44,8 +44,8 @@
 
             <div class="row gy-30">
                 @forelse($testimonials as $testimonial)
-                <div class="col-lg-6">
-                    <div class="testi-card3">
+                <div class="col-lg-6 d-flex">
+                    <div class="testi-card3 w-100 d-flex flex-column h-100">
                         <div
                             class="testi-card-shape"
                             data-mask-src="{{
@@ -106,7 +106,7 @@
                                 </span>
                             </div>
                         </div>
-                        <p class="testi-card_text">
+                        <p class="testi-card_text flex-grow-1">
                             @if($testimonial->excerpt) {!! $testimonial->excerpt
                             !!} @else {!! Str::limit($testimonial->content ??
                             'Stay informed about our upcoming events and
@@ -119,7 +119,7 @@
 
                         @if($testimonial->tags && is_array($testimonial->tags)
                         && count($testimonial->tags) > 0)
-                        <div class="testi-card_tags">
+                        <div class="testi-card_tags mt-auto">
                             @foreach($testimonial->tags as $tag)
                             <span class="tag">{{ $tag }}</span>
                             @endforeach
@@ -157,6 +157,9 @@
         }
         .testi-card3 {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
         .testi-card3:hover {
             transform: translateY(-5px);
@@ -262,6 +265,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
             max-height: 6.4em; /* 4 lines * 1.6 line-height */
+            flex-grow: 1;
         }
 
         /* Tags Styling */

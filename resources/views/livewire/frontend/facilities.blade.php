@@ -19,13 +19,12 @@
         </div>
         <div class="row gy-4 gx-4">
             @forelse($facilities as $facility)
-            <div class="col-md-4">
-                <div class="blog-card">
+            <div class="col-md-4 d-flex">
+                <div class="blog-card w-100 d-flex flex-column h-100">
                     <div class="blog-img">
                         <a
                             href="{{ route('facilities.detail', $facility->slug) }}"
                         >
-
                             @if($facility->featured_image_url)
                             <img
                                 src="{{ $facility->featured_image_url }}"
@@ -43,8 +42,7 @@
                             @endif
                         </a>
                     </div>
-                    <div class="blog-content">
-                        
+                    <div class="blog-content d-flex flex-column flex-grow-1">
                         <div class="blog-meta">
                             <a href="{{ route('facilities') }}"
                                 ><i class="fas fa-building"></i>Facility</a
@@ -70,7 +68,7 @@
                         @endif
                         <a
                             href="{{ route('facilities.detail', $facility->slug) }}"
-                            class="th-btn"
+                            class="th-btn mt-auto"
                         >
                             View Details
                             <i class="fas fa-arrow-up-right ms-2"></i>
@@ -94,6 +92,20 @@
         }
         .blog-card:hover .blog-img img {
             filter: none !important;
+        }
+        /* Equal height cards */
+        .blog-card {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .blog-card .blog-content {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        .blog-card .th-btn.mt-auto {
+            margin-top: auto;
         }
     </style>
 </div>

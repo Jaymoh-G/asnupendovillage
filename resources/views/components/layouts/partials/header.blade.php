@@ -170,12 +170,12 @@
                     <div class="info-card-wrap">
                         <div class="info-card">
                             <div class="box-icon">
-                                <i class="fal fa-map-marker-alt"></i>
+                                <i class="fas fa-map-location-dot"></i>
                                 <div
                                     class="bg-shape1"
                                     data-mask-src="{{
                                         asset(
-                                            'public/assets/img/shape/info_card_icon_bg_shape_1_1.png'
+                                            'assets/img/shape/info_card_icon_bg_shape_1_1.png'
                                         )
                                     }}"
                                 ></div>
@@ -183,7 +183,7 @@
                                     class="bg-shape2"
                                     data-mask-src="{{
                                         asset(
-                                            'public/assets/img/shape/info_card_icon_bg_shape_1_1.png'
+                                            'assets/img/shape/info_card_icon_bg_shape_1_1.png'
                                         )
                                     }}"
                                 ></div>
@@ -206,14 +206,14 @@
                                 </h4>
                             </div>
                         </div>
-                        <div class="info-card">
+                        <div class="info-card" data-theme-color="#FFAC00">
                             <div class="box-icon">
-                                <i class="fal fa-phone"></i>
+                                <i class="fas fa-phone-volume"></i>
                                 <div
                                     class="bg-shape1"
                                     data-mask-src="{{
                                         asset(
-                                            'public/assets/img/shape/info_card_icon_bg_shape_1_1.png'
+                                            'assets/img/shape/info_card_icon_bg_shape_1_1.png'
                                         )
                                     }}"
                                 ></div>
@@ -237,14 +237,14 @@
                                 </h4>
                             </div>
                         </div>
-                        <div class="info-card">
+                        <div class="info-card" data-theme-color="#122F2A">
                             <div class="box-icon">
-                                <i class="fal fa-envelope-open"></i>
+                                <i class="fas fa-envelope"></i>
                                 <div
                                     class="bg-shape1"
                                     data-mask-src="{{
                                         asset(
-                                            'public/assets/img/shape/info_card_icon_bg_shape_1_1.png'
+                                            'assets/img/shape/info_card_icon_bg_shape_1_1.png'
                                         )
                                     }}"
                                 ></div>
@@ -252,7 +252,7 @@
                                     class="bg-shape2"
                                     data-mask-src="{{
                                         asset(
-                                            'public/assets/img/shape/info_card_icon_bg_shape_1_1.png'
+                                            'assets/img/shape/info_card_icon_bg_shape_1_1.png'
                                         )
                                     }}"
                                 ></div>

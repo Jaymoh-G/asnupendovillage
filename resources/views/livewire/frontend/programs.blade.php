@@ -40,13 +40,12 @@
         </div>
         <div class="row gy-4 gx-4">
             @forelse($programs as $program)
-            <div class="col-md-4">
-                <div class="blog-card">
+            <div class="col-md-4 d-flex">
+                <div class="blog-card w-100 d-flex flex-column h-100">
                     <div class="blog-img">
                         <a
                             href="{{ route('programs.detail', $program->slug) }}"
                         >
-
                             @if($program->image_url)
                             <img
                                 src="{{ $program->image_url }}"
@@ -65,8 +64,7 @@
                             @endif
                         </a>
                     </div>
-                    <div class="blog-content">
-                      
+                    <div class="blog-content d-flex flex-column flex-grow-1">
                         <div class="blog-meta">
                             <a href="{{ route('programs') }}"
                                 ><i class="fas fa-tags"></i>Program</a
@@ -94,7 +92,7 @@
                         @endif
                         <a
                             href="{{ route('programs.detail', $program->slug) }}"
-                            class="th-btn"
+                            class="th-btn mt-auto"
                             >Read More <i class="fas fa-arrow-up-right ms-2"></i
                         ></a>
                     </div>
@@ -116,6 +114,20 @@
         }
         .blog-card:hover .blog-img img {
             filter: none !important;
+        }
+        /* Ensure equal height cards */
+        .blog-card {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .blog-card .blog-content {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        .blog-card .th-btn.mt-auto {
+            margin-top: auto;
         }
     </style>
 </div>

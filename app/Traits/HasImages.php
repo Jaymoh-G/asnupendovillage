@@ -67,6 +67,7 @@ trait HasImages
             'mime_type' => $file->getMimeType(),
             'size' => $file->getSize(),
             'alt_text' => pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),
+            'caption' => pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),
         ]);
     }
 
