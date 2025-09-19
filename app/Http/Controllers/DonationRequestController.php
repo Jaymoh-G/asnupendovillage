@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
+use App\Mail\DonationFormMail;
 
 class DonationRequestController extends Controller
 {
@@ -27,23 +28,8 @@ class DonationRequestController extends Controller
             ?: 'info@breezetech.co.ke';
 
         try {
-            $lines = [
-                'New Donation Request',
-                '',
-                'Name: ' . $validated['donor_name'],
-                'Email: ' . $validated['donor_email'],
-                'Phone: ' . $validated['donor_phone'],
-                'Amount: ' . (!empty($validated['amount']) ? $validated['amount'] . (!empty($validated['currency']) ? (' ' . $validated['currency']) : '') : 'Not specified'),
-                'Preferred Payment Method: ' . strtoupper($validated['preferred_payment_method']),
-                'Preferred Contact Method: ' . (!empty($validated['preferred_contact_method']) ? ucfirst($validated['preferred_contact_method']) : 'Not specified'),
-                'Donation Purpose: ' . (!empty($validated['donation_purpose']) ? $validated['donation_purpose'] : 'N/A'),
-                'Message: ' . (!empty($validated['message']) ? $validated['message'] : 'N/A'),
-            ];
-
-            Mail::raw(implode("\n", $lines), function ($message) use ($toEmail) {
-                $message->to($toEmail)
-                    ->subject('Donation Request');
-            });
+            // Send beautifully formatted HTML email
+            Mail::to($toEmail)->send(new DonationFormMail($validated));
 
             return back()->with('success', 'Your donation request has been sent. We will contact you shortly.');
         } catch (\Throwable $e) {

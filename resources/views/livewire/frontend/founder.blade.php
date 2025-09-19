@@ -29,7 +29,7 @@
     <section class="space">
         <div class="container">
             <div class="row gy-4 align-items-center">
-                <div class="col-lg-6">
+                <div class="col-lg-6 order-lg-2">
                     <div class="img-box1">
                         <div class="img1">
                             <img
@@ -47,7 +47,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-6 order-lg-1">
                     <div class="about-wrap1">
                         <div class="title-area mb-30">
                             <span class="sub-title before-none"
@@ -85,7 +85,7 @@
     >
         <div class="container">
             <div class="row gy-4 align-items-center">
-                <div class="col-lg-6">
+                <div class="col-lg-6 order-lg-2">
                     <div class="title-area mb-30">
                         <span
                             class="sub-title"
@@ -98,7 +98,7 @@
                         {!! $pageContent->section2_content !!} @endif
                     </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-6 order-lg-1">
                     <div class="img-box1">
                         <div class="img1">
                             <img
@@ -125,25 +125,38 @@
     $pageContent->section3_content))
     <section class="space">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
+            <div class="row gy-4 align-items-start">
+                <div class="col-lg-6">
                     <h2 class="sec-title">
                         {{ $pageContent->section3_title }}
                     </h2>
                     {!! $pageContent->section3_content !!}
                 </div>
+                @if(isset($pageContent->section3_image_urls) &&
+                is_array($pageContent->section3_image_urls) &&
+                count($pageContent->section3_image_urls) > 0)
+                <div class="col-lg-6">
+                    <div class="section-image-item portrait">
+                        <img
+                            src="{{ $pageContent->section3_image_urls[0] }}"
+                            alt="Founder Section Image"
+                        />
+                    </div>
+                </div>
+                @endif
             </div>
         </div>
     </section>
     @endif @if($pageContent && isset($pageContent->section3_image_urls) &&
     is_array($pageContent->section3_image_urls) &&
-    count($pageContent->section3_image_urls) > 0)
+    count($pageContent->section3_image_urls) > 1) @php $section3Gallery =
+    array_slice($pageContent->section3_image_urls, 1); @endphp
     <section class="space">
         <div class="container">
             <div class="row gy-4">
-                @foreach($pageContent->section3_image_urls as $imageUrl)
+                @foreach($section3Gallery as $imageUrl)
                 <div class="col-md-6 col-lg-4">
-                    <div class="section-image-item">
+                    <div class="section-image-item portrait">
                         <img
                             src="{{ $imageUrl }}"
                             alt="Founder Section Image"
@@ -222,9 +235,10 @@
         }
         .section-image-item {
             position: relative;
-            border-radius: 8px;
+            border: 3px solid #ffac00; /* Match other images */
+            border-radius: 15px; /* Match other images */
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); /* Match other images */
             transition: all 0.3s ease;
         }
         .section-image-item:hover {
@@ -236,6 +250,15 @@
         }
         .section-image-item:hover img {
             transform: scale(1.05);
+        }
+
+        /* Enforce portrait ratio for gallery items */
+        .section-image-item.portrait img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 3 / 4;
+            object-fit: cover;
+            display: block;
         }
 
         /* Image Border Styling */

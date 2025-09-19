@@ -15,6 +15,11 @@ class NewsletterController extends Controller
 
         $apiKey = config('services.mailchimp.key');
         $listId = config('services.mailchimp.list_id');
+        $fake = (bool) config('services.mailchimp.fake');
+
+        if ($fake) {
+            return back()->with('success', 'Thanks for subscribing! (local test)');
+        }
 
         if (empty($apiKey) || empty($listId)) {
             return back()->with('error', 'Subscription service is not configured.');
@@ -30,7 +35,10 @@ class NewsletterController extends Controller
                 'status' => 'subscribed',
             ]);
 
-        if ($response->successful() || ($response->status() === 400 && str_contains($response->body(), 'is already a list member'))) {
+        if (
+            $response->successful() ||
+            ($response->status() === 400 && (str_contains($response->body(), 'is already a list member') || str_contains($response->body(), 'Member Exists')))
+        ) {
             return back()->with('success', 'Thanks for subscribing!');
         }
 

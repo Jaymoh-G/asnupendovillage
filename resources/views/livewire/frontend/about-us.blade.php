@@ -2,6 +2,45 @@
     <style>
         /* Hide the orange bar above images */
         .img-box1:before { display: none !important; }
+        /* Match founder portrait styling */
+        .img-box1 .img1 {
+            border: 3px solid #ffac00;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 640px; /* Increase image size */
+            margin: 0; /* Align to column edge */
+        }
+
+        .img-box1 .img1 img {
+            width: 100%;
+            height: auto;
+            display: block;
+            aspect-ratio: 3 / 4; /* Portrait ratio */
+            object-fit: cover;
+        }
+
+        /* Reduce horizontal gap between image and content in About section */
+        #about-sec .row.gy-4.align-items-center {
+            --bs-gutter-x: 0; /* match tight founder layout */
+        }
+
+        /* Remove extra padding on columns at lg+ to eliminate space */
+        @media (min-width: 992px) {
+            #about-sec .col-xl-7, #about-sec .col-xl-5 {
+                padding-left: 0;
+                padding-right: 0;
+            }
+            /* Nudge text slightly off the image like founder spacing */
+            #about-sec .col-xl-7 .about-wrap1 { padding-left: 12px; }
+            /* Allow image to grow a bit more at large screens */
+            #about-sec .img-box1 .img1 {
+                max-width: 768px;
+            }
+        }
     </style>
     <!--==============================
     Breadcumb
@@ -57,7 +96,7 @@
         </div>
         <div class="container">
             <div class="row gy-4 align-items-center">
-                <div class="col-xl-7">
+                <div class="col-xl-5">
                     <div class="img-box1">
                         @if($pageContent && $pageContent->section1_image_urls && count($pageContent->section1_image_urls) > 0)
                         <div
@@ -66,11 +105,6 @@
                             <img
                                 src="{{ $pageContent->section1_image_urls[0] }}"
                                 alt="About Us"
-                                style="
-                                    width: 100%;
-                                    height: 100%;
-                                    object-fit: cover;
-                                "
                             />
                         </div>
                         @elseif($pageContent &&
@@ -81,11 +115,6 @@
                             <img
                                 src="{{ $pageContent->first_image_url }}"
                                 alt="About Us"
-                                style="
-                                    width: 100%;
-                                    height: 100%;
-                                    object-fit: cover;
-                                "
                             />
                         </div>
                         @else
@@ -110,7 +139,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-5">
+                <div class="col-xl-7">
                     <div class="about-wrap1">
                         <div class="title-area mb-30">
                             <span class="sub-title before-none">
@@ -250,7 +279,7 @@
     <section class="space">
         <div class="container">
             <div class="row gy-4 align-items-center">
-                <div class="col-lg-6">
+                <div class="col-lg-6 col-xl-5">
                     <div class="img-box1">
                         @if($pageContent && $pageContent->section1_images &&
                         count($pageContent->section1_images) > 0)
@@ -289,7 +318,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-6 col-xl-7">
                     <div class="about-wrap1">
                         <div class="title-area mb-30">
                             <span class="sub-title before-none"
